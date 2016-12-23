@@ -1,0 +1,85 @@
+From: "Vince Scheib" <scheib@cs.unc.edu>
+Date: Thu, 26 Sep 2002 22:05:43 -0400
+To:
+
+> do you know about unix?
+
+Unix is a word used to refer to many unix-like operating 
+systems (One of which was really called unix a long time 
+ago). Many computers are designed with the intent of having 
+unix run on them, but there is a separation between machine 
+and operating system.
+
+The operating system is just the software which takes care 
+of running other software. IE, windows allows you to run 
+lots of programs that are written to run on windows.
+
+Linux is a unix-like operating system designed to run on the 
+same kinds of computers that run Windows.
+
+Unix was designed for the older, bigger, shared computers. 
+An important trait is that many users can be logged in at 
+once. For this, you usually think of a unix machine as some 
+big computer far away, and you're connecting to it. In the 
+old days, dumb terminals sat on people's desks. These 
+weren't really "computers", just the bare necessities to 
+connect to a computer (keyboard, monitor, and a little tiny 
+bit of thinking).
+
+The basic way to use a unix machine is by telnet and a 
+command prompt. Telnet is a program. It is very simple. It 
+sends text in two directions, from you to elsewhere, and 
+vice versa. A command prompt is a way to issue commands and 
+start programs. DOS (Disk Operating System) is a command 
+prompt operating system. You type text like "type 
+textfile.txt" and stuff happens.
+
+You unix machines also have graphical user interfaces (GUIs 
+pronounced Gooey). Windows is a GUI. Apple computers have a 
+GUI (these days). unix machines even let you use a GUI when 
+you're not really at the computer. That's call Xwindows.
+
+If you use unix machines, you'll probably only use the text 
+interface. From your windows machine you can easily connect 
+that way. You could, if you wanted, connect with xwindows. 
+You'd have to install special software to do that, however. 
+If you go to a computer lab, there very well may be unix 
+terminals (perhaps even dumb ones) you can use for the unix 
+systems.
+
+Why would you use unix? Well, many things that do things for 
+a long time, reliably, and for many people, run on unix. 
+Email, web page servers, telephone systems, printers and 
+print managers, big computational thingies, air traffic 
+control, are all examples.
+
+Why would YOU use unix? Well, posting web pages is done 
+(usually) on unix machines (and when it's not unix, it's 
+done in very unix ways). Some software like Mathematica is 
+probably available there -- and if you had to let it crunch 
+number for days you'd want it to happen on a unix server. If 
+you had computer files you wanted to open anywhere on 
+campus, instead of carrying them you just save them to your 
+unix account.
+
+The unix methodology is to have many very small programs 
+that do a simple thing. Want to copy a file? Use the File 
+Transfer Protocol (FTP). Want to launch a program, just use 
+a command prompt unless you really need that whole big & 
+slow GUI. et cetera.
+
+The result is that you can not use unix without some 
+reference. Many things in windows aren't so hard to figure 
+out because 1) they're visual, just look and experiment with 
+things and 2) there's online help available that is much 
+easier to use than the help available from a command line.
+
+Is there really a reason for you to use unix? Probably not. 
+Is it a useful thing to know how to use, quite. Would you 
+really find it useful, no. Unless, of course, you had to use 
+it, but you probably don't.
+
+I walk through minefields and watch your head rock.
+
+-- Vincent Scheib <<><>> http://www.scheib.net/
+

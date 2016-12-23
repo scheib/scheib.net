@@ -1,0 +1,154 @@
+<html>
+<!-- Copyright 2010 Karl Hillesland and Vincent Scheib -->
+<head>
+<title>Lines</title>
+<script type="application/x-javascript">
+
+var frame;
+
+var numLines;
+var lineWidth;
+var context = null;
+
+var width=500;
+var height=500;
+var scale = 1.0;
+
+var offsetInner1_seed=Math.random();
+var offsetInner2_seed=Math.random();
+var offsetInner3_seed=Math.random();
+var offsetInner4_seed=Math.random();
+var offsetOuter1_seed=Math.random();
+var offsetOuter2_seed=Math.random();
+var offsetOuter3_seed=Math.random();
+var offsetOuter4_seed=Math.random();
+var offsetInner1;
+var offsetInner2;
+var offsetInner3;
+var offsetInner4;
+var offsetOuter1;
+var offsetOuter2;
+var offsetOuter3;
+var offsetOuter4; 
+var periods1x;
+var periods1y;
+var periods2x;
+var periods2y;
+var inside_scale;
+var outside_scale;
+var changerate_i;
+var changerate_o;
+
+function init()
+{
+ 		frame = 0;
+		window.canvasTimer = setInterval(draw, 16);
+		var canvas = document.getElementById("canvas");
+		context = canvas.getContext("2d");
+}
+
+function changeNumber(intial_rand_0_to_1, changerate, scale, time)
+{
+	return scale * Math.sin(time * changerate + intial_rand_0_to_1 * 2.0 * Math.PI);
+}
+
+function changeNumbers(time)
+{
+	offsetInner1=changeNumber(offsetInner1_seed, changerate_i, inside_scale, time);
+	offsetInner2=changeNumber(offsetInner2_seed, changerate_i, inside_scale, time);
+	offsetInner3=changeNumber(offsetInner3_seed, changerate_i, inside_scale, time);
+	offsetInner4=changeNumber(offsetInner4_seed, changerate_i, inside_scale, time);
+	offsetOuter1=changeNumber(offsetOuter1_seed, changerate_o, outside_scale, time);
+	offsetOuter2=changeNumber(offsetOuter2_seed, changerate_o, outside_scale, time);
+	offsetOuter3=changeNumber(offsetOuter3_seed, changerate_o, outside_scale, time);
+	offsetOuter4=changeNumber(offsetOuter4_seed, changerate_o, outside_scale, time); 	
+}
+
+function drawLine(t)
+{
+	var x1 = Math.sin(2*Math.PI*(t+offsetInner1)*periods1x+offsetOuter1);
+	var y1 = Math.cos(2*Math.PI*(t+offsetInner2)*periods1y+offsetOuter2);
+	var x2 = Math.sin(2*Math.PI*(t+offsetInner3)*periods2x+offsetOuter3);
+	var y2 = Math.cos(2*Math.PI*(t+offsetInner4)*periods2y+offsetOuter4);
+
+	context.moveTo(x1 * scale + width/2.0, y1 * scale + height/2.0);
+	context.lineTo(x2 * scale + width/2.0, y2 * scale + height/2.0);
+}
+
+function draw() 
+{
+	var canvas = document.getElementById("canvas");
+	
+	// Update width and height
+	width = canvas.width = document.body.offsetWidth;
+	height = canvas.height //= document.body.offsetHeight;
+	if (width > height)
+	{
+		scale = width/2.0;
+	}
+	else
+	{
+		scale = height/2.0;
+	}
+	scale *= .9
+	
+	// Update slider variables
+	numLines = eval(document.getElementById("slider_numLines").value);
+	lineWidth = eval(document.getElementById("slider_lineWidth").value);
+	inside_scale = eval(document.getElementById("slider_inside_scale").value/100.0);
+	outside_scale = eval(document.getElementById("slider_outside_scale").value/100.0);
+	changerate_i = eval(document.getElementById("slider_changerate_i").value/1000.0);
+	changerate_o = eval(document.getElementById("slider_changerate_o").value/1000.0);
+	periods1x = eval(document.getElementById("slider_periods1x").value);
+	periods1y = eval(document.getElementById("slider_periods1y").value);
+	periods2x = eval(document.getElementById("slider_periods2x").value);
+	periods2y = eval(document.getElementById("slider_periods2y").value);
+
+	changeNumbers(new Date().getTime()/60.0);
+	
+	context.clearRect(0,0,width,height);
+	context.lineWidth = lineWidth;
+	context.beginPath();
+	for(var i=0.0; i<=(1-1.0/numLines/2); i+= 1.0/numLines)
+	{
+	  	drawLine(i);
+	}
+	context.stroke();
+	++frame;
+}
+</script>
+</head>
+<body onLoad="init();">
+<canvas id="canvas" width="1" height="400">Error: No support for HTML canvas.</canvas>
+
+<br><input id="slider_numLines" type="range" min="1" max="2000" value="200" step="1" style="width:50%" onchange="update_numLines(this.value)"/> 
+numLines = <span id="display_numLines">0</span> <script type="text/javascript">function update_numLines(x) { document.getElementById("display_numLines").innerHTML=x; }</script>
+
+<br><input id="slider_lineWidth" type="range" min="1" max="10" value="1" step="1" style="width:50%" onchange="update_lineWidth(this.value)"/> 
+lineWidth = <span id="display_lineWidth">0</span> <script type="text/javascript">function update_lineWidth(x) { document.getElementById("display_lineWidth").innerHTML=x; }</script>
+
+<br><input id="slider_inside_scale" type="range" min="0" max="100" value="10" step="1" style="width:50%" onchange="update_inside_scale(this.value)"/> 
+inside_scale = <span id="display_inside_scale">0</span> <script type="text/javascript">function update_inside_scale(x) { document.getElementById("display_inside_scale").innerHTML=x; }</script>
+
+<br><input id="slider_changerate_i" type="range" min="0" max="100" value="10" step="1" style="width:50%" onchange="update_changerate_i(this.value)"/> 
+changerate_i = <span id="display_changerate_i">0</span> <script type="text/javascript">function update_changerate_i(x) { document.getElementById("display_changerate_i").innerHTML=x; }</script>
+
+<br><input id="slider_outside_scale" type="range" min="0" max="100" value="10" step="1" style="width:50%" onchange="update_outside_scale(this.value)"/> 
+outside_scale = <span id="display_outside_scale">0</span> <script type="text/javascript">function update_outside_scale(x) { document.getElementById("display_outside_scale").innerHTML=x; }</script>
+
+<br><input id="slider_changerate_o" type="range" min="0" max="100" value="10" step="1" style="width:50%" onchange="update_changerate_o(this.value)"/> 
+changerate_o = <span id="display_changerate_o">0</span> <script type="text/javascript">function update_changerate_o(x) { document.getElementById("display_changerate_o").innerHTML=x; }</script>
+
+<br><input id="slider_periods1x" type="range" min="1" max="10" value="1" step="1" style="width:50%" onchange="update_periods1x(this.value)"/> 
+periods1x = <span id="display_periods1x">0</span> <script type="text/javascript">function update_periods1x(x) { document.getElementById("display_periods1x").innerHTML=x; }</script>
+<br><input id="slider_periods1y" type="range" min="1" max="10" value="2" step="1" style="width:50%" onchange="update_periods1y(this.value)"/> 
+periods1y = <span id="display_periods1y">0</span> <script type="text/javascript">function update_periods1y(x) { document.getElementById("display_periods1y").innerHTML=x; }</script>
+<br><input id="slider_periods2x" type="range" min="1" max="10" value="2" step="1" style="width:50%" onchange="update_periods2x(this.value)"/> 
+periods2x = <span id="display_periods2x">0</span> <script type="text/javascript">function update_periods2x(x) { document.getElementById("display_periods2x").innerHTML=x; }</script>
+<br><input id="slider_periods2y" type="range" min="1" max="10" value="3" step="1" style="width:50%" onchange="update_periods2y(this.value)"/> 
+periods2y = <span id="display_periods2y">0</span> <script type="text/javascript">function update_periods2y(x) { document.getElementById("display_periods2y").innerHTML=x; }</script>
+
+<br><br>Copyright 2010 Karl Hillesland and Vincent Scheib.
+</body>
+</html>
+

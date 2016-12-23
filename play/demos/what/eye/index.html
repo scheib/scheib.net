@@ -1,0 +1,678 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<link rev="MADE" href="mailto:eye@iki.fi">
+<title>Computer Demos - The Story So Far</title>
+<meta name="author" content="Petri Kuittinen">
+<meta name="description" content="An overall introduction to computer demos,
+demo scene and related issues with lots of links to further information">
+<meta name="keywords" content="demo, computer demo, history, demo scene,
+intro, compo, demo party, demo group, demo programming, code, coder,
+music, MOD, art, graphics, assembly, assembler, optimize, cracker,
+PC, Atari ST, Amiga, C64, C-64">
+<style type="text/css">
+<!-- /* these definitions are inside HTML comments that's why that old browser could pass them */
+body {color:black; background:white;}
+A:link {color: #0000b0}
+A:visited {color: #006010}
+A:active: {color: #c00010}
+h1 {text-align: center}
+h1, h2 {background: #f0f0f0}
+P.navbar {background:black; border: medium #ffffff solid;
+padding: 1%; text-align: center; font-weight: bold}
+P.navbar A:link {background:black; color:white; text-decoration: none}
+P.navbar A:visited {color: #10ff30}
+P.navbar A:hover {background: #ffb0d3; color:black; text-decoration: none}
+DL DT {color: #ff0000; background: #f0f0f0; font-weight: 500}
+DL DD {color: #000066;}
+-->
+</style>
+</head>
+<body>
+<center><table BORDER=2 CELLSPACING=0 CELLPADDING=0 BGCOLOR="#FFCC33" >
+<tr>
+<td>
+<center><font face="Arial,Helvetica"><font size=-2>&nbsp;</font><b><a href="../index.html">Back
+to Demos Explained</a></b><font size=-2>&nbsp;</font></font></center>
+</td>
+
+<td>
+<center><font face="Arial,Helvetica"><font size=-2>These web pages archived
+from <a href="http://mlab.uiah.fi/~eye/demos/">http://mlab.uiah.fi/~eye/demos/</a>
+on October 26th 2000 by written permision of the author, Petri Kuittinen. This 
+page has not been modified except for the addition of this notice, and will not 
+be updated. Petri Kuittinen's web pages can be found at <a href="http://www.iki.fi/~eye/">http://www.iki.fi/~eye/</a></font></font></center>
+</td>
+</tr>
+</table></center>
+<h1>Computer Demos - The Story So Far</h1>
+
+<p class="navbar">[ <a href="#begin">introduction</a> |
+<a href="#scene">demo scene</a> |
+<a href="#parties">demo parties</a> |
+<a href="#competitions">competitions</a> |
+<a href="#design">demo design</a> |
+<a href="#links">links</a> |
+<a href="#glossary">glossary</a> ]</p>
+
+<p>Written by <a href="http://mlab.uiah.fi/~eye/">Petri Kuittinen</a></p>
+
+<p><img src="interfer.gif" alt="[screenshot]" width="320" height="200">
+<img src="union.gif" alt="[screenshot]" width="320" height="200"></p>
+
+<p><em>Left: Interference pictures from a PC demo, Right: Scroller
+by
+<a href="http://hem.passagen.se/carebear/">TCB</a> in
+"<a href="ftp://ftp.fatal-design.com/union.zip">Union</a>"-megademo (ST)</em></p>
+
+<h2><a name="begin">Programming Technique + Art = Demo</a></h2>
+
+<p>Computer demos should not be confused with the demo versions of
+commercial programs. They are "demos" too, but the word "demo" in
+this text means a program whose purpose is to present the technical
+and artistic skills of its makers and produce audiovisual pleasure
+to the viewer. A computer demo usually includes various kind of
+real-time produced computer graphics effects which have little
+relation to each other accompanied by music. In a way a demo could
+be described as a sort of music video or a short computer animation
+film without a plot or message other than just "hey, I can do this"
+and "greetings to my friends". Of course there is exception to
+every rule and some demos have a plot and message. An important
+distinction between demos and movies or videos is that the visual
+effects seen in demos are real-time calculated,
+instead of rendered in beforehand like conventional computer
+animations (where often hours of computer time are spent to
+calculate just one frame).</p>
+
+<p>Most computer demos are freeware, in other words they can be
+freely copied, but the original author retains copyright to the
+product. The authors computer demos don't usually release the
+source code and thus the demo programmers must figure out by
+themselves how to produce a certain demo effect, leading to many
+similar looking demos ("I can also do it!"). People who have never
+seen computer demos or who don't understand the creation process
+behind demos, often find computer demos quite boring. Computer
+demos are made for other other people interested in demos, to win
+fame and glory among other demo freaks. Nowadays the motivation to
+make demos is often a price to win at demo competitions.</p>
+
+<p>Demos are usually a group effort. The most important member of a
+demo group is usually the coder (programmer). Demos are
+conventionally programmed in
+<a href="http://www.astentech.com/tutorials/Assembly.html">assembler</a>, but nowadays
+<a href="http://www.ioccc.org/">C</a> and
+<a href="http://www.cee.hw.ac.uk/~msgrant/faq.html">C++</a> are
+also popular, and only the most time-critical parts of the demos
+are programmed in hand-optimized assembler. The original ideology
+of the demo programmers is to build everything from scratch
+(instead of using existing programming libraries) and push the
+hardware to its limits and beyond it. E.g. many C64 and Atari ST
+exploit bugs in hardware which allow some interesting effects e.g.
+to draw graphics on screen borders (overscan / full screen). The
+sound of chips of C64
+(<a href="http://stud1.tuwien.ac.at/~e9426444/">SID</a>) or
+Atari ST
+(<a href="http://www.brainbug.ch/stsound/">YM2149</a>) are not designed
+to play samples,
+but still demo coders have managed to do this. Demo effects are
+usually non-interactive, which allows demo coders to hand-tune
+routines to do exactly-what-is shown and not worry about anything
+else. Whereas game programmers must use more general purpose
+routines and include interaction. Demo coders often use clever
+tricks and actual cheating to make things look better than they
+really are. In addition to the coder, there is usually a musician
+and a graphician (graphics artist) and contact personnel (swappers,
+SysOp). One person can of course takes care of several of these
+duties and there can be several programmers, musicians etc.
+Typically a demo group has 2-15 members, but there are several lone
+wolves in the demo scene.</p>
+
+<h2><a name="scene">The Demo Scene</a></h2>
+
+<p>People who are interested in demos are called the demo scene.
+Organized demo scene began to form on the mid-1980's. During those
+early days the most popular demo machines were
+<a href="http://www.tardis.ed.ac.uk/~alexios/MACHINE-ROOM/Commodore_Amiga_1000.html">Commodore Amiga</a>,
+<a href="http://www.tardis.ed.ac.uk/~alexios/MACHINE-ROOM/Commodore_64.html">Commodore 64</a> (C64) and
+<a href="http://www.tardis.ed.ac.uk/~alexios/MACHINE-ROOM/Atari_520ST.html">Atari ST</a>.
+<a href="http://www.tardis.ed.ac.uk/~alexios/MACHINE-ROOM/Apple_Macintosh.html">Apple Macintosh</a> was never a popular demo platform.
+The first
+<a href="http://www.tardis.ed.ac.uk/~alexios/MACHINE-ROOM/IBM_PC.html">PC</a>s usually had poor graphics and sound
+capabilities. Since emergence of
+<a href="http://gameprogrammer.com/3-tweak.html">VGA</a> graphics and
+<a href="http://www.gate.net/~shipbrk/sb.html">Adlib/SoundBlaster</a> sound
+cards allowed a good demos to made on PCs, but it took many years
+for PC scene to learn to program these well.
+The ST scene began to diminish
+after the first years of 1990's and the PC demo scene began to
+rise. Nowadays the PC is the most popular demo machine. C64 and
+Amiga demo scene are still existing. Yes, some people still make
+demos for C64, but nowadays it is more of nostalgic curiosity.</p>
+
+<p>The demo hobby is centered in Europe, there are little demos
+makers in other continents Majority of leading demo groups come
+from Northern Europe. Finland could perhaps be titled as the
+leading demo country, because Finns have gathered more winning
+positions on major demos parties than any other country. The
+Scandinavian countries have more demo freaks per capita than other
+countries.</p>
+
+<p>It is difficult to estimate the actual size of demo scene, but
+there are at least several thousand people in Finland who are
+interested in demos.</p>
+
+<h2><a name="parties">Demo Parties</a></h2>
+
+<p><img src="halli4.jpg" alt="" width="430" height="297"></p>
+
+<p><em>Overview from Assembly'95 (Helsinki ice hall)</em></p>
+
+<p>Demo scene members organize big meetings, called demo parties.
+They usually last few days and contain so much different kind of
+events that the attenders rarely get a good night's sleep. People
+go to demo parties to meet other demo scene members, swap software,
+play multi-player network games and watch and attend to various
+kinds of <a href="#competitions">competitions</a>. The best competition
+entries are usually rewarded with prices: money and computer
+products from sponsors.</p>
+
+<p>On big demo parties the number of entries for a competition can
+be very large. A small jury consisting of scene members first
+reviews the entries and a limited amount (e.g. 10-15) entries are
+shown to the big audience. Often entries get disqualified because
+they have broken some competition rule or they contain material
+which offended the organizers or they don't work in the organizers'
+computers.</p>
+
+<p>The biggest demo parties are:</p>
+
+<ul>
+  <li><a href="http://www.assembly.org/">Assembly</a> (held in
+      <a href="http://www.finland.fi/">Finland</a> on July-August)</li>
+  <li><a href="http://www.theparty.dk/">The Party</a> (held in
+      <a href="http://www.denmark.dk/">Denmark</a> few days before New Year)</li>
+  <li>The Gathering (held in <a href="http://www.norge.no/english/">Norway</a> on Easter)</li>
+</ul>
+
+<p>They gather several thousand visitors, but there a lots of smaller
+demo parties which gather only few hundred visitors. The average age
+of people who attend demo parties is getting younger and younger each
+year, now it is about 15-16 years, but the average age of those people
+who win competitions is usually slightly above 20. The youngest demo
+scene members are about 10 years of age and oldest ones are around 30
+years of age. The demo hobby is even more male-oriented than other
+computer use. Almost all demo scene members are men. There has been
+some female musicians and graphicians, but I have never heard of a
+female demo coder. Major demo parties have few percent of female
+visitors, but most these women are girlfriends of male demo scene
+members or local girls who just wandered there, because of free
+entrance. Women often get free entrance, where as boys have to pay
+100-250 FIM ($15-$40) to enter a demo party.</p>
+
+<p><img src="asm96-3.jpg" alt="" width="400" height="300"></p>
+
+<p><em>Picture from Assembly'96 (Helsinki Fair Center)</em></p>
+
+<h2><a name="competitions">Competitions</a></h2>
+
+<h3>Demo Competition</h3>
+
+<p>The winners of this competition usually get the best prices
+(compared to other competitions), so in a way this is the "king of
+competitions". There are different categories for different kind of
+home computers, e.g. separate Amiga and PC demo competitions.</p>
+
+<p><img src="environm.gif" alt="[screenshot]" width="320" height= "200">
+<img src="pic004.gif" alt="[screenshot]" width="320" height= "200"></p>
+
+<p><em>Left: Environment mapped metal ball from
+"<a href="http://www.ludd.luth.se/users/jojje/DemoPage/m_1995.html">Solstice</a>"-demo by
+Valhalla (Winner of Wired'95 PC demo compo), Right: Colorful
+"plasma" 3D cube from
+"<a href="ftp://ftp.futurecrew.org/fc/demos/2ndreality.zip">Second Reality</a>" by
+<a href="http://www.futurecrew.org/">Future Crew</a>
+(Winner of Assembly'93 PC demo competition)</em></p>
+
+<h3>Intro Competition</h3>
+
+<p>The difference between a demo and an intro is the size of the
+programs. The maximum allowed hard disk space for demos is usually
+4 megabytes, but for intros to limit is usually only 64 kilobytes
+(40 kilobytes for Amiga intros). Assembly'94 was the first big demo
+party have a 4 kilobyte intro competition. Nowadays there are even
+more extreme intro competitions e.g. 256 byte intro competition.
+The smallest intros are always coded in assembler. It is more
+difficult to get lots of high quality graphics and music and
+different kind of effects to small size. The smallest of intros
+(&lt;= 4 kilobytes) usually don't have any kind of music, because
+the (stupid) competition rules have disallowed them.</p>
+
+<p><img src="gshade.gif" alt="[screenshot]" width="320" height="200">
+<img src="vectorw.gif" alt="[screenshot]" width="320" height="200"></p>
+
+<p><em>Left: Inside of a gourad-shaded torus from "Cyboman 2"-intro
+by
+<a href="http://www.komplex.org/">Complex</a>
+(Winner of The Party'94 PC intro competition), Right: A
+vector world from "Airframe"-intro by Prime (Winner of Assembly'94
+PC intro competition)</em></p>
+
+<h3>Graphics Competition</h3>
+
+<p>This is the competition for still images, usually limited to
+some size (e.g. 640x480 pixels) and amount of colors (e.g. 256).
+The subject of picture is free, but the most popular ones are
+fantasy, science fiction, horror and semi-nude or nude women. Rules
+allow only self-drawn images to enter the competition, but still
+often the majority of the winning pictures have cleverly borrowed
+elements from photographs and existing fantasy paintings.</p>
+
+<p>There is often a different category for computer generated 3D
+graphics, often called the ray tracing compo.</p>
+
+<p><img src="spacetit.gif" alt="[Space Tits - picture]" width="640"
+height="480"></p>
+
+<p><em>"Space Tits" by Danny (Winner of Party'95 graphics
+competition). The woman on the left is copied from a photo of Cindy
+Crawford.</em></p>
+
+<dl>
+  <dt><a href="http://kameli.yok.utu.fi/nocopy/index.htm">http://kameli.yok.utu.fi/nocopy/index.htm</a></dt>
+  <dd>The No-Copy?-Page - an excellent graphics compo picture gallery
+      featuring pictures which are copies of existing ones (<strong>the site
+      is down</strong>)</dd>
+</dl>
+
+<h3>Animation Competition</h3>
+
+<p>Animations are different from demos, because they are rendered
+in advance, where as most of the visuals in demos are calculated in
+real-time. Animations are usually made using some commercial 3D
+animation package, but some people use normal video or hand-drawn
+animations. The most popular subjects are "rides" (flights in
+space, chases etc.), various fights and humor.</p>
+
+<h3>Music Competition</h3>
+
+<p>Music competition is often divided into different categories
+e.g. 4-channel
+<a href="http://www.castlex.com/modfaq/">MOD</a>-formats (Protracker),
+multichannel (max. 32-channels) and C64 music competitions. The
+number of channels
+tells how many instrument sounds can be used simultaneously. There
+length of music file is often limited to about one megabyte and
+only maximum of 3-4 minutes of the song are played (but the song
+can be longer).</p>
+
+<p>The choice for music style is free, but majority of songs are
+similar to techno, euro dance or funk. Music competition usually
+gathers more entries than any other competition. In big demo
+parties this can mean 200-300 entries. Some demo musician are now
+making music for commercial games or producing commercial dance
+music.</p>
+
+<p><img src="9fingers1.gif" alt="[screenshot]" width="349" height="242">
+<img src="stateoftheart3.gif" alt="[screenshot]" width="342" height="242">
+</p>
+
+<p><em>Music video-alike demos by Spaceballs (Amiga):
+"<a href="http://www.talula.freeserve.co.uk/demos2.html">9 Fingers</a>" (left) and
+"<a href="http://home.freeuk.net/talula/files/demos2/stateoftheart.dms">State of the Art</a>"
+(right)</em></p>
+
+<h3>Wild Competition</h3>
+
+<p>(Almost) anything is accepted in wild competitions, it just has
+to be "cool". The entries are usually supplied on a video tape.</p>
+
+<h3>Fast Competition</h3>
+
+<p>A competition with a strict time limit is called a fast competition.
+E.g. 24-hour coding
+competition or 30-minute graphics competition. The actual creation
+process usually happens on the location.</p>
+
+<h2><a name="design">Different Kind of Demo Designs</a></h2>
+
+<p>The first Amiga, Atari ST and C64 demos were short intros
+(introductions) made by <a href="#cracker">cracker</a> groups
+(people who removed the copy protection) which were presented
+before the game started. The word "<a href="#intro">intro</a>" has
+nowadays a different meaning. The early demos and intros usually
+featured some picture, music and a scrolling text. The scrolling
+text usually contained information about the makers of intro and
+greetings to their friends and people who they respect.</p>
+
+<p><img src="fairlight5.gif" alt="[screenshot]" width="320" height= "200">
+<img src="scroller.gif" alt="[screenshot]" width="320" height="200"></p>
+
+<p><em>Left: A cracking intro by
+<a href="http://www.fairlight.com">Fairlight</a> (C64), Right: Delusion / Sonic-PC (PC)</em></p>
+
+<p>The intros grew larger and developed more fancier scrolling
+texts: waving, distorting, rotating and/or scaling scrolling texts,
+many scrolling texts, huge scrolling texts, parallax scrolling
+texts and various kinds of other effects such as: 3D graphics (from
+simple wire frame 3D to filled 3D) bouncing balls ("bob" or
+"sprites") plasma (shifting display of colors)
+<a href="http://www.calweb.com/~bjohnson/fract.html">fractals</a>
+(especially
+<a href="http://homestead.juno.com/johnrhg/files/IntroMandelbrot.html">Mandelbrot</a> and <a href="http://spanky.triumf.ca/www/fractint/julia_type.html">Julia</a>) etc.</p>
+
+<p><img src="aka.gif" alt="[screenshot]" width="320" height="200">
+<img src="cuddly.gif" alt="[screenshot]" width="320" height="200"></p>
+
+<p><em>Left: GigaTex screen from
+"<a href="ftp://sunsite.doc.ic.ac.uk/computing/systems/atari/umich/Demos/lifebtch.msa">Life's A Bitch</a>"-megademo (ST),
+Right: Lots of scrollers by TCB in
+"<a href="http://wwwbrauer.informatik.tu-muenchen.de/~brandtf/year89.html">Cuddly</a>"-megademo (ST)</em></p>
+
+<p>Soon the demos were so large that they contained many "screen"
+with different kind of effects and music. People often called them
+megademos. The word "megademo" indicates that the size of demo is
+about megabyte, but soon it started to mean a any multi-part
+demo.</p>
+
+<p>On Amiga megademos were usually sequential - one screen/effect
+follows another. The user could sometimes skip a part by pressing
+the left mouse button. The rigid non-interactive design allowed
+the demo makers to synchronise music with the screen effects.
+The best examples of this are the Amiga demos by Spaceballs,
+"State of the Art" and "9 Fingers" which featured
+motion-captured video sequences combined with various graphical effects.</p>
+
+<p>On Atari ST the megademo screens were often
+made by different demo groups and thus having no resemblance
+between each other. ST megademos usually had a main menu screen,
+where you could select which part of the demo you wanted to watch.
+The main menu was often designed like a computer game e.g. in the
+Union, Mindbomb and
+<a href="http://wwwbrauer.informatik.tu-muenchen.de/~brandtf/year90.html">Decade</a> megademo the user controlled a character
+with joystick and selected different demo screens by manovering the
+character over a door. In 1991 megademo "Ooh Crikey Wot a
+Scorcher", the user was controlling a space craft, which was flying over
+a 3D landscape. Many of the ST demos featured
+<a href="http://www.inf.bme.hu/~mandula/secret.txt">hidden screens</a> and
+reset screen (screen started when you pressed the reset button on
+the machine).</p>
+
+<p><img src="crikey3.gif" alt="[screenshot]" width="320" height="200">
+<img src="mindbomb.gif" alt="[screenshot]" width="320" height="200"></p>
+
+<p><em>Left: Main menu from
+"<a href="http://wwwbrauer.informatik.tu-muenchen.de/~brandtf/year91.html">Ooh Crikey Wot a Scorcher</a>" by TLB
+(ST), Right: 3D balls by TLB from
+"<a href="http://wwwbrauer.informatik.tu-muenchen.de/~brandtf/year89.html">Mindbomb</a>"-megademo (ST),
+originally the same 3D object was done by
+<a href="http://www.trsi.de/">RSI</a> on Amiga</em></p>
+
+<p>PC and C64 demos accepted the Amiga-like sequential style of
+demos with little or no interaction. In mid-1990's most Amiga and
+PC demos were full of 3D effects. First there was wireframe 3D,
+then filled 3D, then flat-shaded 3D, then gourad-shaded 3D, texture
+mapped 3D, bump-mapped 3D, environmental-mapped 3D etc. The 3D
+objects were usually quite simple: a rotating cube, torus, space
+ship and duck are one of the most popular ones. The 3D world of
+demos is usually static/lifeless as opposed to 3D game worlds,
+which are full of action. Many people soon started to consider
+these "pure" 3D demos boring and new kind of demo designs emerged:
+moving lights and white noise was added to screen. The screen was
+flooded with text messages, but instead of early demos, which had
+long scrolling texts, these were short messages. More and more
+effects were combined together.</p>
+
+<p><img src="ctstoa10.jpg" alt="[screenshot]" width="320" height= "200">
+<img src="inside1.jpg" alt="[screenshot]" width="320" height="200"></p>
+
+<p><em>Left: A rollercoaster ride from
+"<a href="ftp://ftp.cubic.org/pub/gallery/1996/toasted.zip">Toasted</a>"-demo by
+<a href="http://www.cubic.org/">CTS</a> (PC),
+Right:
+"<a href="ftp://us.hornet.org/pub/demos/demos/1996/i/inside.zip">Inside</a>" by <a href="http://www.cncd.fi">CNCD</a> (PC)</em></p>
+
+<p>So far the demo scene hasn't evolved from concentrating on
+technical excellence instead of content and maybe this is one of
+reasons why the demo is slowly dying away. Most PC demos are still
+made for DOS and because of this they don't take fully advantage of
+today's hardware (e.g. 3D accelerators), instead they still rely on
+old VGA or SVGA standards via VESA 2.0. If the main point of
+watching demos was to see something "cool" which wasn't possible to
+do in games, the point is now gone, because state-of-the-art games
+for Windows using cheap 3D accelerator cards blow current demos
+away.</p>
+
+<p>Many old demo scene are nowadays involved in making computer or
+video games (including the <a href="http://mlab.uiah.fi/~eye/">author</a> of
+this document). The production of computer games involves many similar
+skills which are needed to make good demos.</p>
+
+<p>The "golden years" of demo scene (1987-1996) are gone, but I am
+sure we will still see some interesting designs from demo
+scene.</p>
+
+<hr>
+<h2><a name="links">Links to Further Information</a></h2>
+
+<h3>General</h3>
+
+<dl>
+  <dt><a href="http://www.scene.org/">http://www.scene.org/</a></dt>
+  <dd>Scene.org is a site dedicated to demoscene - lots of new
+      stuff</dd>
+  <dt><a href="http://ojuice.planet-d.net/search/">http://ojuice.planet-d.net/search/</a></dt>
+  <dd>Orange Juice - The demoscene information center's search engine</dd>
+</dl>
+
+<h3>Atari ST</h3>
+
+<dl>
+  <dt><a href= "http://www.informatik.tu-muenchen.de/~brandtf/ataridemos.html">http://www.informatik.tu-muenchen.de/~brandtf/ataridemos.html</a></dt>
+  <dd>Atari ST demo history with pictures by Offbeat</dd>
+  <dt><a href="http://www.dhs.nu/">http://www.dhs.nu/</a></dt>
+  <dd>Dead Hackers Society - The best information resource for Atari ST demo scene</dd>
+  <dt><a href="http://lgd.fatal-design.com/">http://lgd.fatal-design.com/</a></dt>
+  <dd>The Little Green Desktop - a huge Atari ST-site with tons of software</dd>
+  <dt><a href="http://www.pacifist.fatal-design.com/">http://www.pacifist.fatal-design.com/</a></dt>
+  <dd>PaCifiST home page - an Atari ST emulator for PC, lots of good links too</dd>
+</dl>
+
+<h3>Commodore 64</h3>
+
+<dl>
+  <dt><a href="http://www.hut.fi/Misc/cbm/">http://www.hut.fi/Misc/cbm/</a></dt>
+  <dd>Commodore 8-bit Server by Marko M&auml;kel&auml;</dd>
+</dl>
+
+<h3>Commodore Amiga</h3>
+
+<dl>
+  <dt><a href="news:alt.amiga.demos">alt.amiga.demos</a></dt>
+  <dd>Usenet news group for Amiga demos.</dd>
+  <dt><a href="http://www.ozemail.com.au/~cyberwlf/ASADFaq.html">http://www.ozemail.com.au/~cyberwlf/ASADFaq.html</a></dt>
+  <dd>An FAQ for the above news group.</dd>
+  <dt><a href="news:alt.sys.amiga.demos">alt.sys.amiga.demos</a></dt>
+  <dd>Another Usenet news group for Amiga demos.</dd>
+  <dt><a href="http://www.cucug.org/amiscene.html">http://www.cucug.org/amiscene.html</a></dt>
+  <dd>The Amiga Demo Scene (great link collection)</dd>
+  <dt><a href="http://www.amigascne.org/">http://www.amigascne.org/</a></dt>
+  <dd>AMiGASCNE WORLDWiDE</dd>
+  <dt><a href="http://www.amiga.org/">http://www.amiga.org/</a></dt>
+  <dd>Amiga Information</dd>
+  <dt><a href="http://www.back2roots.org/">http://www.back2roots.org/</a></dt>
+  <dd>Back to The Roots - Amiga Culture Directory Project</dd>
+  <dt><a href="http://sunsite.auc.dk/demo.guide/index.html">http://sunsite.auc.dk/demo.guide/index.html</a></dt>
+  <dd>The Demo.Guide - reviews of Amiga demos</dd>
+  <dt><a href="http://www.talula.freeserve.co.uk/">http://www.talula.freeserve.co.uk/</a></dt>
+  <dd>Rock Lobster - Amiga Emulation site with demos to download</dd>
+</dl>
+
+<h3>PC</h3>
+
+<dl>
+  <dt><a href="news:comp.sys.ibm.pc.demos">comp.sys.ibm.pc.demos</a></dt>
+  <dd>Usenet news group for PC demos.</dd>
+  <dt><a href="http://www.hornet.org/">http://www.hornet.org/</a></dt>
+  <dd>Hornet Demo Archived is closed now, but you can still download stuff from there</dd>
+  <dt><a href="http://www.oldskool.org/demos/explained/">http://www.oldskool.org/demos/explained/</a></dt>
+  <dd>PC Demos Explained by Trixter - Lots of examples and demos to download
+  (out-of-date)</dd>
+  <dt><a href="http://www.jerware.org/fanclub/">http://www.jerware.org/fanclub/</a></dt>
+  <dd>PC Demo Fan Club by Jer</dd>
+</dl>
+
+<h3>Linux/UNIX</h3>
+
+<dl>
+  <dt><a href="http://linuxscn.planet-d.net/">http://linuxscn.planet-d.net/</a></dt>
+  <dd>#Linuxscn Web site</dd>
+  <dt><a href="http://www.hytti.uku.fi/~vheikkil/ocsa/unixdemos.html">http://www.hytti.uku.fi/~vheikkil/ocsa/unixdemos.html</a></dt>
+  <dd>Viznut's list of UNIX demos</dd>
+</dl>
+
+<h3>Making Demos / Demo Programming</h3>
+
+<dl>
+  <dt><a href="http://www.demogl.com/">http://www.demogl.com/</a></dt>
+  <dd>DemoGL - OpenGL based demo system</dd>
+  <dt><a href="http://www.chesworth.com/pv/">http://www.chesworth.com/pv/</a></dt>
+  <dd>Dr. Dobbs's Programmers Vault</dd>
+  <dt><a href="http://www.neutralzone.org/home/faqsys/">http://www.neutralzone.org/home/faqsys/</a></dt>
+  <dd>Faqsys - demo and game related programming information</dd>
+  <dt><a href="http://www.flipcode.com/">http://www.flipcode.com/</a></dt>
+  <dd>flipCode - Game Development News &amp; Resources</dd>
+  <dt><a href="http://cfxweb.planet-d.net/">http://cfxweb.planet-d.net/</a></dt>
+  <dd>GFXweb - Demo and Game Development</dd>
+  <dt><a href="http://www.geocities.com/SiliconValley/2151/pcgpe.html">http://www.geocities.com/SiliconValley/2151/pcgpe.html</a></dt>
+  <dd>The PC Game Programmer's Encyclopedia</dd>
+  <dt><a href="http://www.geocities.com/SiliconValley/Park/9784/tut.html">http://www.geocities.com/SiliconValley/Park/9784/tut.html</a></dt>
+  <dd>STEEL's Programming Resources</dd>
+</dl>
+
+<h3>Graphics</h3>
+
+<dl>
+  <dt><a href="http://gfxzone.planet-d.net/frames.html">http://gfxzone.planet-d.net/frames.html</a></dt>
+  <dd>GFXZONE - the ultimate demo scene graphics site</dd>
+  <dt><a href="http://www.geocities.com/SoHo/Gallery/4219/main.html">http://www.geocities.com/SoHo/Gallery/4219/main.html</a></dt>
+  <dd>Heister's Digital Art - resource on the underground digital art (ANSI, ASCII graphics etc.)</dd>
+  <dt><a href="http://www.multimania.com/abrobecker/ST-Art.html">http://www.multimania.com/abrobecker/ST-Art.html</a></dt>
+  <dd>ST-Art</dd>
+</dl>
+
+<h3>Music</h3>
+
+<dl>
+  <dt><a href="http://www.niksula.cs.hut.fi/~tive/">http://www.niksula.cs.hut.fi/~tive/</a></dt>
+  <dd>Amegas - Good collection of Classic Amiga MODs</dd>
+  <dt><a href="http://www.brainbug.ch/stsound/">http://www.brainbug.ch/stsound/</a></dt>      
+  <dd>Atari ST Music Pleasuredome</dd>
+  <dt><a href="http://www.harmonycentral.com/">http://www.harmonycentral.com/</a></dt>
+  <dd>A great Internet resource for Musicians</dd>
+  <dt><a href="http://home.freeuk.net/wazzaw/HVSC/">http://home.freeuk.net/wazzaw/HVSC/</a></dt>      
+  <dd>The High Voltage SID Collection (great computer music and links
+      to further information)</dd>
+  <dt><a href="http://www.dmrmag.com/obarski/">http://www.dmrmag.com/obarski/</a></dt>
+  <dd>The Karsten Obarski Tribute Project - About the History of Soundtracker, featuring classic MODs</dd>
+  <dt><a href="http://www.castlex.com/modfaq/">http://www.castlex.com/modfaq/</a></dt>
+  <dd>The MOD FAQ - Making MOD music</dd>
+  <dt><a href="http://www.united-trackers.org/">http://www.united-trackers.org/</a></dt>
+  <dd>United Trackers - Information Center for scene/MOD/tracker music</dd>
+  <dt><a href="http://www.modarchive.com/">http://www.modarchive.com/</a></dt>
+  <dd>MOD Archive - A huge collection of MOD music</dd>
+</dl>
+
+<hr>
+<h2><a name="glossary">Glossary</a></h2>
+
+<dl>
+  <dt>assembler</dt>
+  <dd>symbolic machine language</dd>
+  <dt><a name="BBS">BBS</a></dt>
+  <dd>Bulletin Board System (a system where several modem users can connect to, exchange information and software</dd>
+  <dt>C</dt>
+  <dd>a high-level <a href="http://src.doc.ic.ac.uk/bySubject/Computing/Languages.html">programming language</a> with features from low level
+      languages, suited especially well for system level programming</dd>
+  <dt>C++</dt>
+  <dd>an extended version of C programming language. C++ is an object-oriented programming language</dd>
+  <dt>coder</dt>
+  <dd>programmer</dd>
+  <dt>compo</dt>
+  <dd>competition</dd>
+  <dt>crack</dt>
+  <dd>a program or game whose copyright protection is removed (= "cracked")</dd>
+  <dt><a name="cracker">cracker</a></dt>
+  <dd>a person who removes copyright protection or breaks into
+    systems</dd>
+  <dt><a name="demo">demo</a></dt>
+  <dd>a program whose purpose to is to present the technical talents of its
+      makers and provide audiovisual pleasure to the observer</dd>
+  <dt>demo group / demo team</dt>
+  <dd>group of a people who make demos together</dd>
+  <dt>demo party</dt>
+  <dd>an event to where lots of demo scene members gather</dd>
+  <dt>demo scene</dt>
+  <dd>all the people interested in demos</dd>
+  <dt>dentro</dt>
+  <dd>An intro whose purpose is to preview a demo</dd>
+  <dt>gfx</dt>
+  <dd>graphics</dd>
+  <dt><a name="graphician">graphician</a></dt>
+  <dd>graphics artist</dd>
+  <dt>GUS</dt>
+  <dd>Gravis Ultrasound-sound card</dd>
+  <dt><a name="hacker">hacker</a></dt>
+  <dd>a person who really enjoys to create something new with computers,
+      a computer freak. In media hacker is often mistaken with
+      <a href="#cracker">cracker</a></dd>
+  <dt><a name="intro">intro</a></dt>
+  <dd>demo whose size is limited to e.g. 64 kilobytes; an introduction to some other program (e.g. crack intro to cracked game); introduction of some event or person</dd>
+  <dt>lamer</dt>
+  <dd>a person, who doesn't have the talent or irritates other - a loser</dd>
+  <dt><a name="megademo">megademo</a></dt>
+  <dd>a large demo with many parts</dd>
+  <dt>MOD</dt>
+  <dd>a computer music format (or actually number of similar music
+      formats), which was originally developed for Commodore Amiga.
+      Majority of computer demo music is in
+      <a href="http://www.castlex.com/modfaq/">MOD</a> format.</dd>
+  <dt><a name="rip">rip</a></dt>
+  <dd>to steal from others, e.g. rip music or graphics from other
+      programs</dd>
+  <dt>ripper</dt>
+  <dd>program designed for <a href="#rip">rip</a>ping</dd>
+  <dt>spreader</dt>
+  <dd>same as <a href="#swapper">swapper</a> (newer term)</dd>
+  <dt><a name="swap">swap</a></dt>
+  <dd>exchange programs, music or other data</dd>
+  <dt><a name="swapper">swapper</a></dt>
+  <dd>a person specialized in <a href="#swap">swap</a>ping, often
+    involving illegal software piracy</dd>
+  <dt>SysOp</dt>
+  <dd>System operator of the <strong>BBS</strong></dd>
+  <dt>tracker</dt>
+  <dd>A program used to make MOD music e.g.
+      <a href="http://www.dmrmag.com/obarski/">SoundTracker</a>
+      <a href="http://www.castlex.com/modfaq/4-1-1.html">Protracker</a>,
+      <a href="http://www.united-trackers.org/resources/software/screamtracker.htm">ScreamTracker</a> or
+      <a href="http://www.relaypoint.net/~emillan/ft2/">FastTracker</a></dd>
+  <dt>trackmo</dt>
+  <dd>a demo that concurrently loads new code, graphics and/or music from a
+      floppy disk, while showing the demo</dd>
+  <dt>trade</dt>
+  <dd>same as <a href="#swap">swap</a></dd>
+  <dt>trader</dt>
+  <dd>same as <a href="#swapper">swapper</a> (newer term)</dd>
+  <dt>warez</dt>
+  <dd>illegally copied software</dd>
+</dl>
+
+<hr>
+<address><a href="http://www.iki.fi/~eye/">Petri Kuittinen</a>
+&lt;<a href="mailto:eye@iki.fi">eye@iki.fi</a>&gt;</address>
+<!-- hhmts start -->
+Last modified: Tue Aug  8 21:57:14 EEST 2000
+<!-- hhmts end -->
+</body>
+</html>

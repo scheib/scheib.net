@@ -1,0 +1,137 @@
+<?xml version="1.0"?>
+<!-- 
+
+This is a Really Simple Syndication (RSS) document.
+
+Modern browsers should display it in an easy to read manner, and allow you to subscribe to updates.
+
+If you're reading these comments, your browser does not have these features. Try searching for "RSS" to learn more about RSS feeds.
+
+-->
+<rss version="2.0">
+  <channel>
+    <title>scheib.net</title>
+    <link>http://www.scheib.net/</link>
+    <description>Updates of http://www.scheib.net</description>
+    <language>en-us</language>   
+
+    <item>
+        <title>Subscribe to RSS feed or Email Updates</title>
+        <link>http://feedburner.google.com/fb/a/mailverify?uri=scheibnet</link>
+        <description><![CDATA[You should subscribe to this RSS feed if you use RSS readers. But, if not, you can subscribe to <a href="http://feedburner.google.com/fb/a/mailverify?uri=scheibnet">email updates</a>!]]></description>
+    </item>
+
+    <item>
+      <title>
+        2011-07-16 Updated page to link to Google Profile..
+      </title>
+      <link>
+        http://www.scheib.net
+      </link>
+      <description><![CDATA[You should be following me <a href="http://www.google.com/profiles/117022097663427079142">there</a>, or twitter.]]></description>
+    </item>
+
+    <item>
+      <title>
+        An Important Friends and Family update 06/27/2010
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+
+    <item>
+      <title>
+        Friends and Family update 05/16/2010 take 2 with bonus awesome
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+
+    <item>
+      <title>
+        Friends and Family update 05/16/2010
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+
+    <item>
+      <title>
+        Friends and Family update 04/28/2010
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+
+    <item>
+      <title>
+        Friends and Family update 04/14/2010
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+
+    <item>
+      <title>
+        Friends and Family update 03/17/2010
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+    
+    <item>
+      <title>
+        Friends and Family update 02/28/2010
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+ 
+   
+    <item>
+      <title>
+        Friends and Family update 02/08/2010
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+ 
+   
+    <item>
+      <title>
+        Friends and Family update 12/22/2009
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+
+    <item>
+      <title>
+        Friends and Family update 11/30/2009
+      </title>
+      <link>
+        http://www.scheib.net/ff/
+      </link>
+      <description><![CDATA[<a href="http://www.scheib.net/ff/">Friends and Family</a> section of website updated.]]></description>
+    </item>
+
+  </channel>
+</rss>

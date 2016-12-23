@@ -1,0 +1,97 @@
+<html>
+<head>
+<TITLE>Examples of Real Time Effects</title>
+</head>
+
+<body background="circuit.gif">
+<center><table BORDER=2 CELLSPACING=0 CELLPADDING=0 BGCOLOR="#FFCC33" >
+<tr>
+<td>
+<center><font face="Arial,Helvetica"><font size=-2>&nbsp;</font><b><a href="../index.html">Back
+to Demos Explained</a></b><font size=-2>&nbsp;</font></font></center>
+</td>
+
+<td>
+<center><font face="Arial,Helvetica"><font size=-2>These web pages archived
+from <a href="http://www.oldskool.org/demos/explained/">http://www.oldskool.org/demos/explained/</a>
+on October 17th 2000 in compliance with the statement "If you would like
+to use this website as a historical reference of the PC demoscene or a
+starting point for your own pages, feel free to do so as long as you give
+me (Trixter) credit somewhere." found on the home page. For the most part 
+these web pages are outdated, most of the links are not functional. They are
+provided for the content which is found specifically on the pages.</font></font></center>
+</td>
+</tr>
+</table></center>
+<br>
+
+<p align=center>
+<a href="index.html"><img width=111 height=34 src="up_home.gif" alt="[Home]" border=0 hspace=0 vspace=0></a><a href="demo_reference.html"><img width=111 height=34 src="up_gloss.gif" alt="[Glossary]" border=0 hspace=0 vspace=0></a><a href="demo_history.html"><img width=111 height=34 src="up_hist.gif" alt="[History]" border=0 hspace=0 vspace=0></a><a href="demo_graphics.html"><img width=111 height=34 src="dn_effec.gif" alt="[EFFECTS]" border=0 hspace=0 vspace=0></a><a href="demo_music.html"><img width=111 height=34 src="up_music.gif" alt="[Music]" border=0 hspace=0 vspace=0></a><br><a href="demo_howto.html"><img width=111 height=34 src="up_howto.gif" alt="[HowToCode]" border=0 hspace=0 vspace=0></a><a href="demo_people.html"><img width=111 height=34 src="up_peop.gif" alt="[People]" border=0 hspace=0 vspace=0></a><a href="demo_pages.html"><img width=111 height=34 src="up_place.gif" alt="[Places]" border=0 hspace=0 vspace=0></a><a href="demo_events.html"><img width=111 height=34 src="up_event.gif" alt="[Events]" border=0 hspace=0 vspace=0></a><a href="demo_misc.html"><img width=111 height=34 src="up_misc.gif" alt="[Misc.]" border=0 hspace=0 vspace=0></a></p>
+
+<CENTER>
+<h1>Demo Effects</h1>
+</CENTER>
+<H2>Click on any hot-link here to see an example of the effect being talked about.</h2>
+<H3>Note:  All the graphical examples came from actual PC demos.  Nothing is faked here.  You can find the original demos (as well as source code for the effects listed) at <a href="index.html#wellknownsites">ftp.hornet.org</a> or other demo anonymous ftp sites.  If you need more help than the source code can provide, you can try some <A href="demo_howto.html#newsgroups">related Usenet newsgroups.</a><p>Final note:  If any of my explanations are a bit wrong, please <a href="mailto:trixter@mcs.com">email me</a> to correct any mistakes.</h3>
+
+Vectors:  The cornerstone of many demos, Vectors are any solid object that is presented in three dimensions (i.e. "3-D").  There are several types (listed in general order of development):<P>
+<OL>
+<LI><A href="shadvect.gif">Shaded Vectors:</a> 3D objects that are light-source shaded in some way.  <i>(Screenshot from Airframe / Prime)</i> 
+<LI>Delay Vectors: Objects that fly around the screen, leaving a faint trail behind.  Delay vectors can be made up of either <A href="delaydot.gif">dots</a> or <A href="delayvec.gif">lines</a>.  <i>(Screenshots from Crystal BBS intro / Xography and Show / Majic 12)</i> 
+<LI><A href="glenzv.gif">Glenz:</a> 3D vectors that appear to be made out of glass or transparant material.
+<LI><A href="slimevec.gif">Slime Vectors</a>: A vector object that is copied to the screen with a sine/cosine variation, making it look like it's "slimy."
+<LI><A href="antialia.gif">Anti-aliased Vectors</a>: When sides of a vector touch that have different colors and are "smoothed" along the lines.  Not very common, but effective.
+<LI><A href="texturem.gif">Texture-Mapped Vectors</a>: A vector object that has a texture mapped onto it.
+<LI><A href="gshade.gif">Gouraud-Shaded Vectors</a>: A vector object that is shaded on a surface-by-surface basis.  To wit:  The light intensity is calculated for the vertices only, and is then interpolated across the whole polygon.  <i>(Screenshot from Cyboman 2 / Complex)</i> 
+<LI><A href="phontext.gif">Phong-Shaded Vectors</a>: A vector object that is shaded on a pixel-by-pixel basis, which inserts highlights in the middle of surfaces.  To wit:  Like Gouraud, the vector normal is calculated on the vertices, but unlike Gouraud, the vector itself is interpolated, not just the color.  Very impressive, but hard to optimize for real-time display.  <i>(Screenshot from Solstice / Valhalla)</i> 
+<LI><A href="environm.gif">Environment-mapped Vectors</a>: A vector object that reflects it's environment.  This is done via a process called Environment Mapping.  A derivative of texture mapping, Environment mapping "maps" the texture to the object based on the object's angle towards the viewer.  The end result is that the object looks like it's made of metal, reflecting the environment.  <i>(Screenshot from Solstice / Valhalla)</i> 
+<LI>Metal-Shaded Vectors: A vector object that looks like it's made of metal.  This can be achieved in many different ways:
+	<UL>
+	<LI>Simple environment mapping (the object "reflects" the environment)
+	<LI>Gouraud shading that uses a blue-to-white gradient for every color spread, so the object has a metal "color"
+	<LI>A combination of the two (see <a href="index.html#featureddemos">Hive / Fascination</a> for an example of this)
+	</UL>
+<LI><A href="bumpmap.gif">Bump-mapped Vectors</a>: A vector object that appears to have bumps on its surface, revealed by the highlights reflected off of the object.  <i>(Screenshot from Solstice / Valhalla)</i> 
+
+</OL>
+<p>
+"18-bit" Color: An effect that became popular after Orange's X-Y-Z demo, "18-bit" color is a method of simulating 262,144 colors on the screen at one time.  This is done by emulating a triad (like in a television screen):  You put a red, green, and blue pixel really close to each other, and hope nobody notices.  :-)  The effect is, technically, "<a href="18bitori.gif">washed out</a>", but is quite effective <a href="18bitdis.jpg">when actually displayed</a>.  <i>(Screenshot from Solstice / Valhalla)</i><p>
+<A href="copper.gif">Copper:</a> A wavy colorful effect created by modifing the scan rates of the horizontal and verticle beams of the monitor in real time.  This effect gets its name from the graphics chip in the Amiga computer (the "copper" chip).  There are many examples of <a href="copper2.gif">copper effects.</a>  <i>(Screenshots from Show / Majic 12)</i><p>
+<A href="crosfade.gif">Cross-Fade:</a> When one screen or picture fades into another, i.e. both pictures fade in and out at the same time.  <i>(Screenshot from Delusion / Sonic-PC)</i><P>
+<A href="dottunel.gif">Tunnel:</a> The visual effect of flying down a tunnel made up of dots, solid lines, or other elements.  <i>(Screenshot from Show / Majic 12)</i><P>
+<A href="fire.gif">Fire:</a> An effect that resembles fire or flames rising up the screen.  <i>(Screenshot from Inconexia / Iguana)</i><P>
+<A href="interfer.gif">Interference:</a> A shifting display resembling a moire effect when interference pattern is created by overlapping two or more concentric circles.<p>
+<A href="lensfla2.gif">Lens Flare:</a> An effect that simulates a real lens flare.  Sometimes used in <a href="lensfla1.jpg">interesting ways</a>.  <i>(Screenshots from Solstice / Valhalla and Bill G. Force / Complex)</i>  <p>
+<A href="mandzoom.gif">MandelZoom:</a> A display of a fractal picture that zooms inwards in real time.  (Actually, hardly any of these zooms are real-time; they just look like it.  They're really zooms into a big bitmap of a pre-calculated fractal.)<p>
+<A href="plasma.gif">Plasma:</a> A shifting display of colors.  <i>(Screenshot from Delusion / Sonic-PC)</i><P>
+<A href="rubberc.gif">Rubber Cube</a>: A cube that appears to be made out of rubber.<p>
+<A href="scroller.gif">Scroller:</a> A text message that is presented in an interested way, such as scrolling horizontally from right to left, dripping down onto the screen, etc.  <i>(Screenshot from Delusion / Sonic-PC)</i><P>
+<A href="shadebob.gif">Shadebobs:</a> Circles or squares that, when displayed over each other, turn into different shades of color.  This effect is fairly overused.  <i>(Screenshot from Delusion / Sonic-PC)</i><P>
+<A href="sineflag.gif">Sine Flag:</a> A variation on a sinus pattern; used to display a wavy flag.<p>
+<A href="pic003.gif">Rotating Bitmap</a>: A texture that is used to "tile" the screen; usually rotates.  (Also called "tileing" or "rotating tiles".  (Screenshot from Second Reality / Future Crew)<p>
+<A href="vectball.gif">Vector Balls:</a> A 3D object that is made up of balls.  <i>(Screenshot from Delusion / Sonic-PC)</i><P>
+<A href="vectorw.gif">Vector World:</a> A "virtual world" that is displayed in 3D (three dimensions) and is usually light-source shaded, which adds to its realism.  <i>(Screenshot from Airframe / Prime)</i><P>
+<A href="voxels.gif">Voxels:</a> A landscape that's made up of pixels with size and distance information.  <i>(Screenshot from Airframe / Prime)</i><p>
+<A href="wormhole.gif">Wormhole:</a> A downward rotating spiral that looks like a black hole.  Done with clever organizing and palette rotation.  <i>(Screenshot from Unreal / Future Crew)</i><p>
+
+Dissolve: An effect that puts a picture onto the screen in an interesting way.<P>
+Fade: All the colors on the screen slowly turn into another color, such as black, to "fade out" the picture.<P>
+Rotate: A picture (bitmap) that rotates on the screen.<P>
+Sinus: A shape or pattern that moves in a fluid pattern usually dictated by a sine or cosine mathematical function.<P>
+Zoom: A picture that zooms in and out on the screen.<P>
+
+Finally, several effects can be combined to produce new ones.  When you take a plasma and use it as the texture map for a cube, you get a <a href="pic004.gif">plasma cube</a>.  (Screenshot from Second Reality / Future Crew)<p>
+
+
+</body>
+
+<HR>
+Comments or Suggestions on these WWW pages?  <a
+href="mailto:trixter@mcs.com">Email Trixter.</a>
+<br>
+These pages have been accessed 
+<IMG align=absmiddle SRC="http://counter.digits.com/wc/-d/4/-c/2/-f/000000/-b/ffffff/-e/ffffff/p
+cdemosexplained"
+ALIGN=middle WIDTH=90 HEIGHT=20 BORDER=0 HSPACE=4>
+times since they were created on September 3rd, 1994.  Web counter provided by <a href="http://www.digits.com">www.digits.com</a>
+</html>

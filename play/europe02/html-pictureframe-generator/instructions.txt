@@ -1,0 +1,28 @@
+INSTRUCTIONS FOR AUTO GENERATION OF FRAMED IMAGES IN HTML.
+Vince Scheib
+2000, 2001
+
+1) Generate a batch file with one line for each image in this format:
+call build.bat keyword <format number> <jpeg image name> "<description>"
+
+FORMAT NUMBERS:
+1  NORMAL, no frames
+2  TALL,  column frames
+3  WIDE,  row frames
+
+Images are used as JPEG as hard-coded as "filename.jpg" in the template files. 
+This can be changed easily by doing a search replace on the template files for 
+".jpg" -> ".gif" or whatever.
+
+
+2) Run batch file in the directory with the build.bat and template .html files. 
+
+3) Perform a search replace on all the generated .html files of the following:
+Replace: <space><newline>###<space><newline>    with:<nothing>
+In UltraEdit, this would be done with [ ^p### ^P] [] (the []'s not included)
+
+4) Perform a search replace of [<title>"] [<title> and similarly for the closing 
+" mark in the title. It is recommended to copy the generated .html files to 
+another directory to do this. 
+
+5) Copy the .html files to where they will be used. Also copy the Blank??.html files.

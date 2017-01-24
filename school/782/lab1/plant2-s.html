@@ -1,0 +1,44 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>782 Lab1 - Vince Scheib</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<p><img src="plant2-s.jpg" width="512" height="512"></p>
+
+<p><font face="Arial">The bottom of the pots show us clearly that
+this spherical mapping(left) is wrapping the texture twice, and
+shrinkwrap mapping(center) only once. The shrinkwrap mapping
+causes some unwanted discontinuity underneath the lip of the pot
+however, where we see a the blue and red reversed. This is
+because of the 'my normal faces towards the other side so I'll
+use that color instead' feature of shrinkwrapping. In this case,
+it is undesirable. </font></p>
+
+<p><font face="Arial">It is easy to see the leaves in the
+shrinkwrapped object are affected by their normals. (In this case
+they are affected in the opposite way as would be desired because
+we are looking at the petals as backfaces. The blue ones on the
+left would be red if we were not using the reverse normals of the
+side we are viewing.) Once again shrinkwrap fails us, but it
+worked nicely when viewing from the top.</font></p>
+
+<p><font face="Arial">The triangle face mapping is seen to be
+'almost' working on the bottom of the right pot. (The bottom is
+made of entirely of three sided polygons, most of which are
+texturemapped properly, but cyan shows 'holes' in my algorithm.) </font></p>
+
+<p><img src="plant2texture.jpg" border="1" width="128"
+height="128"></p>
+
+<p><a href="index.html"><font color="#000000" face="Arial">back</font></a></p>
+
+<!-- Counter was here. -->
+
+</body>
+</html>

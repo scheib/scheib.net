@@ -1,0 +1,74 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>782 Lab2 - Face Procedural Textures - Vince Scheib</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<p><font face="Arial"><strong>Face Procedural Texturing:</strong></font></p>
+
+<p><font face="Arial">Given a position in 2 Dimensions (a face of
+an object) return the color of the surface at that point. This
+provides 'flat' textures, such as bricks, water, stone, dirt,
+bark, gravel, &amp;c.</font></p>
+
+<hr noshade>
+
+<p><img src="bricks.jpg" width="512" height="512"></p>
+
+<p><font face="Arial">A brick texture. A pattern 8 layers high
+was designed, with variation in brick size and color. The
+position is mapped to this table and calculations determine if
+the point is on the brick or in the grout. If it is on a brick
+the color used is that brick's specific shade of red. Also, the
+color varies very slightly across the face of all bricks. This
+should be subtle enough for you not to notice, but adds
+variation. Noise, or randomness, is also used to provide a
+'grainy' appearance to the bricks and grout. </font></p>
+
+<hr noshade>
+
+<p><img src="face_tex1.jpg" width="512" height="512"></p>
+
+<p><img src="face_tex2.jpg" width="512" height="512"></p>
+
+<p><font face="Arial">These two images are produced with the same
+texture generator. The algorithm is simple: <em>color_returned =
+color_scale * x_position * y_position</em>. Mirroring provides a
+rectangular kaleidoscoping action. Each color component, red,
+green, and blue, has it's own scaling factor. Limiting the colors
+from looping, once overflowing the acceptable color range,
+provides interesting effects as seen in both these images. In the
+first, the blue and green components to not repeat. In the
+second, the red component does not repeat. The second image also
+displays a moiré effect on the blue channel. A moiré effect is
+a pattern which can be seen due to interference. In this case it
+is simple raster sampling aliasing which causes the effect.
+Notice that the blue does not follow the same contour lines as
+does the red and green. This moiré effect would shimmer
+uncontrollably in animation and also be affected by scale
+changes.</font></p>
+
+<hr noshade>
+
+<p><img src="bad_bricks.jpg" width="512" height="512"></p>
+
+<p><font face="Arial">I never did fix my 3 sided polygon filler
+(I don't intend to in this codebase), but I thought the bricks
+looked particularly interested with this bug.</font></p>
+
+<hr noshade>
+
+<p><a href="index.html"><font face="Arial">back</font></a></p>
+
+<p align="right"><font size="1"><em>copyright 2/14/1999 Vince
+Scheib</em></font></p>
+
+<!-- Counter was here. -->
+
+</body>
+</html>

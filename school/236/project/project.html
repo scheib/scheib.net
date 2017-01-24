@@ -1,0 +1,382 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Vince Scheib">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="KeyWords" content="Vince Scheib, Vincent Scheib, Vin Scheib, Scheib">
+   <title>236 - Computer Graphics - Vince Scheib</title>
+</head>
+<body text="#000000" bgcolor="#9B95A8" link="#0000EE" vlink="#551A8B" alink="#33CCFF">
+&nbsp;
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=4 WIDTH="600" BGCOLOR="#FFFFFF" >
+<tr ALIGN=LEFT>
+<td>
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=20 COLS=1 WIDTH="560" >
+<tr>
+<td>
+<h2>
+<b><font face="Arial,Helvetica">236 Project</font></b></h2>
+
+<h2>
+<b><font face="Arial,Helvetica">Painty Paint!</font></b></h2>
+<font face="Arial,Helvetica"><a href="#1">progress update 1</a></font>
+<br><font face="Arial,Helvetica"><a href="#2">progress update 2</a></font>
+<br>&nbsp;
+<h2>
+<b><font face="Arial,Helvetica">proposal:</font></b></h2>
+<font face="Arial,Helvetica">Previous personal research has produced an
+efficient model for oil paint. The current state of the paint model supports
+variable wetness, bi-directional transfer between 3D brush and canvas,
+and conservation of volume.&nbsp;</font>
+<p><font face="Arial,Helvetica">There are several areas in which this paint
+model may be extended.&nbsp;</font>
+<ul>
+<li>
+<font face="Arial,Helvetica">The paint volume holding capacity is limited,
+and causes unnatural results when attempting to apply paint to an already
+saturated canvas.</font></li>
+
+<li>
+<font face="Arial,Helvetica">The paint is rendered currently with only
+a simple embossing over a color texture which has been alpha blended</font></li>
+
+<li>
+<font face="Arial,Helvetica">More attributes can be added to the paint
+model including&nbsp;</font></li>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">variable amounts of supporting media (oil)</font></li>
+
+<li>
+<font face="Arial,Helvetica">bristle indentation direction (anisotropic
+effects from bristles)</font></li>
+</ul>
+
+<li>
+<font face="Arial,Helvetica">The heightfeild of the paint is not used when
+depositing paint</font></li>
+
+<li>
+<font face="Arial,Helvetica">The paint transfer rate is not physically
+or time based.</font></li>
+
+<li>
+<font face="Arial,Helvetica">Paint does not travel through the brush tip
+as it should.&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">...</font></li>
+</ul>
+<font face="Arial,Helvetica">I will work on many of these aspects at once,
+making progress where it can be made. Many items may be stronly constrained
+by the requirment of real time interaction.</font>
+<br>&nbsp;
+<h2>
+<a NAME="1"></a><font face="Arial,Helvetica">progress update 1</font></h2>
+
+<h3>
+<font face="Arial,Helvetica">Overview</font></h3>
+<font face="Arial,Helvetica">There are several ways in which the paint
+system can be extended. Consideration has been paid to the various options
+at hand, and they are discussed bellow. Several possibilities require solving
+a bug in the current bi-directional transfer implementation, time was spent
+attempting to debug that.</font>
+<h3>
+<font face="Arial,Helvetica">The Bug, and how it is impeding progress</font></h3>
+<font face="Arial,Helvetica">The paint system relies on transferring attributes
+between the 3D surface of the brush and the 2D canvas. Theoretically, a
+texel projected down from the brush should be reprojected back from the
+canvas to it’s original position. Warping is expected, as the 3D surface
+is expected to not project down to the canvas in a one to one mapping.
+Specifically on portions of the brush which are near perpendicular to the
+canvas, several texels will map from the brush down to the canvas, and
+a single texel on the canvas will project to a large area on the brush’s
+surface. Warping should not cause problems, however.</font>
+<p><font face="Arial,Helvetica">The current error is that the texture returning
+from the canvas is somehow ‘scrambled’ slightly. The effects look, to the
+human eye, very much like the zippering effects of Z-Fighting. Z-Fighting,
+however, is not the cause of the problem, as there are no coplanar polygons.&nbsp;</font>
+<p><font face="Arial,Helvetica">The mixing of the texture is acceptable
+as it is currently used with the surface layer color &amp; volume. The
+effects are not very noticeable because these attributes change very rapidly.
+I.E. the surface paint has a very high turnover rate, and in the process
+does not have great variation in color, it is therefore not very noticeable.
+The volume errors are not very noticeable due to the large volume of ‘reservoir’
+paint just behind the surface layer. The effects on the reservoir volume
+are slightly noticeable as the brush depletes it’s supply of paint, the
+trailing paint at the end appears slightly ‘chunky’. Most users would not
+notice this.&nbsp;</font>
+<p><font face="Arial,Helvetica">However, the bug is serious if one were
+to update a more sensitive attribute layer, such as the reservoir paint
+color texture. This texture is expected to change only slightly over a
+long period of time. The scrambling bug quickly blends the reservoir colors.
+This has the effect of the paint mixing thoroughly on the brush, destroying
+a ‘complex blend’ which may have been picked up.&nbsp;</font>
+<p><font face="Arial,Helvetica">Many of the proposed additions to the paint
+model require additional attribute channels. For example, many require
+carrying more than 8 bits of information for the volume of paint stored
+on the brush. (the 8 bits comes from the 8 bits per channel supported by
+hardware rasterization.)&nbsp; A second attribute channel would provide
+16 bits, by adding 8 higher significance bits. These bits, due to their
+high significance, would be adversely affected by the scrambling bug. In
+a similar way, other required attribute channels will simply not function
+in the presence of the scrambling bug.&nbsp;</font>
+<p><font face="Arial,Helvetica">More time must be spent to correct this
+bug, or find the flaw in the approach used. Or, alternative methods may
+be used for the paint transfer.</font>
+<h3>
+<font face="Arial,Helvetica">Alternative paint transfer method number 1:
+software implementation</font></h3>
+<font face="Arial,Helvetica">The current method of projection and reverse
+projection can be implemented in software. This may solve the bug through
+re-implementation. Additionally, attribute channels would no longer be
+limited to 8bit integer values. Floating point channels, for example, could
+be transferred. This would provide much needed precision! However, this
+would likely slow the system down considerably. It is possible that on
+the new dual processor machines this may not be slower. It is very unlikely
+a software texture mapped rasteriser will be any faster, however the difference
+may be saved by not sending the textures back and forth over the graphics
+bus. It is also possible that the bug is somehow inherent to the projection
+method; this is very unlikely, but if true would make a reimplementation
+useless.</font>
+<h3>
+<font face="Arial,Helvetica">Alternative paint transfer method number 2:
+texture tagging and meshing</font></h3>
+<font face="Arial,Helvetica">Another method is to render the texture coordinate
+values down instead of rendering the texture contents. These could then
+be used to look up the attributes for the transfer to the canvas. On the
+return, a direct mapping back to the source of each footprint texel exists.
+This is extremely valuable, as we desire to have the attributes transfer
+down and up in precisely the same manner. However, the projection back
+up to the brush may be sparse. To solve this, the texture coordinates rendered
+down to the footprint must be meshed when rendering back to the brush.&nbsp;</font>
+<p><font face="Arial,Helvetica">This approach is slightly more expensive
+than the current implementation (involving a lookup for each texture when
+mapped down, and a re-meshing for the transfer back up). The implementation
+of this method should not require as much work as the alternative method
+number 1.</font>
+<h3>
+<font face="Arial,Helvetica">Explicit additions to the paint system under
+consideration</font></h3>
+<b><font face="Arial,Helvetica">Intuitive input scaling</font></b>
+<br><font face="Arial,Helvetica">The user currently can move within the
+workspace of the input device and move over the entire virtual workspace.
+However, when attempting detail work, this mapping may not be ‘fine’ enough
+for precise and small movements. The input workspace can be scaled, together
+or independently of the visual workspace, to allow greater precision for
+local work.&nbsp;</font>
+<br><font face="Arial,Helvetica">Implementation complexity low</font>
+<p><b><font face="Arial,Helvetica">Smooth path interpolation</font></b>
+<br><font face="Arial,Helvetica">As the user moves the input device rapidly,
+their movements are discreteized. The current paint system linearly interpolates
+between these positions. A better solution may use a curve interpolation
+method to provide greater continuity.&nbsp;</font>
+<br><font face="Arial,Helvetica">Implementation complexity low</font>
+<p><b><font face="Arial,Helvetica">Anisotropic effects</font></b>
+<br><font face="Arial,Helvetica">The direction for which a brush stroke
+has been laid may be recorded at each texel on the canvas. When rendering,
+this information can be used with an anisotripic light model to simulate
+the fine groves left by the bristles of the brush. This effect is clearly
+noticeable in some real paintings.</font>
+<br><font face="Arial,Helvetica">May not be very obvious until light and
+eye positions are easily movable (currently fixed for many optimization
+reasons)</font>
+<br><font face="Arial,Helvetica">Implementation complexity low</font>
+<p><b><font face="Arial,Helvetica">Better bump mapping</font></b>
+<br><font face="Arial,Helvetica">Currently an embossing technique with
+fixed light position is used. A more versatile bump mapping technique,
+such as Blinn bump mapping, would provide a more convincing rendering.
+This could be implemented either in software or hardware. Hardware implementations
+are rumored to be very difficult.</font>
+<br><font face="Arial,Helvetica">Implementation complexity medium</font>
+<p><b><font face="Arial,Helvetica">Better specular light model</font></b>
+<br><font face="Arial,Helvetica">Current light model is only the embossing.
+A better specular model may allow for the indication of ‘wet’ paint by
+higher specular term. However, this will likely slow rendering quite a
+bit, and may be passed over in favor of a much more complex rendering method,
+such as described below.</font>
+<br><font face="Arial,Helvetica">Implementation complexity low</font>
+<p><b><font face="Arial,Helvetica">Kubelka Munk color model</font></b>
+<br><font face="Arial,Helvetica">The paint industry researched the precise
+optical properties of oil paints, and the Kubelka Munk model provides a
+method to render thick layers of paint accurately. Subsurface scattering
+theory should be able to be combined with this method to provide for rendering
+of thin layers of oil paints on top of each other. This would ideally provide
+a more realistic look to the paint model. It would require a change to
+the ‘pigment’ model of the paint model, however the rendering complexities
+far outweigh the pigment model changes.</font>
+<br><font face="Arial,Helvetica">Implementation complexity high</font>
+<p><b><font face="Arial,Helvetica">Multilayer paint model</font></b>
+<br><font face="Arial,Helvetica">Currently a dry and wet layer are simulated.
+Allowing for additional wet layers, possibly arbitrarily more, would allow
+for a more accurate model. Complex actions can be performed with this additional
+state information, such as layering several colors of paint and then gouging
+into them. Adding just one more layer, to reach a model with one dry layer
+and two wet layers, causes problems with partial drying. It is not readily
+apparent how these layers would be partially dried, while maintaining their
+distinct layers. With respect to an unlimited number of layers to deposit
+onto, it is clear that a truly unlimited number can not be provided. However,
+a few layers could be provided, and if the user applies more paint then
+the previous layers could be pushed down, in a FIFO manner. The oldest
+layer would become ‘burried’, or lost, possibly merged into the dry layer.
+If this were done locally per texel, a counter could be incremented to
+denote the layer shifting. On the other hand, if the entire canvas was
+shifted down the user would experience a noticeable pause. Depositing the
+paint in this model is only slightly expensive, but blending with it may
+be much more complicated. Gouging would require moving large volumes of
+the paint, and this model does not support that easily. It is not clear
+that a distinctly layered approach is the proper solution for the desired
+attributes.</font>
+<br><font face="Arial,Helvetica">Implementation complexity high</font>
+<p><b><font face="Arial,Helvetica">Movable paint volumes</font></b>
+<br><font face="Arial,Helvetica">Currently paint moves between the brush
+and canvas only. It does not move across the canvas, unless picked up and
+redeposited by the brush. True paint can be pushed in large volumes across
+the canvas by the brush, where the pain piles up in a ‘front’. To implement
+this a data structure must be constructed which allows paint volume to
+move in three dimensions, and a simulation algorithm must solve for the
+volumes of paint moved. A full navier-stokes simulation would be expensive,
+and is likely overkill for this application. A reduced simulation may be
+able to use the constraints of relatively thing volumes moving very viscously
+upon a flat surface. Pressure of the brush can be determined from the penetration
+of the brush, and this used to determine how much paint is displaced by
+a cellular pressure and viscosity based transport.&nbsp;</font>
+<br><font face="Arial,Helvetica">Implementation complexity high</font>
+<p><b><font face="Arial,Helvetica">Bristle gouging into paint volume</font></b>
+<br><font face="Arial,Helvetica">A texture on the brush may be used to
+indicate texels that are under higher pressure than others, allowing for
+individual bristles to gouge slightly deeper into the paint. Implementing
+this across the entire brush surface is overkill, as this effect will only
+be seen by the last portion of the brush to be in contact with a part of
+the canvas. This will have different implementations for the current, distinct
+multiplayer, and voxel canvas models. The effects simply can not be seen
+at the current resolution of the canvas – and higher resolutions run too
+slowly.&nbsp;</font>
+<br><font face="Arial,Helvetica">Implementation complexity high</font>
+<p><b><font face="Arial,Helvetica">Paint transfer based on canvas height
+field</font></b>
+<br><font face="Arial,Helvetica">Peaks on the canvas should catch paint
+before valleys, and under high pressure the peaks should be scraped clean.
+A huristical approach may use image processing techniques on the height
+field of the canvas to determine rate of transfer for each texel.&nbsp;</font>
+<br><font face="Arial,Helvetica">Implementation complexity medium</font>
+<p><b><font face="Arial,Helvetica">Multiresolution canvas</font></b>
+<br><font face="Arial,Helvetica">Upon detail work, a portion of the canvas
+may increase it’s resolution, and be inset into the lower resolution of
+the main canvas. This allows for dramatic scale differences in paint strokes,
+and is just really hard and therefore attractive. Ideally, the higher resolution
+portions could still be painted over with low resolution techniques when
+they are not being focused on, allowing for greater simulation speeds.
+User interface for this may be very difficult – as they would need to be
+able to not only specify when to increase the resolution of an area, but
+also clearly see which areas of the canvas are at specific resolutions.
+A method for detecting when a higher resolution is needed is not apparent
+at this moment.&nbsp;</font>
+<br><font face="Arial,Helvetica">Implementation complexity high</font>
+<h3>
+<font face="Arial,Helvetica">Plans for implementation</font></h3>
+<font face="Arial,Helvetica">The upcoming I3D demo day encourages the accomplishment
+of one or more of the lower implementation complexity additions to the
+paint model. These are desirable, but offer less of a reward in novelty
+of concept. They will be approached in this order:</font>
+<br><font face="Arial,Helvetica">Input scaling</font>
+<br><font face="Arial,Helvetica">Anisotropic effects</font>
+<br><font face="Arial,Helvetica">Smooth path interpolation</font>
+<br><font face="Arial,Helvetica">Blinn bump mapping</font>
+<p><font face="Arial,Helvetica">After that time, the outcome of the Siggraph
+paper will possibly affect what is attempted. Most likely, however, is
+the voxel style canvas volume representation with very simplified paint
+moving simulation.&nbsp;</font>
+<br>&nbsp;
+<br>&nbsp;
+<h2>
+<a NAME="2"></a><font face="Arial,Helvetica">progress update 2</font></h2>
+
+<h3>
+<font face="Arial,Helvetica">Overview</font></h3>
+<font face="Arial,Helvetica">Specific improvement to the DAB system has
+been selected. A Multiresolution image data structure will be implemented
+to allow users to paint fine detail on any portion of the canvas.&nbsp;</font>
+<p><font face="Arial,Helvetica">Various papers on multiresolution image
+techniques were published, mostly in the mid ninties. The implementation
+choosen for this project most closely resembles the ‘sparse quadtree’ presented
+by</font>
+<br><font face="Arial,Helvetica">Berman, Bartell, and Salesin</font>
+<br><font face="Arial,Helvetica">Multiresolution Painting and Compositing
+(1994)</font>
+<br>&nbsp;
+<h3>
+<font face="Arial,Helvetica">Specific Work accomplished since last update:</font></h3>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">the DAB system did not properly store the
+volume of paint – the implementation was faulty, and a correct implementation
+of a relative height field was put into the system.</font></li>
+
+<li>
+<font face="Arial,Helvetica">The topic of multiresolution image was choosen
+from the many options available.</font></li>
+
+<li>
+<font face="Arial,Helvetica">Various papers on the topic were read, and
+the many approaches considered.</font></li>
+</ul>
+
+<br>&nbsp;
+<h3>
+<font face="Arial,Helvetica">Specifics of the implementation:</font></h3>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">Multiresolution image format, containing a
+flexible pixel format (allowing for the many attributes required for the
+painting software)</font></li>
+
+<li>
+<font face="Arial,Helvetica">A sparse quadtree approach. Each node in the
+quad tree has the same number of texels, however child nodes are at &frac12;
+the scale of their parents.&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">At a specific zoom level, a screen sized cache
+will be allocated to allow the user to work rapidly.&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">A lazy approach will be taken for propagating
+that changes the user makes up and down the quadtree. Only at zoom level
+change, or panning about the image, will the changes be propagated.&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">The user will be given nagivation via the
+haptic input device. Pressing the button on the stylus will enable movement,
+which will correspond to the 3DOF position movements.&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">As a side note, this will require a complete
+replacement of the image format datastructures, which are currently implemented
+in a C style, with distributed responsibility.&nbsp;</font></li>
+</ul>
+</td>
+</tr>
+</table></center>
+</td>
+
+<td BGCOLOR="#645C72"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+
+<tr>
+<td BGCOLOR="#645C72"><font face="Arial,Helvetica">&nbsp;</font></td>
+
+<td BGCOLOR="#645C72"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+</table></center>
+
+<center>
+<p><a href="../../index.html"><img SRC="../../../common/back.gif" NOSAVE BORDER=0 height=20 width=50></a>
+</center>
+
+</body>
+</html>

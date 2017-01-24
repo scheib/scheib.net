@@ -1,0 +1,405 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>782 Lab3 - Distributed Raytracer - Vince Scheib & Ryan Geiss</title>
+</head>
+
+<body bgcolor="#C0C0C0" text="#000000">
+<div align="center"><center>
+
+<table border="0" cellpadding="10" cellspacing="0" width="600"
+bgcolor="#FFFFFF">
+    <tr>
+        <td width="100%"><hr size="5" noshade width="400"
+        color="#000000">
+        <p align="center"><a name="TOP"></a><font color="#000000"
+        size="4" face="Arial Black">Distributed Ray Tracer w/
+        Animation<br>
+        Ryan Geiss &amp; Vince Scheib</font> </p>
+        <hr size="5" noshade width="400" color="#000000">
+        <p align="center"><font color="#000000" size="2"
+        face="Arial"><strong>[</strong></font><a href="#RESULTS"><font
+        color="#000000" size="2" face="Arial"><strong>RESULTS</strong></font></a><font
+        color="#000000" size="2" face="Arial"><strong>]<br>
+        [</strong></font><a href="#OVERVIEW"><font
+        color="#000000" size="2" face="Arial"><strong>OVERVIEW</strong></font></a><font
+        color="#000000" size="2" face="Arial"><strong>]<br>
+        [</strong></font><a href="#LOG"><font color="#000000"
+        size="2" face="Arial"><strong>PROJECT LOG</strong></font></a><font
+        color="#000000" size="2" face="Arial"><strong>]<br>
+        [</strong></font><a href="#ASSIGNMENTS"><font
+        color="#000000" size="2" face="Arial"><strong>TASK
+        ASSIGNMENTS</strong></font></a><font color="#000000"
+        size="2" face="Arial"><strong>]<br>
+        [</strong></font><a href="#BREAKDOWN"><font
+        color="#000000" size="2" face="Arial"><strong>DETAILED
+        BREAKDOWN</strong></font></a><font color="#000000"
+        size="2" face="Arial"><strong>]<br>
+        [</strong></font><a href="#PAPERS"><font color="#000000"
+        size="2" face="Arial"><strong>PAPERS REFERENCED &amp;
+        SUMMARIZED</strong></font></a><font color="#000000"
+        size="2" face="Arial"><strong>]<br>
+        [</strong></font><a href="#PERSONAL"><font
+        color="#000000" size="2" face="Arial"><strong>PERSONAL
+        INFORMATION</strong></font></a><font color="#000000"
+        size="2" face="Arial"><strong>]</strong></font></p>
+        <hr noshade color="#000000">
+        <p><a name="RESULTS"></a><font color="#000000" size="4"
+        face="Arial Black">RESULTS</font></p>
+        <p><font color="#000000" size="4" face="Arial">We created
+        many images and animations showing antialiasing, soft
+        shadows, soft reflection, soft refraction, depth of field,
+        and motion blur. Here they are:</font></p>
+        <p><img src="icon_vertigo.jpg" width="200" height="200"><br>
+        <font color="#000000" size="4" face="Arial">A big
+        animation with over 8000 spheres. This rendered for days
+        on very large servers, but still only finished 7
+        oversamples, so it is a bit pixelated. Very nice depth of
+        field and motion blur. Animation designed by Vince.<br>
+        </font><a href="vertigo01_n7-4-3.mpg"><font
+        color="#000000" size="4" face="Arial">View the 5.6MB MPEG
+        animation</font></a><font color="#000000" size="4"
+        face="Arial">. <br>
+        </font><a href="vertigo01_n7-4-3.mov"><font
+        color="#000000" size="4" face="Arial">View the 2.9MB
+        QuickTime animation</font></a><font color="#000000"
+        size="4" face="Arial">. </font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><font color="#000000" size="4" face="Arial"><img
+        src="icon_rotation.jpg" width="450" height="150"><br>
+        A nice animation showing motion blur &amp; depth of field.
+        Rendertime was about 4 days on my P133. Each frame has 27
+        oversamples. Animation designed by Vince.<br>
+        </font><a href="rotation02-n27.mpg"><font color="#000000"
+        size="4" face="Arial">View the 450KB MPEG animation</font></a><font
+        color="#000000" size="4" face="Arial">. <br>
+        </font><a href="rotation02-n27.mov"><font color="#000000"
+        size="4" face="Arial">View the 690KB QuickTime animation</font></a><font
+        color="#000000" size="4" face="Arial">. </font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><font color="#000000" size="4" face="Arial"><img
+        src="icon_glass.jpg" width="193" height="125"><br>
+        Short animation showing a transparent polygonal cup. Nice
+        refraction &amp; soft shadows. Notice the very faint
+        shadow from the cup. 30 Oversamples. Animation designed
+        by Ryan.<br>
+        </font><a href="Glass-n30.mpg"><font color="#000000"
+        size="4" face="Arial">View the 51KB MPEG animation</font></a><font
+        color="#000000" size="4" face="Arial">.</font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><a href="coil_n46.jpg"><font color="#000000" size="4"
+        face="Arial"><img src="icon_coil_n46.jpg" width="200"
+        height="150"></font></a><font color="#000000" size="4"
+        face="Arial"><br>
+        A Huge number of polygons, soft shadows, phong shading,
+        soft reflections. Just under 50 oversamples. Picture
+        designed by Ryan.<br>
+        </font><a href="coil_n46.jpg"><font color="#000000"
+        size="4" face="Arial">View the image</font></a><font
+        color="#000000" size="4" face="Arial">.</font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><a href="many_reflections_n100.jpg"><font
+        color="#000000" size="4" face="Arial"><img
+        src="icon_many_reflections_n100.jpg" width="165"
+        height="100"></font></a><font color="#000000" size="4"
+        face="Arial"><br>
+        Crazy reflections (Mirrored sphere within mirrored sphere).
+        100 oversamples. Picture designed by Vince.<br>
+        </font><a href="many_reflections_n100.jpg"><font
+        color="#000000" size="4" face="Arial">View the image</font></a><font
+        color="#000000" size="4" face="Arial">.</font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><font color="#000000" size="4" face="Arial"><img
+        src="shattered_sphere.jpg" width="300" height="150"><br>
+        <img src="wireframe.jpg" width="300" height="150"><br>
+        </font><a href="oversized-polys.jpg"><font
+        color="#000000" size="4" face="Arial"><img
+        src="icon_oversized-polys.jpg" width="143" height="111"></font></a><font
+        color="#000000" size="4" face="Arial">&lt;-- </font><a
+        href="oversized-polys.jpg"><font color="#000000" size="4"
+        face="Arial">View a larger version</font></a><font
+        color="#000000" size="4" face="Arial">.<br>
+        Polygons can be shrunken and enlarged to create
+        interesting effects. Pictures designed by Ryan.</font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><font color="#000000" size="4" face="Arial"><img
+        src="soft_reflections_n190.jpg" width="600" height="300"><br>
+        <img src="distributed_refraction.jpg" width="600"
+        height="300"><br>
+        Distributed reflection and refraction. Notice that in the
+        first picture the left sphere has a blurred reflection
+        verses the crisp reflection in the right sphere. Pictures
+        designed by Ryan.</font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><font color="#000000" size="4" face="Arial"><img
+        src="depth_box_filter_n400.jpg" width="600" height="300"><br>
+        Depth of field. Picture by Vince.</font></p>
+        <p><font color="#000000" size="4" face="Arial">-</font></p>
+        <p><font color="#000000" size="4" face="Arial"><img
+        src="soft_shadows_and_phong_polys.jpg" width="600"
+        height="300"><br>
+        An early render, (without antialiasing) showing
+        interesting phong on a polygon object. Soft shadows too.
+        Picture designed by Ryan.</font></p>
+        <p align="right"><strong>[</strong><a href="#TOP"><strong>TOP</strong></a><strong>]</strong></p>
+        <hr noshade color="#000000">
+        <p><a name="OVERVIEW"></a><font color="#000000" size="4"
+        face="Arial Black">OVERVIEW</font></p>
+        <p><font color="#000000" size="4" face="Arial">A
+        distributed ray tracer* with the following features:</font></p>
+        <blockquote>
+            <p><font color="#000000" size="4" face="Arial">-
+            Motion Blur<br>
+            - Anti-aliasing<br>
+            - Depth of Field<br>
+            - Glossy Reflections<br>
+            - Keyframed Animation Control<br>
+            - Polygonal objects</font></p>
+        </blockquote>
+        <p><font color="#000000" size="4" face="Arial">*- A 'distributed
+        ray tracer' is a ray tracer which oversamples by a linear
+        factor of <em>n</em>, distributing sampling rays to
+        obtain a higher quality result. </font></p>
+        <p align="right"><strong>[</strong><a href="#TOP"><strong>TOP</strong></a><strong>]</strong></p>
+        <hr noshade color="#000000">
+        <p><a name="LOG"></a><font color="#000000" size="4"
+        face="Arial Black">PROJECT LOG</font></p>
+        <table border="0" cellpadding="2" cellspacing="10"
+        width="100%">
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">2/18/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Project
+                initialization. <br>
+                Tasks determined, goals set, this page generated.</font></td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">2/21/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Vince
+                overhauled old ray tracer engine to suit the
+                design of the distributed ray tracer. (Not
+                completely done with this yet)<br>
+                Ryan ported old code for polygonal based objects.
+                (Not completely done with this yet)</font></td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">2/22/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Vince
+                wrangled with incorporating the polygon object
+                for a while, did some design work on how to set
+                up data for individual frames. Listened to plenty
+                of techno. Entered code to distribute the point
+                lightsource position.</font></td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">2/23/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Made
+                sure code is cross platform happy. </font><p><font
+                color="#000000" size="4" face="Arial">Phong
+                rendering of polygons done, WOW that looks
+                awesome.</font></p>
+                <p><font color="#000000" size="4" face="Arial">Merging
+                of multiple files built in, automatic reuse of
+                previous renders makes it snappy fast to preview
+                and then gradually improve quality without
+                spending all that re-render time. </font></p>
+                <p><font color="#000000" size="4" face="Arial">Depth
+                of field &amp; antialiasing done.</font></p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">2/24/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Summarized
+                papers</font></td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">2/27/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Added
+                Keyframe top level design, animation for
+                materials and observer parameters. </font></td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">2/28/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Blurred
+                reflections and transparency implemented.</font><p><font
+                color="#000000" size="4" face="Arial">Put
+                together first animation. 'rotation02'.</font></p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">3/2/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Started
+                rendering the Vertigo animation on 8 Sun Ultra
+                Sparc II processors.</font></td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">3/7/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Stopped
+                rendering the Vertigo animation</font><p><font
+                color="#000000" size="4" face="Arial">Made a few
+                other neato images</font></p>
+                </td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">3/9/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Gave
+                presentation</font></td>
+            </tr>
+            <tr>
+                <td valign="top"><font color="#000000" size="4"
+                face="Arial">3/10/99</font></td>
+                <td><font color="#000000" size="4" face="Arial">Stopped
+                working on this project.</font></td>
+            </tr>
+        </table>
+        <p align="right"><strong>[</strong><a href="#TOP"><strong>TOP</strong></a><strong>]</strong></p>
+        <hr noshade color="#000000">
+        <p><a name="ASSIGNMENTS"></a><font color="#000000"
+        size="4" face="Arial Black">TASK ASSIGNMENTS</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Ray
+        tracer Top Level Design - Vince </font></p>
+        <p><font color="#000000" size="4" face="Arial">- Motion
+        Blur - Vince</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Anti-aliasing
+        - Vince</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Soft
+        Shadows - Vince</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Depth of
+        Field - Vince</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Blurred
+        Transparency - Ryan</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Glossy
+        Reflections - Ryan</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Image
+        Merging - Ryan</font></p>
+        <p><font color="#000000" size="4" face="Arial">-
+        Keyframed Animation Control - Vince</font></p>
+        <p><font color="#000000" size="4" face="Arial">-
+        Polygonal objects - Ryan</font></p>
+        <p align="right"><strong>[</strong><a href="#TOP"><strong>TOP</strong></a><strong>]</strong></p>
+        <hr noshade color="#000000">
+        <p><a name="BREAKDOWN"></a><font color="#000000" size="4"
+        face="Arial Black">DETAILED BREAKDOWN</font></p>
+        <p><font color="#000000" size="4" face="Arial">- Motion
+        Blur</font></p>
+        <blockquote>
+            <p><font color="#000000" size="4" face="Arial">Objects
+            have a time parameterized description of movement in
+            space according to keyframes. Sample rays will be
+            distributed throughout the time dimension. This
+            relies solely on being able to retrieve position and
+            other describing characteristics from the animation
+            module for any specified time parameter.</font></p>
+        </blockquote>
+        <p><font color="#000000" size="4" face="Arial">- Anti-aliasing</font></p>
+        <blockquote>
+            <p><font color="#000000" size="4" face="Arial">The
+            sampling ray is perturbed slightly so that samples
+            from various portions of a pixels extruded volume are
+            collected.</font></p>
+        </blockquote>
+        <p><font color="#000000" size="4" face="Arial">- Depth of
+        Field</font></p>
+        <blockquote>
+            <p><font color="#000000" size="4" face="Arial">The
+            eye position (source of sampling ray) is perturbed
+            slightly to simulate the distortion of a lens camera.
+            This will cause blurring of all objects nearer or
+            farther then the center of interest (focal depth).</font></p>
+        </blockquote>
+        <p><font color="#000000" size="4" face="Arial">- Glossy
+        Reflections</font></p>
+        <blockquote>
+            <p><font color="#000000" size="4" face="Arial">Specular
+            reflections are distorted by perturbing the reflected
+            sampling ray.</font></p>
+        </blockquote>
+        <p><font color="#000000" size="4" face="Arial">-
+        Keyframed Animation Control</font></p>
+        <blockquote>
+            <p><font color="#000000" size="4" face="Arial">Object
+            attributes at specified time positions are defined
+            via a text file, the animation module interpolates
+            attributes between these key time positions and can
+            return the proper 'scene' at any specified time value.
+            </font></p>
+        </blockquote>
+        <p><font color="#000000" size="4" face="Arial">-
+        Polygonal objects</font></p>
+        <blockquote>
+            <p><font color="#000000" size="4" face="Arial">A ray
+            tracer's most basic object is a sphere, three sided
+            polygons will also be added to this ray tracer. This
+            involved reading an input file specifying the
+            geometry, transforming the location of the geometry,
+            and calculating intersections with the polygons.</font></p>
+        </blockquote>
+        <p align="right"><strong>[</strong><a href="#TOP"><strong>TOP</strong></a><strong>]</strong></p>
+        <hr noshade color="#000000">
+        <p><a name="PAPERS"></a><font color="#000000" size="4"
+        face="Arial Black">PAPERS REFERENCED &amp; SUMMARIZED</font></p>
+        <p><font color="#000000" size="4" face="Arial">Cook,
+        Robert L. Thomas Porter, Loren Carpenter. &quot;Distributed
+        Ray Tracing&quot;. <br>
+        Proceedings of SIGGRAPH'84. In <em>Computer Graphics</em>
+        18, 3, pp. 137-145, July 1984.<br>
+        [</font><a href="paper_sum1.html"><font color="#000000"
+        size="4" face="Arial">SUMMARY</font></a><font
+        color="#000000" size="4" face="Arial">]</font></p>
+        <p><font color="#000000" size="4" face="Arial">Painter,
+        James. Kenneth Sloan. &quot;Antialiased Ray Tracing by
+        Adaptive Progressive Refinement&quot;. <br>
+        Proceedings of SIGGRAPH'89. In <em>Computer Graphics</em>
+        23, 3, pp. 281-285, July 1989.<br>
+        [</font><a href="paper_sum2.html"><font color="#000000"
+        size="4" face="Arial">SUMMARY</font></a><font
+        color="#000000" size="4" face="Arial">]</font></p>
+        <p align="right"><strong>[</strong><a href="#TOP"><strong>TOP</strong></a><strong>]</strong></p>
+        <hr noshade color="#000000">
+        <p><a name="PERSONAL"></a><font color="#000000" size="4"
+        face="Arial Black">PERSONAL INFORMATION</font></p>
+        <p><font color="#000000" size="4" face="Arial"><strong>Geiss,
+        Ryan M.</strong><br>
+        </font><a href="mailto:geiss.3@osu.edu"><font
+        color="#000000" size="4" face="Arial">mailto:geiss.3@osu.edu</font></a><font
+        color="#000000" size="4" face="Arial"><br>
+        </font><a href="http://www.cis.ohio-state.edu/~geiss/"><font
+        color="#000000" size="4" face="Arial">http://www.cis.ohio-state.edu/~geiss/</font></a></p>
+        <p><font color="#000000" size="4" face="Arial"><strong>Scheib,
+        Vincent E.<br>
+        </strong></font><a href="mailto:sch_REMOVE_THIS_ANTI_SPAM_TEXT_eib@cs.unc.edu"><font
+        color="#000000" size="4" face="Arial">mailto:sch_REMOVE_THIS_ANTI_SPAM_TEXT_eib@cs.unc.edu</font></a><font
+        color="#000000" size="4" face="Arial"><br>
+        </font><a href="http://www.scheib.net"><font
+        color="#000000" size="4" face="Arial">http://www.scheib.net</font></a></p>
+        <p><font color="#000000" size="3" face="Arial Black">We
+        were both third year undergraduate students in Computer
+        Science Engineering. (Spring 1999)</font></p>
+        <p align="right"><strong>[</strong><a href="#TOP"><strong>TOP</strong></a><strong>]</strong></p>
+        <hr noshade color="#000000">
+        <p><a href="../index.html"><img
+        src="../../../common/back.gif" border="0" width="50"
+        height="20"></a></p>
+        <p align="right"><font size="1"><em>copyright 1999 Ryan
+        Geiss &amp; Vince Scheib</em></font></p>
+        </td>
+    </tr>
+</table>
+</center></div>
+
+<!-- Counter was here. -->
+
+</body>
+</html>

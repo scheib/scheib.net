@@ -1,0 +1,39 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>782 Lab1 - Vince Scheib</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<p><img src="plant1-s.jpg" width="512" height="512"></p>
+
+<p><font face="Arial">This texture (shown below) helps to see how
+it is placed. It shows us that the spherical(left object) is
+actually mapping the texture around twice. The shrinkwrap(center)
+wraps it only once. The red and blue coloring assist in
+identifying where the color is coming from. Note that the
+shrinkwraped plant's petals use their normals to gather color
+even from the far side of the cylinder which the shrinkwrap is
+coming from. I direct your attention to the inside lip of the
+center pot. The right side is blue. This is because we are seeing
+the backface of the lip, it's normal is facing outward and so
+gathers the blue from the right side. The petals on the right,
+however, are being viewed properly (not their backfaces) and we
+see that they are red, which is the color coming from the left
+side. The 'dirt' in the pot handles the shrinkwrap poorly
+however. It has normals which are near vertical, and show great
+discontinuity as to which side to gather color from. </font></p>
+
+<p><font face="Arial"><img src="plant2texture.jpg" border="1"
+width="128" height="128"></font></p>
+
+<p><a href="index.html"><font face="Arial">back</font></a></p>
+
+<!-- Counter was here. -->
+
+</body>
+</html>

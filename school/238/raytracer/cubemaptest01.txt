@@ -1,0 +1,128 @@
+RAYCASTER SCRIPTFILE V2.0
+____________________________________________
+
+ Cube Map Sky Test 01
+____________________________________________
+
+SCREEN RESOLUTION
+600 300
+
+FILENAME
+cubemaptest01
+
+NUMBER OF LIGHTS
+0
+
+NUMBER OF MATERIALS
+1
+
+NUMBER OF OBJECTS
+1
+
+RECURSION DEPTH
+2
+
+SAMPLES PER PIXEL
+100
+
+BEGIN / END FRAME
+1 1
+
+FRAME INCREMENT / WIDTH
+1 0
+
+____________________________________________
+ENVIRONMENT
+
+CubeSkyMap
+ambient
+0 0 0
+
+  topfile
+  snowcliff_up.tga
+  frontfile
+  snowcliff_rt.tga
+  rightfile
+  snowcliff_ft.tga
+  backfile
+  snowcliff_lf.tga
+  leftfile
+  snowcliff_bk.tga
+  bottomfile
+  snowcliff_dn.tga
+
+topfile
+snowcliff_up.tga
+frontfile
+snowcliff_rt.tga
+rightfile
+snowcliff_ft.tga
+backfile
+snowcliff_lf.tga
+leftfile
+snowcliff_bk.tga
+bottomfile
+snowcliff_dn.tga
+
+END ENVIRONMENT
+
+____________________________________________
+LIGHTS
+
+____________________________________________
+MATERIALS
+
+BASIC
+color
+0 0 0
+kd ks kn
+0.0 0.0 1
+reflection refraction
+1.0 0
+density
+1.1
+reflection / refraction blur angles
+0 0
+
+
+____________________________________________
+OBJECTS
+
+SPHERE
+POSITION
+0 0 0
+RADIUS
+1.0
+MATERIAL
+1
+GET / CAST SHADOWS
+0 0
+
+____________________________________________
+OBSERVER
+
+POSITION
+0 -3 0
+
+LOOK AT
+0 0 0
+
+TILT
+0
+
+ANGLE OF VIEW
+90
+
+LENSE RADIUS
+0
+
+PIXEL SIZE
+0
+____________________________________________
+KEYFRAMES
+
+
+
+END KEYFRAMES
+____________________________________________
+GO

@@ -1,0 +1,71 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "PQP"=..\..\..\..\no_backup\prog\PQP_v1.2\PQP.DSP - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "hw2"=.\hw2.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name lib_qglvu
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name PQP
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "lib_qglvu"=..\..\..\..\no_backup\prog\glvu\MSVC6\lib_qglvu.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "try3"=..\hw1\try3\try3.dsp - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+

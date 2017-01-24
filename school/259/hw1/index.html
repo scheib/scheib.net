@@ -1,0 +1,219 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Vincent Scheib">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>Physically Based Modeling ODE and Particle Dynamics - Vincent Scheib</title>
+</head>
+<body text="#000000" bgcolor="#5B4266" link="#FF0000" vlink="#800080" alink="#FFFF00">
+&nbsp;
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=4 WIDTH="600" BGCOLOR="#FFFFFF" >
+<tr>
+<td>
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=20 COLS=1 WIDTH="560" >
+<tr>
+<td><b><font face="Arial,Helvetica">Homework1: ODE &amp; Particle Dynamics</font></b>
+<p><i><font face="Arial,Helvetica">Summary:</font></i>
+<p><font face="Arial,Helvetica">Implement a small program to simulate particle
+dynamics (a cannon shooting and a mass on a spring). Use several numerical
+integration methods.</font>
+<p><i><font face="Arial,Helvetica">Assignment text:</font></i>
+<br>&nbsp;
+<table BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#CCCCCC" >
+<tr>
+<td><font size=-1>Due on Wednesday, Feb 13, 2002&nbsp;</font>
+<p><font size=-1>(10pt) Problem A: Ballistic Motion</font>
+<br><font size=-1>Given a location of a gun at (0,0,0), write an 3D artillery
+simulator that can take in the mass of the projectile, amount of powder,
+the azimuth and elevation of the gun barrel. Use the amount of powder and
+the mass of the projectile to determine the muzzle velocity. Account for
+gravity and air friction. Assume that one kilogram of powder produces 10,000
+newtons of force. Assume instantaneous acceleration as a result of the
+powder going off. Air friction coefficient is constant. Set it to be 50
+kg/s initially. The gun and target are both on the X-Z plane.&nbsp;</font>
+<p><font size=-1>(15pt) Problem B: Spring-Mass Simulator</font>
+<br><font size=-1>A spring hands vertically in its equilibrium or resting
+position. Given a user-defined mass m attached to the spring with the spring
+constant k, not stretched at first. Simulate the motion of the spring and
+mass under the effects of spring and gravitational forces. Assume the mass
+is 5 kg and k = 15 kg/s^2. Then, set the mass to be 10 kg and k = 20 kg/s^2.&nbsp;</font>
+<p><font size=-1>For both problems, you'll need to write at least two functions
+(Euler's method vs. Mid-point or 4th order Runge-Kutta) for integration
+and compare their numerical accuracy and stability. Which function is more
+accurate? Which one is more stable? Which one is more efficient?&nbsp;</font>
+<p><font size=-1>This assignment will be graded based upon:&nbsp;</font>
+<br><font size=-1>Correctness of the implementations (50%)&nbsp;</font>
+<br><font size=-1>UI &amp; other SE factors (30%)&nbsp;</font>
+<br><font size=-1>Other features (analysis, etc.) (20%)&nbsp;</font></td>
+</tr>
+</table>
+
+<p><i><font face="Arial,Helvetica">What I did:</font></i>
+<p><font face="Arial,Helvetica">I have created a small program.</font>
+<br><font face="Arial,Helvetica"><a href="simple-physics.zip">download
+the program</a> (you need to put <a href="../qt.zip">qt-mt230nc.dll</a>
+in the same directory)</font>
+<p><font face="Arial,Helvetica">It requires Windows (2000?), openGL, <a href="http://www.cs.unc.edu/~walk/software/glvu/index.html">GLVU</a>
+(to compile), and the QT runtime dll (included).</font>
+<p><font face="Arial,Helvetica">You can view the <a href="code">source
+code</a>. All the simulation code is contained in the main.cpp. The other
+files are used for the user interface.</font>
+<br>&nbsp;
+<p><font face="Arial,Helvetica">I have implemented the following integration
+methods:</font>
+<ul>
+<li>
+<font face="Arial,Helvetica">Euler</font></li>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">x(t+dt) = x(t) + v(t)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">v(t+dt) = v(t) + a(t)*dt</font></li>
+</ul>
+
+<li>
+<font face="Arial,Helvetica">Midpoint</font></li>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">x_k1 = v(t)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">v_k1 = a(t)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">x_k2 = (x(t)+.5*x_k1)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">v_k2 = (v(t)+.5*v_k1)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">x(t+dt) = x(t) + x_k2</font></li>
+
+<li>
+<font face="Arial,Helvetica">v(t+dt) = v(t) + v_k2</font></li>
+</ul>
+
+<li>
+<font face="Arial,Helvetica">Runga-Kutta Fourth Order (RK4)</font></li>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">x_k1 = v(t)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">v_k1 = a(t)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">x_k2 = (x(t)+.5*x_k1)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">v_k2 = (v(t)+.5*v_k1)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">x_k3 = (x(t)+.5*x_k2)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">v_k3 = (v(t)+.5*v_k2)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">x_k4 = (x(t)+x_k3)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">v_k4 = (v(t)+v_k3)*dt</font></li>
+
+<li>
+<font face="Arial,Helvetica">&nbsp;</font></li>
+
+<li>
+<font face="Arial,Helvetica">x(t+dt) = x(t) + x_k1*1/6 + x_k2*1/3 + x_k3*1/3
++ x_k4*1/6</font></li>
+
+<li>
+<font face="Arial,Helvetica">v(t+dt) = v(t) + v_k1*1/6 + v_k2*1/3 + v_k3*1/3
++ v_k4*1/6</font></li>
+</ul>
+
+<li>
+<font face="Arial,Helvetica">Implicit (backwards Euler)</font></li>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">For cannon balls:</font></li>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">v(t+dt) = (v(t)+dt*gravity)/(1+dt*WindResistance/BallMass)</font></li>
+
+<li>
+<font face="Arial,Helvetica">x(t+dt) = x + dt*v(t+dt)</font></li>
+</ul>
+
+<li>
+<font face="Arial,Helvetica">For spring mass:</font></li>
+
+<ul>
+<li>
+<font face="Arial,Helvetica">v(t+dt) = (v(t)-dt*SpringConstant/Mass*x(t)+dt*gravity)
+/ (1+dt*dt*SpringConstant/SpringMassMass)</font></li>
+
+<li>
+<font face="Arial,Helvetica">x(t+dt) = x + dt*v(t+dt)</font></li>
+</ul>
+</ul>
+</ul>
+<font face="Arial,Helvetica">The user interface alloes very easy manipulation
+of simulation variables and camera view points.&nbsp;</font>
+<p><img SRC="screenshot.png" NOSAVE height=627 width=807>
+<p><font face="Arial,Helvetica">I found that all integration methods worked
+similarly for small time steps (10ms). The hanging spring performed poorly
+for large time steps (50ms, 100ms) with Euler and Midpoint. The mass on
+the spring would gain energy and "explode". RK4 performed well, but still
+gained energy.</font>
+<p><font face="Arial,Helvetica">The implicit solver removes energy from
+the system slowly, however it is far more stable. Shots from the cannon
+do not go as far, and the spring mass dampens out and will eventually stop
+moving. These effects are slight, but become more apparent at very large
+time steps (100ms or more).&nbsp;</font>
+<p>&nbsp;</td>
+</tr>
+
+<tr>
+<td></td>
+</tr>
+</table></center>
+</td>
+
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+
+<tr>
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+</table></center>
+
+<center>
+<p><a href="../index.html"><img SRC="../../../common/back.gif" NOSAVE BORDER=0 height=20 width=50></a></center>
+
+</body>
+</html>

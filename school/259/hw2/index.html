@@ -1,0 +1,386 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Vincent Scheib">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>Physically Based Modeling ODE and Particle Dynamics - Vincent Scheib</title>
+</head>
+<body text="#000000" bgcolor="#5B4266" link="#FF0000" vlink="#800080" alink="#FFFF00">
+&nbsp;
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=4 WIDTH="600" BGCOLOR="#FFFFFF" >
+<tr>
+<td>
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=20 COLS=1 WIDTH="560" >
+<tr>
+<td><b><font face="Arial,Helvetica">Homework2: Collision Detection</font></b>
+<p><i><font face="Arial,Helvetica">Summary:</font></i>
+<p><font face="Arial,Helvetica">Implement collision detection for several
+complex objects moving with different velocities and rotations. Provide
+simple motion response upon colliding. Optimize for the case when objects
+are all equal size.</font>
+<p><i><font face="Arial,Helvetica">Assignment text:</font></i>
+<br>&nbsp;
+<table BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#CCCCCC" >
+<tr>
+<td><font size=-1>(6 pt) Problem A: Implementation</font>
+<br><font size=-1>Write a program to detect collisions among many sphere-like
+objects of different sizes flying inside a confined region (e.g. a cube,
+a table with boundary, etc.); Each object is given an initial random velocity
+and angular velocity. The velocity stays the same unless an object hits
+an obstacle (e.g. a wall or another object), in which case a component
+of the velocity should be flipped so that the object stays within the confinement.
+State your assumptions about the objects! You may wish to reuse and modify
+the source code available at: http://www.cs.unc.edu/~geom/collide/packages.shtml&nbsp;</font>
+<p><font size=-1>(9pt) Problem B: Analysis</font>
+<br><font size=-1>Analyze performance of your algorithm (or implementation)
+in different situations.&nbsp;</font>
+<br><font size=-1>Change the following parameters and measure computation
+time:&nbsp;</font>
+<ul>
+<li>
+<font size=-1>Number of objects (1~50)&nbsp;</font></li>
+
+<li>
+<font size=-1>Complexity of objects (The number of polygons for each object.&nbsp;
+Try at least 3 different data sets)&nbsp;</font></li>
+
+<li>
+<font size=-1>Sizes of objects (The relative size of each object w.r.t..
+the extension of the bounding cube.)&nbsp;</font></li>
+</ul>
+<font size=-1>Your algorithm (implementation) should exhibit different
+characteristics to the variation of these parameters. Present data in tables
+and graphs, and explain the differences in performance.&nbsp;</font>
+<p><font size=-1>(10pt) Problem C: Varying Parameters</font>
+<br><font size=-1>Same as Problem A, except the objects have the same size.
+What would you do differently? Show a simple prototype implementation to
+compare and contrast the performance of two different algorithms (implementation).</font></td>
+</tr>
+</table>
+
+<p><i><font face="Arial,Helvetica">What I did:</font></i>
+<p><font face="Arial,Helvetica">I have created a small program.</font>
+<br><font face="Arial,Helvetica"><a href="collision-test.zip">download
+the program</a> (you need to put <a href="../qt.zip">qt-mt230nc.dll</a>
+in the same directory)</font>
+<p><font face="Arial,Helvetica">It requires Windows (2000?), openGL, <a href="http://www.cs.unc.edu/~walk/software/glvu/index.html">GLVU</a>
+(to compile), <a href="http://www.cs.unc.edu/~geom/SSV/">PQP</a>, and the
+QT runtime dll (included).</font>
+<p><font face="Arial,Helvetica">You can view the <a href="code">source
+code</a>. All the simulation code is contained in the main.cpp. The other
+files are used for the user interface.</font>
+<p><font face="Arial,Helvetica">I have implemented a simple system using
+PQP (Proximity Query Package). PQP uses Object Oriented Bounding Boxes
+(OOBB) for collision detection of arbitrary objects. The objects I used
+came from Nate Robin's OpenGL <a href="http://www.xmission.com/~nate/tutors.html">tutors</a>.
+They are complex, all of them convex and some of them actually are separate
+objects.</font>
+<p><font face="Arial,Helvetica">The user interface shown in this screen
+shot:&nbsp;</font>
+<p><img SRC="screenshot.png" NOSAVE height=505 width=620>
+<p><font face="Arial,Helvetica">Objects flash red when they are in collision,
+the model of Al Capone in the top center is colliding with the rear wall.
+The objects ranged from 1000 to 7000 triangles.</font>
+<br>&nbsp;
+<p><i><font face="Arial,Helvetica">Analysis:</font></i>
+<p><font face="Arial,Helvetica">I have gathered timing for different objects,
+scale of objects, and number of objects. These can be seen in this graph:</font>
+<center>
+<p><img SRC="graph.gif" NOSAVE height=348 width=584></center>
+
+<p><font face="Arial,Helvetica">White and black represent objects with
+1692 and 7625 triangles, respectively.&nbsp;</font>
+<p><font face="Arial,Helvetica">Small signifies that the object scale was
+extremely small compared to the environment. In this situation, thousands
+of objects can fit within the space and rarely collide with each other.</font>
+<p><font face="Arial,Helvetica">Medium signifies objects of the size seen
+in the screen shot.&nbsp;</font>
+<p><font face="Arial,Helvetica">Large signifies objects scaled such that
+they are always in collision with another object.</font>
+<p><font face="Arial,Helvetica">These timings are also in this table:</font>
+<br>&nbsp;
+<center><table BORDER CELLSPACING=0 WIDTH="100%" >
+<tr>
+<td>Num. Obj.</td>
+
+<td>1k, small</td>
+
+<td>7k, small</td>
+
+<td>1k, medium</td>
+
+<td>7k, medium</td>
+
+<td>1k, large</td>
+
+<td>7k, large</td>
+</tr>
+
+<tr>
+<td>400</td>
+
+<td>0.25</td>
+
+<td>0.26</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>350</td>
+
+<td>0.19</td>
+
+<td>0.20</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>300</td>
+
+<td>0.14</td>
+
+<td>0.16</td>
+
+<td>0.33</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>250</td>
+
+<td>0.10</td>
+
+<td>0.11</td>
+
+<td>0.23</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>200</td>
+
+<td>0.07</td>
+
+<td>0.07</td>
+
+<td>0.14</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>150</td>
+
+<td>0.04</td>
+
+<td>0.04</td>
+
+<td>0.09</td>
+
+<td>0.53</td>
+
+<td></td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>100</td>
+
+<td>0.02</td>
+
+<td>0.02</td>
+
+<td>0.04</td>
+
+<td>0.20</td>
+
+<td></td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>50&nbsp;</td>
+
+<td>0.01</td>
+
+<td>0.01</td>
+
+<td>0.01</td>
+
+<td>0.05</td>
+
+<td>0.50</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>40&nbsp;</td>
+
+<td>0.01</td>
+
+<td>0.01</td>
+
+<td>0.01</td>
+
+<td>0.01</td>
+
+<td>0.31</td>
+
+<td></td>
+</tr>
+
+<tr>
+<td>30&nbsp;</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td>0.18</td>
+
+<td>0.69</td>
+</tr>
+
+<tr>
+<td>20&nbsp;</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td>0.09</td>
+
+<td>0.31</td>
+</tr>
+
+<tr>
+<td>10&nbsp;</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td>0.02</td>
+
+<td>0.08</td>
+</tr>
+
+<tr>
+<td>0&nbsp;</td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td></td>
+
+<td>0.01</td>
+
+<td>0.01</td>
+</tr>
+</table></center>
+
+<p><font face="Arial,Helvetica">The most significant contribution to computation
+time is that of object scale. When objects are of a smaller relative scale,
+they rarely are in collision. Thus, the collision detection code must only
+infrequently traverse down the bounding box hierarchy. At these scales,
+the complexity of the object has little influence on computation time.</font>
+<p><font face="Arial,Helvetica">The second most influential metric is the
+number of objects in the system. A pair wise test must be performed for
+all objects during collision detection.</font>
+<p><font face="Arial,Helvetica">Lastly, but significant during collisions,
+the complexity of an object affects the computation time.&nbsp;</font>
+<br>&nbsp;
+<p><i><font face="Arial,Helvetica">Same Size Objects:</font></i>
+<p><font face="Arial,Helvetica">If we assume objects are all the same size,
+we can perform faster rejection on object collision tests. Specifically,
+we can avoid the pair wise test. Knowing the maximum object size, we can
+partition space and only check for object collisions for objects sharing
+a cell.&nbsp;</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">One simple way to do this is to make a
+grid where each cell is only slightly larger than an object. Then, for
+each object, the cell the center resides in is marked as containing that
+object. Then, for each cell, every object within a cell is tested for collision
+with objects in that and any adjacent cell. (objects may overlap cell boundaries,
+but no more than one.) When doing this, care is taken to only check an
+object pair once.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Why do this? A pair wise test has quadratic
+complexity. It requires N(N-1)/2 object-object tests. However, traversing
+the spatial partitioning is linear. Within each cell a pair wise test is
+performed, however this is on a very small number of objects (unless the
+space is very crowded).&nbsp;</font>
+<center>
+<p><img SRC="graph2.gif" NOSAVE height=349 width=659></center>
+
+<p><font face="Arial,Helvetica">Results are positive. As can be seen in
+the graph, the spatial subdivision performs much better -- closer to linear
+than the pair wise implementation.</font></td>
+</tr>
+
+<tr>
+<td></td>
+</tr>
+</table></center>
+</td>
+
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+
+<tr>
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+</table></center>
+
+<center>
+<p><a href="../index.html"><img SRC="../../../common/back.gif" NOSAVE BORDER=0 height=20 width=50></a></center>
+
+</body>
+</html>

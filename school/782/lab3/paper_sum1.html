@@ -1,0 +1,86 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Distributed Ray Tracing - Summary - 782 Lab3 - Distributed Raytracer - Vince Scheib & Ryan Geiss</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<p align="right">Vince Scheib<br>
+Roger Crawfis<br>
+CIS 782<br>
+Summery of Paper<br>
+February 25, 1999 </p>
+
+<p>Summarization of:<br>
+Cook, Robert L. Thomas Porter, Loren Carpenter. &quot;Distributed
+Ray Tracing&quot;. Proceedings of SIGGRAPH'84. In Computer
+Graphics 18, 3, pp. 137-145, July 1984.<br>
+<br>
+<br>
+Ray tracing, the process of recursively intersecting a
+parameterized line equation with surfaces, is a simple and
+elegant rendering algorithm. Shadows, reflection, and refraction
+are easily attained, while much more difficult with alternative
+display techniques. Extending this algorithm to distributed ray
+tracing incorporates: blurred reflections, blurred refraction,
+soft shadows, depth of field, and motion blur. This increases the
+quality of rendered images dramatically, with relatively little
+cost. <br>
+<br>
+The modification to the traditional ray tracer is very simple.
+Sample each pixel multiple times and each time distribute scene
+parameters. This point samples many parameters that have a large
+range of values. Finally, average the samples together for an
+approximation of the contribution of each parameters' diverse
+range. Each of the effects are addressed individually below.<br>
+<br>
+<br>
+Blurred Reflections<br>
+Reflections in the traditional ray tracer are perfect, or mirror
+like. In the distributed algorithm the reflected ray is perturbed
+slightly. This creates a glossy reflection, where objects in the
+reflection are increasingly blurry the farther away they are.<br>
+<br>
+Blurred Refraction<br>
+In the same way that the reflected ray is perturbed, so is the
+refracted ray. This parallels the glossy reflection with glossy
+transparency.<br>
+<br>
+Soft Shadows<br>
+Sampling a light source over an area expands upon the simple
+'point light' of most ray tracers. When checking for shadows, a
+random point is selected from a light source with probability
+equal to the proportional amount of light emanating from that
+point. This simulates an area light source, which causes soft
+shadows.<br>
+<br>
+Depth of Field<br>
+Distributing the eye position over the area of a virtual lens,
+while maintaining the center of interest, causes defocusing of
+objects not on the focal plane. <br>
+<br>
+Motion Blur<br>
+Randomly positioning objects according to their time
+parameterized description of position in space causes motion
+blur. These sample points should be taken from the current frame
+to be rendered plus or minus some epsilon. <br>
+<br>
+As stated above, each of these parameters is distributed per
+pixel sample. Averaging together multiple samples simultaneously
+averages together the point samples of each parameter. Thus all
+effects can be obtained for approximately the same cost.</p>
+
+<p><a href="index.html"><img src="../../../common/back.gif"
+border="0" width="50" height="20"></a></p>
+
+<p align="right"><font size="1"><em>copyright 1999 Ryan Geiss
+&amp; Vince Scheib</em></font></p>
+
+<!-- Counter was here. -->
+
+</body>
+</html>

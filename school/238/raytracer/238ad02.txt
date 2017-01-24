@@ -1,0 +1,149 @@
+RAYCASTER SCRIPTFILE V2.1
+____________________________________________
+
+ 238 Adaptive test
+____________________________________________
+
+. NOTES
+ -400000 samples with 10 samples per pixel base. so none adaptive
+ -800137 upped oversamples to double
+ -1600064 forced 20 samples per pixel minimum, matched oversamples to double
+ -2004732 upped oversamples
+  
+SCREEN RESOLUTION
+200 200
+
+FILENAME
+238ad02
+
+NUMBER OF LIGHTS
+1
+
+NUMBER OF MATERIALS
+2
+
+NUMBER OF OBJECTS
+2
+
+RECURSION DEPTH
+5
+
+SAMPLES PER PIXEL
+50
+
+BEGIN / END FRAME
+1 1
+
+FRAME INCREMENT / WIDTH
+1 0
+
+ADAPTIVE BUFFER
+0
+    1
+    20
+    2000000
+
+____________________________________________
+ENVIRONMENT
+
+ambient
+.1 .1 .1
+background
+1 0 0
+
+
+END ENVIRONMENT
+
+____________________________________________
+LIGHTS
+
+POINTLIGHT
+position
+2 2 4 
+radius
+0.5
+color
+1 1 1
+cast shadows
+
+____________________________________________
+MATERIALS
+
+.1
+BASIC
+color
+0 1 0
+kd ks kn
+0.7 0.2 40
+reflection refraction
+0.3 0
+density
+0
+reflection / refraction blur angles
+20 0
+
+.2
+BASIC
+color
+0 0 1
+kd ks kn
+0.7 0.2 40
+reflection refraction
+0.3 0
+density
+0
+reflection / refraction blur angles
+20 0
+
+____________________________________________
+OBJECTS
+
+
+SPHERE
+POSITION
+0 0 -10000
+RADIUS
+10000
+MATERIAL
+1
+GET / CAST SHADOWS
+1 0
+
+SPHERE
+POSITION
+0 0 2
+RADIUS
+1.0
+MATERIAL
+2
+GET / CAST SHADOWS
+0 1
+
+
+____________________________________________
+OBSERVER
+
+POSITION
+0 -5 5
+ 
+LOOK AT
+0 0 0
+
+TILT
+0
+
+ANGLE OF VIEW
+75
+
+LENSE RADIUS
+0
+
+PIXEL SIZE
+1
+
+____________________________________________
+KEYFRAMES
+
+END KEYFRAMES
+____________________________________________
+GO

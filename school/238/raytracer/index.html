@@ -1,0 +1,327 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Vince Scheib">
+   <meta name="KeyWords" content="Raytracer, Distributed, Vince Scheib, Vincent Scheib, Vin Scheib, Scheib">
+   <meta name="GENERATOR" content="Mozilla/4.75 [en] (WinNT; U) [Netscape]">
+   <title>238 - Distributed Raytracer - Vince Scheib</title>
+</head>
+<body text="#000000" bgcolor="#9B95A8" link="#0000EE" vlink="#551A8B" alink="#33CCFF">
+&nbsp;
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=4 WIDTH="600" BGCOLOR="#FFFFFF" >
+<tr ALIGN=LEFT>
+<td>
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=20 COLS=1 WIDTH="560" >
+<tr>
+<td><b><font face="Arial,Helvetica">Raytracer</font></b>
+<p><font face="Arial,Helvetica">This is the fourth time I have worked on
+a raytracer.&nbsp;</font>
+<br><font face="Arial,Helvetica">The first time I did very little. That
+code was scrapped.</font>
+<br><font face="Arial,Helvetica">The <a href="../../781/index.html">second
+time</a> I tried to make it better. That code was reused.</font>
+<br><font face="Arial,Helvetica">The <a href="../../782/lab3/index.html">third
+time</a> I made it Distributed (it spreads many rays out for higher quality).</font>
+<br><font face="Arial,Helvetica">The fourth time is now.</font>
+<p><font face="Arial,Helvetica">Changes Made:</font>
+<br><font face="Arial,Helvetica">-Fixed bugs</font>
+<br><font face="Arial,Helvetica">-Found bugs that I tried to fix but failed
+(lots of these, actually)</font>
+<br><font face="Arial,Helvetica">-Added environment maps</font>
+<br><font face="Arial,Helvetica">-Made adaptive</font>
+<br><font face="Arial,Helvetica">-Thrashed the code to the point that I
+don't want to touch it again. (I was in a great rush)</font>
+<p><font face="Arial,Helvetica">Fourth Time, First changes:</font>
+<br><font face="Arial,Helvetica">Added a texture mapped environment.&nbsp;</font>
+<br><font face="Arial,Helvetica"><a href="bloopers/">bloopers Directory</a></font>
+<p><a href="cubemaptest01-0001-032.jpg"><img SRC="cubemaptest01-0001-032_tn.jpg" BORDER=1 height=150 width=300></a>
+<br>&nbsp;<a href="cubemaptest01.txt">cubemaptest01.txt</a>
+<br>&nbsp;
+<p><font face="Arial,Helvetica">Spent a long time making the first 'real'
+scene.</font>
+<p><a href="cubemaptest04_0001.jpg"><img SRC="cubemaptest04_0001_tn.jpg" BORDER=1 height=150 width=300></a>
+<br><a href="cubemaptest04.txt">cubemaptest04.txt</a>
+<br>(300 oversamples. about 1.25 hours to render on one SGI R10000 and
+my NT workstation)
+<p>Thought I'd let it do something else too... so I changed this just a
+little and got this:
+<br><a href="cubemaptest05_0001.jpg"><img SRC="cubemaptest05_0001_tn.jpg" BORDER=1 height=150 width=300></a>
+<br><a href="cubemaptest05.txt">cubemaptest05.txt</a>
+<br>(800 oversamples. Millions of square root domain errors. 3 hours on
+one SGI R10000 and my NT workstation)
+<p>Ok, so I have the lighting model and sphere &amp; polygon intersection
+from last time. I added the environment map which was a simplified plane
+intersection. I don't know why I spent 12 hours doing just this...&nbsp;
+<p>The environment map is simply a cube surrounding the scene. If at any
+point a ray we are tracing doesn't hit anything, then we just ram it into
+the environment map cube and see what to draw. The environment map isn't
+really in the scene of course, we just imagine that it is there once a
+ray misses everything. Mapping into the cube isn't so hard when we first
+think about it. it's just
+<br>texture-u&nbsp; =&nbsp; ray-direction-vector.u / ray-direction-vector.w
+<br>texture-v&nbsp; =&nbsp; ray-direction-vector.v / ray-direction-vector.w
+<br>(where w is the largest member of ray-direction-vector, and u and v
+are properly choosen so that they align with the x and y of the texture
+maps.) There is some additional worrying to be done to handle floating
+point inprecision.&nbsp;
+<p>I also implemented linear filtering on the texturemaps to make them
+look better.
+<p>---
+<p><b>Adaptive Oversampling</b>
+<br>Previously I was sampling every pixel a constant number of times, and
+then averaging them all together. This is inefficient (relative to number
+of pixel samples rendered) when a scene contains large areas of relatively
+non-distributed area.&nbsp;
+<p>My Method:
+<p>Store the averaged color for every pixel along with the sum of the weights
+that went to contributing that pixel. (When taking a pixel sample, you
+can associate a weight of how much it contributes to the scene according
+to which random values were chosen for the various distributions. I did
+not implement this, however, and just weighted each pixel samples with
+a 1.) When adding a new sample, the new average is = old_average * (avg_weight
+/ new_weight) + new_sample * (sample_weight / new_weight) where new_weight
+= avg_weight + sample_weight.
+<p>Store an error metric. This is difficult, as to get a proper error I
+believe I would need to be able to read all previous samples. I can’t,
+because I am averaging them together. So I simply take a weighted average
+the new error with the average error, in exactly the same way that I find
+the new average color.
+<p>Render the entire image N times to establish base error statistics.
+I can not adaptively improve a pixel unless I know that it is in error.
+The only way to know that is to sample it many times and see how distributed
+the colors are for it.&nbsp;
+<p>Adaptively render pixels which have the highest average error per sample.&nbsp;
+<p>Figures: (from souce file&nbsp; <a href="238ad02.txt">238ad02.txt</a>
+)
+<br>&nbsp;
+<center><table>
+<tr>
+<td>1</td>
+
+<td><img SRC="238ad02-0001-adaptive(400000).gif" BORDER=0 height=200 width=200></td>
+
+<td>
+<center>This column shows the difference between the current image and
+the previous.</center>
+</td>
+
+<td>
+<center>This column shows in red the pixels which were sampled to make
+this new image from the last.
+<p>(Final row is explained below)</center>
+</td>
+</tr>
+
+<tr>
+<td>2</td>
+
+<td><img SRC="238ad02-0001-adaptive(800137).gif" BORDER=0 height=200 width=200></td>
+
+<td><img SRC="238ad02-0001-adaptive(800137)dif.gif" height=200 width=200></td>
+
+<td><img SRC="238ad02-0001-adaptive(800137)D2a.gif" height=200 width=200></td>
+</tr>
+
+<tr>
+<td>3</td>
+
+<td><img SRC="238ad02-0001-adaptive(1600064).gif" BORDER=0 height=200 width=200></td>
+
+<td><img SRC="238ad02-0001-adaptive(1600064)dif.gif" height=200 width=200></td>
+
+<td><img SRC="238ad02-0001-adaptive(1600064)D2a.gif" height=200 width=200></td>
+</tr>
+
+<tr>
+<td>4</td>
+
+<td><img SRC="238ad02-0001-adaptive(2004732).gif" BORDER=0 height=200 width=200></td>
+
+<td><img SRC="238ad02-0001-adaptive(2004732)dif.gif" height=200 width=200></td>
+
+<td><img SRC="238ad02-0001-adaptive(2004732)D2a.gif" height=200 width=200></td>
+</tr>
+
+<tr>
+<td>5</td>
+
+<td><img SRC="238ad02_0001.gif" height=200 width=200></td>
+
+<td><img SRC="238ad02_0001diff.gif" height=200 width=200></td>
+
+<td><img SRC="238ad02-0001-adaptive(2004732)Derr.gif" height=200 width=200></td>
+</tr>
+</table></center>
+
+<ol>
+<li>
+The scene rendered with 10 oversamples for every pixel.&nbsp;</li>
+
+<br>&nbsp;
+<li>
+The equivalent of 10 oversamples for the entire image are rendered adaptively.
+(That’s 400000 samples for this 200x200 pixel image.) This uses the error
+values determined in the previous image (they are refined as we continue
+to render this image as well.)<br><br>
+Look at the second column. This shows the difference between the first
+image and the second. It clearly shows which pixels were resampled, as
+well as the relative amount of error fixed by doing so.<br><BR>
+Look at the third coulmn. This shows the number of additional samples
+taken for each pixel.<br>&nbsp;
+</li>
+<li>
+Notice that some pixels in the last image (2) seem to stick out. We did
+not oversample all pixels that needed it. In the soft shadow you can see
+bright green specks, standing out from the smoother shading which we just
+accomplished. This is because we did not find enough error for those pixels
+during the initial 10 oversamples. Our adaptive method will not fix this
+for a long time (remember that the error metric is error / samples -- so
+once we oversampled the other pixels enough we would eventually get to
+these.)
+<br><BR>To fix this, another 10 oversamples are taken for every pixel, and then
+another 400000 adaptive pixels samples (equivalent to 10 oversamples are
+taken for every pixel) are found.
+<BR><BR>Look at the third column. Notice that the pixels which we had missed
+last time were sampled again many times. They are the bright red dots --
+showing that they had many aditional samples taken.
+<br>&nbsp;
+</li>
+<li>
+Now another 400000 adaptive samples are taken. This greatly improves the
+areas that need it. The second column shows diminishing returns for our
+efforts (even in the areas that need it). The difference between the two
+images is slim. The third column shows that there were a few more pixels
+that needed many more samples (there are few bright red specks) but not
+as many as last time.&nbsp;<br>&nbsp;</li>
+<li>
+This final image is what my raytracer produced previously. It has used
+the same total number of pixel samples -- (50 per pixel, or 20,00,000 total
+pixels sampled). The second column shows the difference between this and
+the adaptive image from (4). The difficult areas of soft shadow, glossy
+reflection, and edges of objects are what have been improved.&nbsp;<BR><BR>
+The third column shows in red the total number of samples taken per
+pixel. You can see that large numbers of samples are needed for the soft
+shadow and the antialiasing of object edges. The blue in the image shows
+the error per samples. This is what is used when determining which pixels
+to render more samples for. The bright cyan specks are the pixels with
+highest priority to be rendered again. Notice that the whole image is essentially
+covered with cyan (although parts very dark). This shows that all pixels
+have the possibility of being resampled, once the highest priority pixels
+are sampled enough.&nbsp;
+<br>&nbsp;</li>
+</ol>
+
+<p><br><b>Another example</b>
+<br>&nbsp;
+<br>&nbsp;
+<table BORDER=0 WIDTH="100%" >
+<tr>
+<td VALIGN=TOP><a href="238big03-0001-adaptive(38400000).jpg"><img SRC="t238big03-0001-adaptive(38400000).jpg" height=266 width=400></a></td>
+
+<td>Nestled deep in the forest is a collection of objects. They sit there
+and get raytraced all the time. This image shows a non-adaptive rendering
+of the scene with 60 oversamples per pixel.&nbsp;
+<p>Shown here is a portion of the image magnified by 2 for you to see the
+details. Click on it to see the entire image.</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP><a href="238big02-0001-adaptive(32316531).jpg"><img SRC="t238big02-0001-adaptive(32316531).jpg" height=266 width=400></a></td>
+
+<td>30 image oversamples then 12,800,000 adaptive pixel samples (equivalent
+of 20 image oversamples).&nbsp; This image took 5/6th as many samples as
+the previous one.
+<p>The shadow just left of the purple sphere is no longer grainy. The reflection
+in the bottom left sphere is also better. Click and compare the full images.</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP><a href="238big01-0001-adaptive(38412432).jpg"><img SRC="t238big01-0001-adaptive(38412432).jpg" height=266 width=400></a></td>
+
+<td>This is also an adaptive image, however this time 38,400,000 adaptive
+samples were taken (equiv. of 60 image oversamples). A minimum of 2 samples
+for each pixel were used of course, as that many is needed before the error
+for a pixel is defined. However, some pixels which should have been oversampled
+more times were not. They appear as specks. (easily visible in full image).
+These occurred due to the first two samples for a pixel returning an error
+too low – a statistical pitfall. The moral: Adaptively sample an image
+after first gathering a good amount of error data (IE, overample the entire
+image multiple times first.)&nbsp;</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP><a href="238big02-0001-adaptive(32316531)raydebug.jpg"><img SRC="t238big02-0001-adaptive(32316531)raydebug.jpg" height=266 width=400></a></td>
+
+<td>This is the internal data used for the adaptive rendering. The red
+channel is the number of samples taken. The blue channel is the average
+error. The green channel is the average error divided by the number of
+samples taken. All channels are output scaled such that the maximum datapoint
+for that channel apears with maximum intensity.</td>
+</tr>
+
+<tr>
+<td VALIGN=TOP><a href="238big02-0001-adaptive(32316531)raydebugB.jpg"><img SRC="t238big02-0001-adaptive(32316531)raydebugB.jpg" height=266 width=400></a></td>
+
+<td>I have scaled the colors to make certain aspects clearer. The red shows
+where the most samples have been taken. The bright blue dots show the highest
+values on the blue channel – these are the pixels that would be rendered
+next if more adaptive samples were taken.</td>
+</tr>
+
+<tr>
+<td ALIGN=CENTER VALIGN=TOP><img SRC="histogrames.gif" BORDER=0 height=424 width=258></td>
+
+<td>Histograms of the three channels. Notice that there were no pixels
+with less than 30 samples. (this data is from the second image from above).
+Also, notice that there are only small portions of the image with high
+error. This is why adaptive sampling helps us – we want to focus our efforts
+on those areas and not the bulk of the low error pixels. In fact, you can
+see that some pixels received up to 1084 oversamples! This is a drastic
+change from the limit of 60 oversamples in the unadaptive method.</td>
+</tr>
+</table>
+
+<p><b>Adaptive Wrapup</b>
+<p>Wow. The adaptive method I implemented really improved things. Previously
+I would take hundrededs of oversamples for every pixel in an image. To
+do so I would save all the images to disk (so that many computers could
+work on it at once.) This adaptive method requires much less rendering.
+A couple dozen samples for each pixel establish the required error information.
+Then only a handful of adaptive rays need to be used to refine the portions
+of the image which require it. (a handful when compared to how many pixel
+samples are used to render an entire image). All of this is done in constant
+memory, so I don’t need lots of hard drive space. The data is saved to
+disk whenever you want – you can interrupt the raytracer at any time to
+check on how it’s doing, and resume later.&nbsp;
+<p>Rendering time is faster due to the fact that I’m rendering drastically
+fewer rays for acceptable images. However, render time for one adaptive
+ray is longer than one non-adaptive ray: errors must be computed and pixels
+with highest error/sample ratio must be searched for.&nbsp;
+<p>I can no longer have multiple machines working on rendering the same
+image. It was always so cool to have a PC, an SGI, and a SUN all working
+on the same image for me.&nbsp;
+<p>Also, I thrashed my code to put this in. It requires much cleanup (which
+I have no intention of doing.)
+<br>&nbsp;
+<p><a href="code/">Code Directory</a>
+<br>&nbsp;</td>
+</tr>
+</table></center>
+</td>
+
+<td BGCOLOR="#645C72">&nbsp;</td>
+</tr>
+
+<tr>
+<td BGCOLOR="#645C72">&nbsp;</td>
+
+<td BGCOLOR="#645C72">&nbsp;</td>
+</tr>
+</table></center>
+
+<center>
+<p><a href="../index.html"><img SRC="../../../common/back.gif" BORDER=0 height=20 width=50></a></center>
+
+</body>
+</html>

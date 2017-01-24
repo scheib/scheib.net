@@ -1,0 +1,441 @@
+RAYCASTER SCRIPTFILE V2.0
+____________________________________________
+
+ Cube Map Sky Test 05
+____________________________________________
+
+SCREEN RESOLUTION
+800 400
+
+FILENAME
+cubemaptest05
+
+NUMBER OF LIGHTS
+1
+
+NUMBER OF MATERIALS
+7
+
+NUMBER OF OBJECTS
+22
+
+RECURSION DEPTH
+8
+
+SAMPLES PER PIXEL
+800
+
+BEGIN / END FRAME
+1 1
+
+FRAME INCREMENT / WIDTH
+1 0
+
+____________________________________________
+ENVIRONMENT
+
+CubeSkyMap
+ambient
+.35 .22 .13
+
+topfile
+tropicalup.tga
+frontfile
+tropicalrt.tga
+rightfile
+tropicalft.tga
+backfile
+tropicallf.tga
+leftfile
+tropicalbk.tga
+bottomfile
+tropicaldn.tga
+
+END ENVIRONMENT
+
+____________________________________________
+LIGHTS
+
+POINTLIGHT
+position
+-1 -10 100
+radius
+0
+color
+1 1 1
+cast shadows NO
+
+____________________________________________
+MATERIALS
+
+. GLASS
+BASIC
+color
+1 1 1
+kd ks kn
+0.05 0.5 35
+reflection refraction
+0.05 .95
+density
+1.1
+reflection / refraction blur angles
+2 .5
+
+. MIRROR
+BASIC
+color
+0 0 0
+kd ks kn
+0.0 0.0 1
+reflection refraction
+1 0
+density
+1.1
+reflection / refraction blur angles
+0 0
+
+. MIRROR2
+BASIC
+color
+0 0 0
+kd ks kn
+0.0 0.0 1
+reflection refraction
+1 0
+density
+1.1
+reflection / refraction blur angles
+40 0
+
+. RED
+BASIC
+color
+.8 .2 .2
+kd ks kn
+0.7 0.3 1
+reflection refraction
+0.5 0
+density
+1.1
+reflection / refraction blur angles
+20 0
+
+. GREEN
+BASIC
+color
+.2 .8 .2
+kd ks kn
+0.7 0.3 1
+reflection refraction
+0.5 0
+density
+1.1
+reflection / refraction blur angles
+20 0
+
+. BLUE
+BASIC
+color
+.2 .2 .8 
+kd ks kn
+0.7 0.3 1
+reflection refraction
+0.5 0
+density
+1.1
+reflection / refraction blur angles
+20 0
+
+
+. GLASS inside
+BASIC
+color
+1 1 1
+kd ks kn
+0.05 0.5 35
+reflection refraction
+0.05 .95
+density
+.90
+reflection / refraction blur angles
+0 0
+
+____________________________________________
+OBJECTS
+
+.GLASS
+SPHERE
+POSITION
+0 0 0
+RADIUS
+1.0
+MATERIAL
+1
+GET / CAST SHADOWS
+0 0
+
+.GLASS inside
+SPHERE
+POSITION
+0 0 0
+RADIUS
+0.9
+MATERIAL
+7
+GET / CAST SHADOWS
+0 0
+
+.MIRROR
+SPHERE
+POSITION
+-4 0 0
+RADIUS
+1.0
+MATERIAL
+2
+GET / CAST SHADOWS
+0 0
+
+.MIRROR2
+SPHERE
+POSITION
+-6 0 0
+RADIUS
+1.0
+MATERIAL
+3
+GET / CAST SHADOWS
+0 0
+
+.............
+.RED
+SPHERE
+POSITION
+-2 0 1
+RADIUS
+0.4
+MATERIAL
+4
+GET / CAST SHADOWS
+0 0
+
+.GREEN
+SPHERE
+POSITION
+-2 0 0
+RADIUS
+0.4
+MATERIAL
+5
+GET / CAST SHADOWS
+0 0
+
+.BLUE
+SPHERE
+POSITION
+-2 0 -1
+RADIUS
+0.4
+MATERIAL
+6
+GET / CAST SHADOWS
+0 0
+
+.............
+.RED
+SPHERE
+POSITION
+-2 1 1
+RADIUS
+0.4
+MATERIAL
+4
+GET / CAST SHADOWS
+0 0
+
+.GREEN
+SPHERE
+POSITION
+-2 1 0
+RADIUS
+0.4
+MATERIAL
+5
+GET / CAST SHADOWS
+0 0
+
+.BLUE
+SPHERE
+POSITION
+-2 1 -1
+RADIUS
+0.4
+MATERIAL
+6
+GET / CAST SHADOWS
+0 0
+
+.............
+.RED
+SPHERE
+POSITION
+-2 3 1
+RADIUS
+0.4
+MATERIAL
+4
+GET / CAST SHADOWS
+0 0
+
+.GREEN
+SPHERE
+POSITION
+-2 3 0
+RADIUS
+0.4
+MATERIAL
+5
+GET / CAST SHADOWS
+0 0
+
+.BLUE
+SPHERE
+POSITION
+-2 3 -1
+RADIUS
+0.4
+MATERIAL
+6
+GET / CAST SHADOWS
+0 0
+
+.............
+.RED
+SPHERE
+POSITION
+-2 7 1
+RADIUS
+0.4
+MATERIAL
+4
+GET / CAST SHADOWS
+0 0
+
+.GREEN
+SPHERE
+POSITION
+-2 7 0
+RADIUS
+0.4
+MATERIAL
+5
+GET / CAST SHADOWS
+0 0
+
+.BLUE
+SPHERE
+POSITION
+-2 7 -1
+RADIUS
+0.4
+MATERIAL
+6
+GET / CAST SHADOWS
+0 0
+
+.............
+.RED
+SPHERE
+POSITION
+-2 15 1
+RADIUS
+0.4
+MATERIAL
+4
+GET / CAST SHADOWS
+0 0
+
+.GREEN
+SPHERE
+POSITION
+-2 15 0
+RADIUS
+0.4
+MATERIAL
+5
+GET / CAST SHADOWS
+0 0
+
+.BLUE
+SPHERE
+POSITION
+-2 15 -1
+RADIUS
+0.4
+MATERIAL
+6
+GET / CAST SHADOWS
+0 0
+
+.............
+.RED
+SPHERE
+POSITION
+-2 31 1
+RADIUS
+0.4
+MATERIAL
+4
+GET / CAST SHADOWS
+0 0
+
+.GREEN
+SPHERE
+POSITION
+-2 31 0
+RADIUS
+0.4
+MATERIAL
+5
+GET / CAST SHADOWS
+0 0
+
+.BLUE
+SPHERE
+POSITION
+-2 31 -1
+RADIUS
+0.4
+MATERIAL
+6
+GET / CAST SHADOWS
+0 0
+
+____________________________________________
+OBSERVER
+
+POSITION
+3 -5 0
+
+LOOK AT
+-2 0 0
+
+TILT
+0
+
+ANGLE OF VIEW
+50
+
+LENSE RADIUS
+0.01
+
+PIXEL SIZE
+1
+____________________________________________
+KEYFRAMES
+
+
+
+END KEYFRAMES
+____________________________________________
+GO

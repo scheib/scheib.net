@@ -1,0 +1,743 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Vince Scheib">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>Dueling Teapots - A Fault Tolerant Networked Game - Vince Scheib</title>
+</head>
+<body text="#000000" bgcolor="#FFDEAB" link="#FF0000" vlink="#800080" alink="#FFFF00">
+<font face="Arial,Helvetica"></font>&nbsp;
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=4 WIDTH="600" BGCOLOR="#FFFFFF" >
+<tr>
+<td><font face="Arial,Helvetica"></font>
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=20 COLS=1 WIDTH="560" >
+<tr>
+<td>
+<h2>
+<a NAME="top"><font face="Arial,Helvetica">Dueling Teapots - A Fault Tolerant Networked
+Game</font></h2>
+<font face="Arial,Helvetica">COMP 243, Fall 2001</font>
+<br><font face="Arial,Helvetica">Final Course Project Write-up</font>
+<br><font face="Arial,Helvetica">Vince Scheib, Miguel Otaduy, David O'Brien</font>
+<br><font face="Arial,Helvetica"></font>&nbsp;
+<h2>
+<font face="Arial,Helvetica">TABLE OF CONTENTS</font></h2>
+<font face="Arial,Helvetica"><a href="#1.0">1.0 SYSTEM DESCRIPTION</a></font>
+<br><font face="Arial,Helvetica"><a href="#2.0">2.0 SYSTEM STRUCTURE</a></font>
+<br><font face="Arial,Helvetica"><a href="#3.0">3.0 SYSTEM AVAILABILITY
+/ FAULT TOLERANCE GOALS</a></font>
+<br><font face="Arial,Helvetica"><a href="#4.0">4.0 SYSTEM STATE</a></font>
+<br><font face="Arial,Helvetica"><a href="#5.0">5.0 DESCRIPTION OF PROTOCOLS</a></font>
+<br><font face="Arial,Helvetica"><a href="#6.0">6.0 DESCRIPTION OF PROBLEMS
+ENCOUNTERED</a></font>
+<h2>
+<a NAME="1.0"></a><font face="Arial,Helvetica">1.0 SYSTEM DESCRIPTION</font></h2>
+
+<div align=right><font face="Arial,Helvetica"><font size=-1><a href="#top">top</a></font></font></div>
+<b><font face="Arial,Helvetica">A screen shot of the network game:</font></b>
+<br><img SRC="game.jpg" BORDER=0 height=472 width=625>
+<br><font face="Arial,Helvetica">figure 1.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Dueling Teapots is a fault tolerant network
+game.&nbsp; It allows several players at different locations to play a
+simple teapot battle game in a shared environment.&nbsp; When a player
+begins a game, he is presented with a list of possible games to join, or
+the option to begin a new game.&nbsp; See figure 2.</font>
+<br><font face="Arial,Helvetica"></font>&nbsp;<font face="Arial,Helvetica"></font>
+<p><img SRC="teapot2.jpg" height=331 width=652>
+<br><font face="Arial,Helvetica">figure 2.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Dueling Teapots is a multi-player distributed
+game that allows:</font>
+<ul>
+<li>
+<font face="Arial,Helvetica">Multiple players over a network</font></li>
+
+<li>
+<font face="Arial,Helvetica">Reasonable refresh rate with some noticeable
+delay</font></li>
+
+<li>
+<font face="Arial,Helvetica">Anyone may enter or leave the game at any
+time</font></li>
+
+<li>
+<font face="Arial,Helvetica">Backup Server automatically takes over when
+needed</font></li>
+
+<li>
+<font face="Arial,Helvetica">Anyone may be upgraded to server or backup
+when needed</font></li>
+
+<li>
+<font face="Arial,Helvetica">Uses a well know directory server to determine
+current games</font></li>
+
+<li>
+<font face="Arial,Helvetica">Server maintains consistent state and duplicates
+this data to the backup</font></li>
+
+<li>
+<font face="Arial,Helvetica">Cute teapots and flying sugar cubes</font></li>
+</ul>
+
+<h2>
+<a NAME="2.0"></a><font face="Arial,Helvetica">2.0 SYSTEM STRUCTURE</font></h2>
+
+<div align=right><font face="Arial,Helvetica"><font size=-1><a href="#top">top</a></font></font></div>
+<font face="Arial,Helvetica">Dueling Teapots uses a simple client server
+model to maintain consistent game state at all sites.&nbsp; The server
+is supplemented by a backup server whose purpose is to take over the server
+responsibilities in the event of server failure.&nbsp; During normal operation
+of the game, clients send the server updates to their state entered by
+the player, such as a change in direction or the firing of a missile.&nbsp;
+The server amalgamates these into a game state and rebroadcasts it back
+to the clients. Game states are also relayed to the backup server.&nbsp;
+There is also a persistent directory server running at a well known location
+that is not shown in the figure.&nbsp; It is described in section 2.3.</font>
+<h3>
+<font face="Arial,Helvetica">2.1 Client Server Structure and Implementation</font></h3>
+<font face="Arial,Helvetica">The overall system structure is shown below
+in figure 3.&nbsp; The solid lines represent message paths that occur at
+fixed intervals during normal operation of the game.&nbsp; The dotted lines
+represent messages that are occasionally sent to maintain proper communication
+connections when new players join or when components quit or fail.&nbsp;
+These are explained in more detail in section 4.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotsystem1.jpg" BORDER=2 height=300 width=480>
+<br><font face="Arial,Helvetica">figure 3.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">An important design feature of the implementation
+is that each player process is divided into three roles: game simulator,
+network client, and server.&nbsp; Figure 3 draws these all as separate
+objects to more clearly explain the communication channels, but actually
+the server and one client are different threads in the same player process.&nbsp;
+The same is true for the back server.&nbsp; Every player process has a
+running server object that can be in one of four states: IDLE, BACKUP,
+ACTIVE_ALONE, ACTIVE_BACKEDUP.&nbsp; This allows any player to become a
+backup or primary server when needed by simply passing a message and changing
+state.&nbsp; Most of the communication channels needed for a changed of
+state will have already been created resulting in faster switches.&nbsp;
+Additionally, this was a faster way to implement the network design.</font>
+<h3>
+<font face="Arial,Helvetica">2.2 Starting a New Game</font></h3>
+<font face="Arial,Helvetica">When a player starts a game, he is asked whether
+he would like to join an existing game or begin a new game.&nbsp; Information
+about current games comes from the Directory Server described below.&nbsp;
+When choosing to begin a new game, the process creates a network client
+object, a game simulation object and a server object.&nbsp; As this is
+the first player, the server begins in ACTIVE SINGLE mode.&nbsp; At this
+point in the game, this single player process simulates the game, acts
+as the server, and as the sole client.&nbsp; There is no backup server.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">When a second player joins, that process
+creates a game simulation object, a network client object, and a server
+object set to IDLE mode.&nbsp; It's first message to the server is a JOIN
+message that is time stamped.&nbsp; The server responded with an ACK message
+and a time stamp.&nbsp; The client uses this to do a rough clock synchronization.&nbsp;
+The server also uses the JOIN command to add this client to its list of
+current players.&nbsp; The detail of this server state are described in
+section 4.&nbsp; At this point the server and second client can begin to
+exchange state messages.&nbsp; Additionally, the server will now recognize
+that there is a new client that can perform backup server duties.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The server will now contact the new client
+and send it a command to become a backup server.&nbsp; When the new client
+receives this message, it will upgrade its server to BACKUP mode.&nbsp;
+The new backup server will begin to accept state updates from the server
+and respond with acknowledgments.&nbsp; When the server receives the first
+ACK from the new backup, its state changes to ACTIVE BACKEDUP.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Additional clients may know enter the game
+by sending JOIN commands to the server.&nbsp; As they join, they are all
+added to the servers internal list of players.&nbsp; However, as there
+will already be a backup server running, these additional clients will
+leave the server objects in IDLE mode.</font>
+<h3>
+<font face="Arial,Helvetica">2.2 Directory server</font></h3>
+<font face="Arial,Helvetica">When a new player joins a game, it can proceed
+in two ways: it can either create a new game, or add itself to an existing
+game.</font>
+<br><font face="Arial,Helvetica">The directory server manages the database
+of existing games. Its IP address and port are known by all the players,
+so that requests can be passed. It has a listening socket where it accepts
+requests from the players. There are 3 different requests:</font>
+<br><font face="Arial,Helvetica">- <b>Add a game server</b>: a player decides
+to create a new game, starts a game server, and reports this information
+to the directory server. The directory server assigns a game ID to this
+game. A socket remains open between the player and the directory server.
+The directory will send periodic update queries to the player through this
+socket, to check if that particular game is still running.</font>
+<br><font face="Arial,Helvetica">- <b>Request the existing game servers</b>:
+the player decides to join an existing game, so it requests the list of
+game servers to the directory. This responds with the IP addresses and
+ports of the existing game servers.</font>
+<br><font face="Arial,Helvetica">- <b>Change a game server</b>: if a backup
+server takes over, it will notify the directory server of this fact. The
+directory server needs to update the IP address and port of the main server
+for that particular game.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Players communicate with the directory
+server using a directory client object that makes this communication completely
+transparent for the player.</font>
+<br><font face="Arial,Helvetica">Below we show a diagram of the communication
+between the directory server and the players.</font>
+<br><img SRC="teapotdirectory.jpg" height=250 width=442>
+<br><font face="Arial,Helvetica">figure 4.</font>
+<h3>
+<font face="Arial,Helvetica">2.3 Thread structure of player process</font></h3>
+<font face="Arial,Helvetica">Each player has these main entities in the
+process:</font>
+<br><font face="Arial,Helvetica">- <b>Game application</b>: carries out
+the visualization, handles input from the user, produces local state updates
+and reads global state from the game client.</font>
+<br><font face="Arial,Helvetica">- <b>Game client</b>: works as an interface
+between the game application and the server.</font>
+<br><font face="Arial,Helvetica">- <b>Game server</b>: every process runs
+a game server that can potentially update the state of the game and report
+it to all the clients. A game server can be in 3 different states: main
+server, backup server, or idle. It will actually carry out all the tasks
+that it has been created for only in the event of becoming a main server.</font>
+<br><font face="Arial,Helvetica">- <b>Directory client</b>: if the player
+is not a main server, it simply remains idle until there is a specific
+request. However, if the player is a main server, communicates periodically
+with the directory server to notify that the game is alive.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Here we show the threads that might be
+running on the player process, associated to the different entities.</font>
+<br><img SRC="teapotthreads.jpg" height=300 width=645>
+<br><font face="Arial,Helvetica">figure 5.</font>
+<h2>
+<a NAME="3.0"></a><font face="Arial,Helvetica">3.0 SYSTEM AVAILABILITY
+/ FAULT TOLERANCE GOALS</font></h2>
+
+<div align=right><font face="Arial,Helvetica"><font size=-1><a href="#top">top</a></font></font></div>
+<font face="Arial,Helvetica">Dueling teapots is able to recover from the
+failure of any single component in the system.&nbsp; Recovery from multiple
+component failure is possible as long as both primary server and backup
+server do not fail simultaneously.&nbsp; The failures that the system can
+recover from are described below.</font>
+<h3>
+<font face="Arial,Helvetica">3.1 Failure of a Client</font></h3>
+<font face="Arial,Helvetica">The failure of any individual client is handled
+by a simple time-out.&nbsp; Each client normally sends local state changes
+to the server at regular intervals.&nbsp; When the server has missed a
+set number of updates from a specific client, the server decides that that
+client has left the game.&nbsp; The server then stops sending that client
+game state updates and removes its record from the total game state.&nbsp;
+Additionally, if the server at any point is unable to write to the socket
+connecting to any client, the server closes that connection and removes
+that client from its record of the total game state.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">At this point all other clients will still
+receive game state updates from the server, but these will not include
+information for failed client.&nbsp; These running clients will stop simulating
+and displaying the failed client's teapot.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">If the client had actually not failed or
+quit the game, but instead simply lost network connect to the server, the
+server will follow the above protocol and still remove the client from
+the game.&nbsp; The client will continue to run in isolation.&nbsp; Eventually,
+it will also reach a time-out due to lack of server updates.&nbsp; At the
+point, a message is displayed informing the player that the client has
+most likely lost connection to the server and that the player should exit
+the game.&nbsp; If the connection is later restored, the player will still
+have to quit and rejoin the game.&nbsp; A protocol to allow the player
+to rejoin after time-out have served was not implemented.&nbsp; As this
+is only a simple game, such recovery protocol was to deemed crucial.</font>
+<br><font face="Arial,Helvetica"></font>&nbsp;
+<h3>
+<font face="Arial,Helvetica">3.2 Failure of Backup Server</font></h3>
+<font face="Arial,Helvetica">In normal operation of the distributed game,
+the server exchanges game state updates with clients and sends game state
+updates to the backup server.&nbsp; The backup server sends a brief acknowledgment
+to each update it gets from the server.&nbsp; This is shown in figure 6.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotbackup1.jpg" BORDER=2 height=260 width=540>
+<br><font face="Arial,Helvetica">figure 6.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">When the back up server fails, communication
+between the server and backup is interrupted and the server will either
+time-out waiting for backup acknowledgments or assume the backup has failed
+when it can not write to the socket connecting it to the backup.&nbsp;
+See figure 7.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotbackup2.jpg" BORDER=2 height=260 width=540>
+<br><font face="Arial,Helvetica">figure 7.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">When the server determines that there is
+no active backup server, it will attempt to contact one of the remaining
+clients to instruct it to begin backup server responsibilities.&nbsp; The
+server is careful to avoid picking either an unresponsive client or itself
+to upgrade to backup.&nbsp; The server maintains an ordered list of active
+clients and cycles through them to pick a new backup.&nbsp; If one client
+does not respond to the request, the server will try the next one in sequence
+until one responds accepting backup duties.&nbsp; If at a later time this
+backup leaves the game and the server must again pick a new backup, the
+server will continue from the point it left off in the list sequence.&nbsp;
+This will increase the chances that the server will consider all clients
+for upgrade and decrease the chances that the server will repeatedly ask
+an unresponsive client.&nbsp; This process is shown in figure 8.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotbackup3.jpg" BORDER=2 height=260 width=540>
+<br><font face="Arial,Helvetica">figure 8.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">When a client receives a request to become
+backup, it must create a backup server.&nbsp; Because each player process
+is created with both a client and server thread, the client thread simply
+must upgrade its server thread status from IDLE to BACKUP.&nbsp;&nbsp;
+This brings the server thread to life and begins its processing, as in
+figure 9.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotbackup4.jpg" BORDER=2 height=260 width=540>
+<br><font face="Arial,Helvetica">figure 9.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">When the new backup thread begins processing,
+it immediately sends an acknowledgment to the primary server.&nbsp; At
+the point the primary and new backup server begins exchanging messages,
+as in figure 10.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotbackup5.jpg" BORDER=2 height=260 width=540>
+<br><font face="Arial,Helvetica">figure 10.</font>
+<br><font face="Arial,Helvetica"></font>&nbsp;
+<h3>
+<font face="Arial,Helvetica">3.3 Failure of Primary Server</font></h3>
+<font face="Arial,Helvetica">We start with the same normal operation state
+as described in section 3.2.&nbsp; Figure 11 shows this normal game communication.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotserver1.jpg" BORDER=2 height=272 width=618>
+<br><font face="Arial,Helvetica">figure 11.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">When the server fails, the clients and
+the backup stop receiving game state messages, but continue to try to reach
+the server.&nbsp; See figure 12.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotserver2.jpg" BORDER=2 height=272 width=618>
+<br><font face="Arial,Helvetica">figure 12.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The backup server will time-out waiting
+for a state update from the client or will assume that the server has died
+when it can not write an acknowledgment to the socket connecting it to
+the server.&nbsp; Part of the state the server maintains is the IP address
+and port of a listening socket at each client.&nbsp; The backup uses these
+to send a message to each client telling them that it is now assuming the
+role of the primary server, as in figure 13.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotserver3.jpg" BORDER=2 height=272 width=618>
+<br><font face="Arial,Helvetica">figure 13.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The backup the upgrades its mode to ACTIVE_SINGLE
+and stores the sockets it just opened with each client into its internal
+data structure.&nbsp; This data structure is detailed in section 4.&nbsp;
+It will use these new sockets to communicate game states to the clients.&nbsp;
+See figure 14.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotserver4.jpg" BORDER=2 height=272 width=618>
+<br><font face="Arial,Helvetica">figure 14.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">As each client receives a message instructing
+it to communicate with a new server, they close the sockets the had opened
+with the original server and start sending there updates to the new server.&nbsp;
+Normal message passing of state between clients and server resumes at this
+point, as in figure 15.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotserver5.jpg" BORDER=2 height=272 width=618>
+<br><font face="Arial,Helvetica">figure 15.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The new server chooses a client to take
+over the backup server role.&nbsp; It follows the same procedure described
+in section 3.2.&nbsp; Figure 16.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotserver6.jpg" BORDER=2 height=272 width=618>
+<br><font face="Arial,Helvetica">figure 16.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The new backup begins operation as described
+in section 3.2.&nbsp; The network has now recovered from the server failure
+and is functioning under normal conditions with a new server and backup
+server.&nbsp; Figure 17.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotserver7.jpg" BORDER=2 height=272 width=618>
+<br><font face="Arial,Helvetica">figure 17.</font>
+<br><font face="Arial,Helvetica"></font>&nbsp;
+<h2>
+<a NAME="4.0"></a><font face="Arial,Helvetica">4.0 SYSTEM STATE</font></h2>
+
+<div align=right><font face="Arial,Helvetica"><font size=-1><a href="#top">top</a></font></font></div>
+<font face="Arial,Helvetica">The server is the primary agent involved in
+maintaining consistent game state.&nbsp; It receives state clients from
+each client and creates a merged game state for the entire game environment.&nbsp;
+This is then relayed to the clients and to the backup.&nbsp; This game
+state includes an entry for each active player.&nbsp; Section 3.1 described
+how the server determines the set of active clients.&nbsp; The game simulators
+rely on these periodic update of this list to know whom to simulate and
+display.</font>
+<h3>
+<font face="Arial,Helvetica">4.1 State in Server</font></h3>
+<font face="Arial,Helvetica">The server maintains game state in the following
+data structure.&nbsp; Figure 18 shows this structure with five entries
+representing clients or players.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="teapotsystem3.jpg" BORDER=2 height=132 width=558>
+<br><font face="Arial,Helvetica">figure 18.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica"><i>NetID</i> is a combination of IP address
+and port number.&nbsp; This value is sent by the client as part of the
+JOIN message.&nbsp; It uniquely identifies each game client and is used
+as an index into the data structure.&nbsp; The IP and port of the <i>NetID</i>
+is crucial to the role of the backup server.&nbsp; They identify a listening
+socket each client opens that listens for two important messages, BECOME_BACKUP
+and TAKE_OVER.&nbsp; Since this data structure is replicated in the backup
+server, this is the mechanism that allows the backup to know how to contact
+each client when it must take over as server.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica"><i>Player State</i> is the state of each
+individual player, as sent by the clients.&nbsp; The server never examines
+the contents of the <i>Player State</i>, making this design adaptable for
+other networked games.&nbsp; For Dueling Teapots, the <i>Player State</i>
+includes position and direction of the teapot and any shots fired by that
+player.&nbsp; Each time the server receives a new <i>Player State</i> from
+the client, the time of receipt is recorded in <i>Last Update Time</i>.&nbsp;
+This is used to calculate time-out of the clients.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Finally, each entry includes a socket address
+for each client.&nbsp; When the server accepts a connection from a client
+and receives a JOIN message, the server does not close the socket.&nbsp;
+It stores the socket address in the data structure and uses it to receive
+player state updates and to send back complete game state packets to clients.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">At set intervals, the server will extract
+the <i>NetID </i>and<i> Player State</i> structure from each record and
+put them into a single packet.&nbsp; This game state packet will include
+the most recent data on each client and will be sent to each client and
+the backup server.&nbsp; Each client object will then pass this packet
+on to the game simulator for processing and rendering.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The data structure does not buffer all
+data from the clients.&nbsp; At any time it stores only the most recent
+<i>Player State</i> received.&nbsp; If two player states arrive very close
+together, the second may overwrite the first before it can be relayed to
+all the other clients.&nbsp; This potential loss of state packets is not
+important as the game simulation is only interested in the most up-to-date
+player status.</font>
+<br><font face="Arial,Helvetica"></font>&nbsp;
+<h3>
+<font face="Arial,Helvetica">4.2 STATE WARPING</font></h3>
+<font face="Arial,Helvetica">It is desirable to have a fluid display of
+the game state. We are transmitting the locations and orientations of several
+objects. In addition, we send the velocity of each of these components
+so that their position in the future can be extrapolated. We expect a client
+to be rendering data which is at least partially out of date.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">If we rendered positions alone, each remote
+player would appear to be very lagged. By extrapolating the current position
+we may render a reasonable estimate of their current position, even though
+we do not know that for certain yet. This extrapolation process, however,
+can yield discontinuous movement.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">When extrapolating the position of a player,
+we render a position some distance from their last known location. If we
+then receive an update for their orientation which has turned that extrapolated
+position will jump dramatically. The top of the figure below illustrates
+the path rendered over time using this simple approach.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The solid black circles indicate position
+and orientation at the time given by the number. The red circles illustrate
+the extrapolated position at a time equal to the number in the circle.
+The light blue path indicates the apparent path the object would take.
+The dashed portion of the path indicates an instantaneous jump from one
+position to another.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The situation illustrated shows data being
+received every 1 second with a 1 second delay from it's creation. The data
+created at second 2 is not received until time 3. The object is rendered
+from second 2 to 3 as moving along the extrapolated path from the data
+created at time 1. Then a position and orientation are received from time
+2. The new extrapolated position causes the object to jump instantaneously
+(the dashed line). It is then moved along data 2's direction to time 4.
+See figure 19.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="warping.gif" NOSAVE height=488 width=643>
+<br><font face="Arial,Helvetica">figure 19.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">A technique called warping can be used
+to remove these unsightly instantaneous jumps. In effect, the extrapolated
+position is filtered. The lower portion of the figure illustrates the path
+of warped data.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Warping is accomplished by maintaining
+a current "warped" state of the world. For every frame that is rendered
+this warped version of the world is updated in such a way that it approaches
+the extrapolated version of the last received data.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">At each frame the most up to date committed
+data received from other players is extrapolated to estimate their current
+position. The warped version of the data is also extrapolated to with it's
+own velocities. Then a linear combination of the two are computed and stored
+back to the warped state. This warped state is saved.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The linear combination used is very simple.
+W = F*W + (1-F)*G; where W is the warped state, G is the goal state, and
+F is the warping factor. A value of 0 for F is equivalent to not using
+warping at all.</font>
+<br><font face="Arial,Helvetica"></font>&nbsp;
+<h2>
+<a NAME="5.0"></a><font face="Arial,Helvetica">5.0 DESCRIPTION OF PROTOCOLS</font></h2>
+
+<div align=right><font face="Arial,Helvetica"><font size=-1><a href="#top">top</a></font></font></div>
+<font face="Arial,Helvetica">Essentially there are three different protocols:
+Server and Client, Server and Backup, Server and Directory Server.&nbsp;
+Each protocol uses a small number of fixed length packets to simplify parsing.&nbsp;
+The only variable length packet is the complete game state that the server
+send to clients.&nbsp; This will vary in length depending on the number
+of players.&nbsp; All massages are defined as C++ structures and sent in
+binary format.</font>
+<h3>
+<font face="Arial,Helvetica">5.1 Communication between Game Clients and
+the Game Server</font></h3>
+<font face="Arial,Helvetica">The protocol begins when the client sends
+a JOIN message to the server.&nbsp; The format is below and includes a
+time stamp and <i>NetID</i> object identifying the client:</font>
+<blockquote><font face="Arial,Helvetica">const int JOIN&nbsp;&nbsp; = 101;</font>
+<br><font face="Arial,Helvetica">struct joinMessage{</font>
+<br><font face="Arial,Helvetica">&nbsp;int msg;</font>
+<br><font face="Arial,Helvetica">&nbsp;Time time;</font>
+<br><font face="Arial,Helvetica">&nbsp;NetID netid;</font>
+<br><font face="Arial,Helvetica">&nbsp;joinMessage() : msg(JOIN) {}</font>
+<br><font face="Arial,Helvetica">};</font></blockquote>
+<font face="Arial,Helvetica">The server uses this data to create a record
+in its internal data structure.&nbsp; The server responds with an ACK message
+which is identical in structure to the join message except that the netid
+field is not used:</font>
+<blockquote><font face="Arial,Helvetica">const int ACK&nbsp;&nbsp; = 102;</font>
+<br><font face="Arial,Helvetica">struct ackMessage{</font>
+<br><font face="Arial,Helvetica">&nbsp;int msg;</font>
+<br><font face="Arial,Helvetica">&nbsp;Time time;</font>
+<br><font face="Arial,Helvetica">&nbsp;NetID netid;</font>
+<br><font face="Arial,Helvetica">&nbsp;ackMessage() : msg(ACK) {}</font>
+<br><font face="Arial,Helvetica">};</font></blockquote>
+<font face="Arial,Helvetica">The client now at period intervals begins
+to send state update messages:</font>
+<blockquote><font face="Arial,Helvetica">const int STATEC&nbsp; = 201;</font>
+<br><font face="Arial,Helvetica">struct stateMessage{</font>
+<br><font face="Arial,Helvetica">&nbsp;int&nbsp;&nbsp; msg;</font>
+<br><font face="Arial,Helvetica">&nbsp;Time&nbsp;&nbsp; time;</font>
+<br><font face="Arial,Helvetica">&nbsp;NetID&nbsp;&nbsp; netid;</font>
+<br><font face="Arial,Helvetica">&nbsp;PlayerState state;</font>
+<br><font face="Arial,Helvetica">&nbsp;stateMessage(void) : msg(STATEC)
+{}</font>
+<br><font face="Arial,Helvetica">};</font></blockquote>
+<font face="Arial,Helvetica">The server will occasionally send a sequence
+of stateMessage packets to the clients.&nbsp; These are placed in contiguous
+memory and sent as one large packet.&nbsp; The sequence is terminated by
+a endMessage structure.&nbsp; These are shown below.&nbsp; The netid field
+in the state is not used in the first structure and only the msg field
+is used in the second.</font>
+<blockquote><font face="Arial,Helvetica">const int STATES&nbsp; = 201;</font>
+<br><font face="Arial,Helvetica">struct stateMessage{</font>
+<br><font face="Arial,Helvetica">&nbsp;int&nbsp;&nbsp; msg;</font>
+<br><font face="Arial,Helvetica">&nbsp;Time&nbsp;&nbsp; time;</font>
+<br><font face="Arial,Helvetica">&nbsp;NetID&nbsp;&nbsp; netid;</font>
+<br><font face="Arial,Helvetica">&nbsp;PlayerState state;</font>
+<br><font face="Arial,Helvetica">&nbsp;stateMessage(void) : msg(STATES)
+{}</font>
+<br><font face="Arial,Helvetica">};</font></blockquote>
+
+<blockquote><font face="Arial,Helvetica">const int STATEEND&nbsp; = 202;</font>
+<br><font face="Arial,Helvetica">struct endMessage{</font>
+<br><font face="Arial,Helvetica">&nbsp;int&nbsp;&nbsp; msg;</font>
+<br><font face="Arial,Helvetica">&nbsp;Time&nbsp;&nbsp; time;</font>
+<br><font face="Arial,Helvetica">&nbsp;NetID&nbsp;&nbsp; netid;</font>
+<br><font face="Arial,Helvetica">&nbsp;PlayerState state;</font>
+<br><font face="Arial,Helvetica">&nbsp;endMessage(void) : msg(STATEEND)
+{}</font>
+<br><font face="Arial,Helvetica">};</font></blockquote>
+<font face="Arial,Helvetica">The protocol also defined a time-out period
+for the receipt of state messages at both the client and server ends.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The server-client protocol also defines
+two other messages that a server may send a client.&nbsp; These deal with
+backup duties.</font>
+<blockquote><font face="Arial,Helvetica">const int TAKEOVER&nbsp; = 203;</font>
+<br><font face="Arial,Helvetica">struct takeoverMessage{</font>
+<br><font face="Arial,Helvetica">&nbsp;int msg;</font>
+<br><font face="Arial,Helvetica">&nbsp;Time time;</font>
+<br><font face="Arial,Helvetica">&nbsp;NetID netid;</font>
+<br><font face="Arial,Helvetica">&nbsp;takeoverMessage(void) : msg(TAKEOVER)
+{}</font>
+<br><font face="Arial,Helvetica">};</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">const int BACKUP&nbsp; = 204;</font>
+<br><font face="Arial,Helvetica">struct becomeBackupMessage{</font>
+<br><font face="Arial,Helvetica">&nbsp;int msg;</font>
+<br><font face="Arial,Helvetica">&nbsp;Time time;</font>
+<br><font face="Arial,Helvetica">&nbsp;NetID netid;</font>
+<br><font face="Arial,Helvetica">&nbsp;becomeBackupMessage(void) : msg(TAKEOVER)
+{}</font>
+<br><font face="Arial,Helvetica">};</font></blockquote>
+<font face="Arial,Helvetica">The clients appropriate responses to these
+are described in section 3.</font>
+<h3>
+<font face="Arial,Helvetica">5.2 Communication between the Main Server
+and the Backup Server</font></h3>
+<font face="Arial,Helvetica">This protocol is tightly connected to the
+server-client protocol above.&nbsp; At set intervals, the server will send
+to the backup, if one is running, a stateMessage to the backup.&nbsp; The
+definition is the same as given in section 5.1.&nbsp; The backup will respond
+with an ackMessage, again defined as above.&nbsp; Each has a time-out.&nbsp;
+When the primary server times out it then sends out a takeoverMessage,
+as defined above, message to some client instructing it take over the backup
+role.&nbsp; When the backup times-out, it must notify all the clients that
+it is now the primary server.</font>
+<h3>
+<font face="Arial,Helvetica">5.3 Communication between the Directory Clients
+and the Directory Server</font></h3>
+<font face="Arial,Helvetica">The communication between the directory server
+and the directory clients is based on messages with the following structure:</font>
+<blockquote><font face="Arial,Helvetica">struct DirMessage</font>
+<br><font face="Arial,Helvetica">{</font>
+<br><font face="Arial,Helvetica">&nbsp;int mid;</font>
+<br><font face="Arial,Helvetica">&nbsp;int gameid;</font>
+<br><font face="Arial,Helvetica">&nbsp;char host[4];</font>
+<br><font face="Arial,Helvetica">&nbsp;int port;</font>
+<br><font face="Arial,Helvetica">};</font></blockquote>
+<font face="Arial,Helvetica">Where the message ID can be one of: LAST_MESSAGE,
+GET_ALL_SERVERS, GET_THIS_SERVER, ADD_SERVER, CHANGE_SERVER, ARE_YOU_ALIVE,
+YES_I_AM.&nbsp; The directory client sends a request of type GET_ALL_SERVERS,
+GET_THIS_SERVER, ADD_SERVER or CHANGE_SERVER to a listening socket of the
+directory server, and this one responds acknowledging after successful
+completion. In the special case of GET_ALL_SERVERS, it will return a list
+of messages ending with LAST_MESSAGE, one for each of the existing games.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The directory server sends ARE_YOU_ALIVE
+messages to directory clients of game servers on a fixed time basis. If
+it receives a YES_I_AM, that particular server will be considered to remain
+alive.</font>
+<h2>
+<a NAME="6.0"></a><font face="Arial,Helvetica">6.0 DESCRIPTION OF PROBLEMS
+ENCOUNTERED</font></h2>
+
+<div align=right><font face="Arial,Helvetica"><font size=-1><a href="#top">top</a></font></font></div>
+<font face="Arial,Helvetica">During the development of the project we had
+to make several important decisions that are reflected in the final design
+of the system. These decisions were made trying to maximize the properties
+of scalability of the system, availability and consistency. We have grouped
+the design decisions under the following categories:</font>
+<br><font face="Arial,Helvetica">- General structure of the system.</font>
+<br><font face="Arial,Helvetica">- Definition of state and state maintenance.</font>
+<br><font face="Arial,Helvetica">- Low level implementation of the communication.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">At the end of this section we analyze the
+data transfer between game server and client during the normal execution
+of the game.</font>
+<h3>
+<font face="Arial,Helvetica">6.1 General Structure of the System</font></h3>
+<b><font face="Arial,Helvetica">Scalability of the System</font></b>
+<br><font face="Arial,Helvetica">In order to make the whole system scalable,
+we needed to handle arbitrary numbers of players. In the final implementation
+of the system, this is only possible if the players are distributed into
+different games. Having a directory server that communicates with the game
+servers makes the distribution of games transparent to the user.</font>
+<br><font face="Arial,Helvetica">We considered the possibility of making
+each game scalable too, but we could not implement anything in that direction
+given the time constraints. Every game server could redistribute partial
+state updates to clients, depending on their spatial distribution. The
+game scenario could be partitioned, and each player would only need to
+know about the players that are in its same partition. This would substantially
+reduce the traffic load on the network.</font><font face="Arial,Helvetica"></font>
+<p><b><font face="Arial,Helvetica">Availability</font></b>
+<br><font face="Arial,Helvetica">The availability of the game servers is
+reinforced using the backup servers, as explained in section 3. Moreover,
+any player can play the role of server.</font>
+<br><font face="Arial,Helvetica">This was a very important point in the
+design process. We wanted a game were anybody could enter or leave the
+game freely.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">However, problems with availability may
+arise due to two reasons:</font>
+<br><font face="Arial,Helvetica">1) No protections are implemented for
+the directory server.</font>
+<br><font face="Arial,Helvetica">2) Games can end if the main server and
+the backup server quit before the backup took over or if the network is
+partitioned and they are in the same partition.</font>
+<h3>
+<font face="Arial,Helvetica">6.2 Definition of State and State Maintenance</font></h3>
+<b><font face="Arial,Helvetica">Consistency</font></b>
+<br><font face="Arial,Helvetica">The eventual definition of the state and
+how it is maintained is described in section 4, and it was adopted mainly
+for consistency issues. During the design we evaluated other approaches
+for defining the state of the game, but we rejected them because they might
+bring inconsistency problems.</font>
+<br><font face="Arial,Helvetica">We wanted to minimize the data flow between
+server and clients, sending a minimal state from the server to the clients.
+In this situation, clients would have to keep a local version of the state,
+and they would have to decide what players were still in the game and which
+not. However, we decided that it could bring inconsistencies, because different
+clients could compute different local states, particularly painful if they
+'killed' each other in their local version of the state of the game. Therefore,
+we decided to update the state only at the game server. The 'decision making'
+is entitled to one of the processes.</font>
+<h3>
+<font face="Arial,Helvetica">6.3 Low Level Implementation of the Communication</font></h3>
+<font face="Arial,Helvetica">The first dichotomy in the design process
+showed up in the election of the transport level protocol. Most of the
+commercial network games use UDP and implement their own 'retry' policy.
+For the sake of simplicity, we decided to use TCP in our implementation.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">In order to minimize the lag due to communications,
+all the messages have a predefined length, and the different processes
+know at all times the length of the messages that they are supposed to
+read. No two messages with different length are sent through the same socket.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Finally, one of the most problematic decisions
+was related to the time-outs that would be hard coded in the communication
+routines. We decided to set loops of 100 ms for the threads that would
+receive state updates (both on the server and the client), and 40 ms for
+the threads that would send state updates (both on the server and the client).
+We realized that these frequencies could be handled by the application,
+but it might run into problems with higher frequencies.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Also the time-outs and frequencies for
+the rest of the communications had to be tuned, but they were not as crucial
+as the client server communication. In general, they all ran at lower frequencies.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The next subsection analyzes the data transfer
+between server and client.</font>
+<h3>
+<font face="Arial,Helvetica">6.4 Data Transfer Analysis</font></h3>
+<font face="Arial,Helvetica">We have studied the time it takes data to
+flow through our system. In an interactive game, the time between a player
+taking an action and the time it is apparent to others is critical. We
+have achieved an average of 0.3 second delay. This is longer than desired.
+In this section we discuss the performance of our system.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">To study the time it takes data to be passed
+through our system we have recorded the age of data packets as they reach
+each part of our system. Below is a chart displaying the age of data passing
+through each stage of our pipeline. Each series of data represents one
+point in the system pipeline:</font>
+<ul>
+<li>
+<font face="Arial,Helvetica">client send: The data has been written to
+the socket from a player's game client to the server.</font></li>
+
+<li>
+<font face="Arial,Helvetica">server receive: The data has been received
+by the server from a game client.</font></li>
+
+<li>
+<font face="Arial,Helvetica">server send: The data has been bundled and
+sent from the server to the game clients.</font></li>
+
+<li>
+<font face="Arial,Helvetica">client receive: The client has received data
+from the server.</font></li>
+
+<li>
+<font face="Arial,Helvetica">client graphics: The client has rendered a
+frame of the game using the data.</font></li>
+</ul>
+<font face="Arial,Helvetica">The chart below, figure 20, displays data
+captured for over one second of time. The horizontal axis is the current
+time. Each data point on a series represents one measurement of data age.
+These samplings are approximately one second apart. The height of a data
+point represents the age of the data at that point.</font><font face="Arial,Helvetica"></font>
+<p><img SRC="stats.gif" NOSAVE height=480 width=635>
+<br><font face="Arial,Helvetica">figure 20.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">First we note a significant delay before
+the data is released from a game client. This number is roughly around
+80 ms. We note that this time may be related to the way we restrict the
+transmission rate for the game client. The thread which transmits data
+has a 100 ms sleep imposed. We did this because sending data at a faster
+rate overloaded the server. However, the data should be updated by the
+local user's actions constantly. We did not intend this sleep to merely
+delay the time data is transmitted, only the frequency. While the transmission
+thread is sleeping data should be able to be updated. This is likely an
+implementation error on our part.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The server receives data from a client
+in a reasonable amount of time, roughly 40 ms.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">The delay between a server receiving and
+sending data is largely due to a limited send rate on the server. For the
+same reason, when limited the transmission rate of the client, we found
+we had to limit the transmission rate of the server.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Receiving data from the server by the client
+takes very little time. This is reasonable because the client has no other
+incoming traffic.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">There is a substantial delay between receiving
+data and displaying it on the screen. We also note that the display rate
+occurs at approximately 10 frames per second, and thus the display time
+of data occurs at specific intervals. This is apparent in the stepping,
+or square function, appearance of the client graphics data series.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">It is likely that our client uses too many
+threads and processes data after too many iterations. For example, transferring
+data read from a socket is accomplished on alternating cycles from the
+display routine. Thus in one iteration the data is gathered, and the next
+it is displayed. When implementing this portion we choose to keep the display
+and network action disjoint. We also chose to minimize the computational
+cost of the display routine, which is why we chose to avoid waiting on
+a mutex for network data at this point.</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">In summary: the network transmission times
+appear quite low, however several portions of the client take far too much
+time. Even the server application may take longer than necessary to retransmit
+data.</font></td>
+</tr>
+</table></center>
+<font face="Arial,Helvetica">&nbsp;</font></td>
+
+<td BGCOLOR="#B9A078"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+
+<tr>
+<td BGCOLOR="#B9A078"><font face="Arial,Helvetica">&nbsp;</font></td>
+
+<td BGCOLOR="#B9A078"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+</table></center>
+<font face="Arial,Helvetica"></font>
+<center>
+<p><a href="../index.html"><img SRC="../../common/back.gif" NOSAVE BORDER=0 height=20 width=50></a></center>
+
+</body>
+</html>

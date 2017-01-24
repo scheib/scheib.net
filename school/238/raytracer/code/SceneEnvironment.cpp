@@ -1,0 +1,5 @@
+// SceneEnvironment.cpp: implementation of the SceneEnvironment class.
+//
+//////////////////////////////////////////////////////////////////////
+
+#include "SceneEnvironment.h"

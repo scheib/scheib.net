@@ -1,0 +1,147 @@
+<html>
+
+<head>
+<meta http-equiv="Content-Type"
+content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="Microsoft FrontPage Express 2.0">
+<title>Antialiased Ray Tracing by Adaptive Progressive Refinement - Summary - 782 Lab3 - Distributed Raytracer - Vince Scheib & Ryan Geiss</title>
+</head>
+
+<body bgcolor="#FFFFFF" text="#000000">
+
+<p>Paper Summary Ryan Geiss<br>
+CIS 782 [Ryan Geiss, Vince Scheib]<br>
+<br>
+Antialiased Ray Tracing by Adaptive Progressive Refinement<br>
+<br>
+This paper discusses how to add progressively-refined
+anti-aliasing to an ordinary raytracer. Its goal is to create a
+high-quality anti-aliased image quickly, which can progressively
+improve in quality after the initial image is shown. This
+behavior is ideal for a good user interface. The progressive
+refinement is accomplished using some statistics and some keen
+data structures which allow rapid detection of areas in the
+greatest need of subsampling. </p>
+
+<p>They begin by discussing past areas of research on the topic.
+The first subject discussed is that of [sub]sampling patterns.
+They mention jittered sampling and Poisson Disk distributions.
+Jittered sampling is achieved by placing the samples randomly
+within a cell on a regular grid. This is easy on the CPU. A
+poisson disk distribution is achieved by throwing a bunch of
+points into the pixel space, then nudging / replotting them until
+no two are within a certain distance. This creates a slightly
+better effect visually, but is much slower.</p>
+
+<p>The next prior research topic is the Adaptive Sampling Rate -
+how many samples to take for a given pixel. They decide this
+based on two quantities - the error estimator and stopping
+condition. The first indicates, basically, the variance (from the
+mean) of the value of a pixel, and the second is a maximum
+threshold for that variance - the pixel is subdivided and
+resampled until that variance (over the sub-areas) is finally
+below the threshold. For best results, every pixel is subsampled,
+and the variance of the samples analyzed to see if more
+subsamples are needed. Various past efforts argue over whether
+the variance should be based on the mean color, the contrast,
+etc. </p>
+
+<p>The third topic overviewed is that of Image Reconstruction
+from the many samples. They suggest that the filter used smooth
+out the noise introduced by the stochastic sampling. Box,
+triangle, and Gaussian filters are a few mentioned. Of course,
+filter width is proportional to sluggishness. The tough part is
+that some pixels have more samples than others. One way to fix
+this is to add up &amp; normalize all the samples for each pixel;
+however, this does not accurately record how well-sampled an
+image with respect to area. They suggest doing it hierarchically:
+start with the finest samples, then weight and combine them on
+their own scale, then go up a level and repeat, until you get up
+to the pixel level. Also, by layering several box filters, you
+end up getting a free approximation of a Gaussian filter.</p>
+
+<p>The proposed method is broken into three steps: sample
+generation, sample evaluation, and image reconstruction.</p>
+
+<p>Sample generation is accomplished in the usual way, but with a
+few refinements. Normally, one only looks within a pixel, so it
+takes about 8 subsamples to see if one wishes to even further
+subsample a pixel. It is better to share samples between pixels,
+so in very plain areas no subsampling is needed at all. They use
+&quot;hierarchical integration&quot; over the entire image. As
+they render, they build a binary tree which always divides in x,
+then y, then x, etc. Leaves represent sample values; nodes
+contain the mean and variance of all children, as well as the
+&quot;external variance&quot;, which is an average of itself with
+its neighbors. At the beginning, they try to get coverage of
+large, plain areas while also identifying distinct features (such
+as edges). To do this, the error threshold they use is (area *
+variance), so whenever this product is larger than the threshold,
+they take more samples. When it's time for another sample, they
+can magically go down the binary tree via the nodes with the
+highest error (area * variance), and progressively refine exactly
+where it's needed the most. For a stopping condition, a
+fixed-percent confidence interval for the mean is used. The
+confidence interval on the estimate of the mean shrinks as the
+number of samples increases; once the interval hits a certain
+size (say, 1/255), the subsampling stops. Note that the
+confidence interval takes the variance into account ( ((x-mu) /
+sqrt(sample variance/n) follows a t-distribution and is used to
+get the interval). In total, the only other stopping condition is
+that at least each pixel is sampled, so that small objects aren't
+missed (in the beginning, large areas with low variance are
+skipped to enhance the time-to-delivery of the rough image).</p>
+
+<p>The second stem, sample evaluation, is simply done via a
+regular raytracing engine. </p>
+
+<p>The third step, image reconstruction, is explained
+analytically. If one takes the image function and convolutes it
+with a filter function, the result is just an integration based
+on the image function. However, I don't see how this is to be
+done computationally. They suggest a summed-area table, but
+because we're only doing this in non-projected, rectangular 2D
+coordinate space and only one time, it doesn't make much sense to
+me. They also discuss using the sample points to triangulate the
+image plane, then using any decent algorithm to interpolate along
+the triangles. This allows for the difference in levels of
+sampling from pixel to pixel. To get the final image, then, the
+triangle-based-image function is convoluted with a filter and
+evaluated at pixel centers. </p>
+
+<p>In order to do this progressively, though, not just the
+sampling process, but also the image reconstruction, must
+progressively refine itself. If the reconstruction is quick
+relative to the sampling, one can just reconstruct the entire
+image each time an update to the display is desired.
+Alternatively, at each update, only the pixels that have been
+subsampled (since the last update) get updated. A good
+implementation for this is for every subsample, to subtract its
+prior weight contribution to the final image, then to render the
+two subsamples, and to add each back in at half the former
+weight. </p>
+
+<p>It turns out that sample evaluation is still the big winner as
+far as CPU usage goes; so you pay little for the overhead
+involved in progressive adaptive subsampling, other than the cost
+of the subsampling. It also turns out that very hi-resolution
+images render a lot faster because the ratio of &quot;edge&quot;
+pixels to normal (low-variance) pixels decreases. </p>
+
+<p>The cool thing about this algorithm, in my opinion, is that it
+uses the (area * variance) factor as the threshold for the
+stopping function, in combination with the binary tree which you
+can peruse via this value. This quickly generates an image where
+the highest-variance areas are refined first. It's very similar
+to the idea of progressive radiosity. </p>
+
+<p><a href="index.html"><img src="../../../common/back.gif"
+border="0" width="50" height="20"></a></p>
+
+<p align="right"><font size="1"><em>copyright 1999 Ryan Geiss
+&amp; Vince Scheib</em></font></p>
+
+<!-- Counter was here. -->
+
+</body>
+</html>

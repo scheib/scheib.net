@@ -1,0 +1,287 @@
+RAYCASTER SCRIPTFILE V2.0
+____________________________________________
+. 
+. This is a sample input file which elaborated all input file options.
+____________________________________________
+
+. First, the script file works on a per line basis. So, all labels and data must appear
+. on seperate lines. There is a max line length of 500 characters, if there is a line
+. over this length the parser will report an error (most likly, 'expecting BLAH')
+
+. The parser is case INsensitive, use uppercase or lowercase at will, (filenames
+. are case sensitive of course.
+
+. Blank lines are skipped, as well as lines begining with a
+  SPACE, 
+_ UNDERSCORE, 
+. PERIOD, 
+: COLON, 
+; SEMICOLON, 
+! BANG, or
+# POUND
+
+. The script file has sections which must be in order. The first section is the 
+. general setup section, it is not labeled, but just begins after the required
+. 'RAYCASTER SCRIPTFILE Vx.x'.  This is followed by the sections:
+. ENVIRONMENT
+. LIGHTS
+. MATERIALS
+. OBJECTS
+. OBSERVER
+. KEYFRAMES.
+. GO
+
+### Here the content begins:
+
+. resolution of image to generate
+SCREEN RESOLUTION
+300 150
+
+. base filename of images (frame # and oversample # are appended to filename) 
+FILENAME
+pic
+
+. All lights, Materials, and Objects must have their numbers accounted for exactly.
+. When refering to any of these later in the script file counting starts at 1 through n
+
+NUMBER OF LIGHTS
+1
+
+NUMBER OF MATERIALS
+1
+
+NUMBER OF OBJECTS
+3
+
+. Specifies levels of recursion
+RECURSION DEPTH
+1
+
+. Number of images to render and merge together.
+SAMPLES PER PIXEL
+1
+
+. The first frame to render, and the last 
+BEGIN / END FRAME
+1 10
+
+. The amount of frames to skip, only every 'frame increment' frame is rendered.
+. The width specifies how large a time to distribute time samples around a frame.
+FRAME INCREMENT / WIDTH
+1 1
+
+____________________________________________
+ENVIRONMENT
+
+..........
+: basic environment just specify 'ambient' and or 'background' or neither
+:ambient
+:0 0 0
+:background
+:0 0 0
+
+
+............
+: Simple sky environment, specify 'SimpleSky', 'ambient', and optionally 'colors'
+:  if specifing colors then 4 colors must be listed, 'top' 'top_horizon' 'bottom_horizon' 'bottom' 
+SimpleSky
+ambient
+0 0 0
+
+:colors
+:top
+:0 0 0
+:top_horizon
+:0 0 0
+:bottom_horizon
+:0 0 0
+:bottom
+:0 0 0
+
+
+............
+: Cube Sky Map environment, specify 'CubeMapSky', 'ambient', and 6 image files
+: 'topfile', 'frontfile', 'rightfile', 'backfile', 'leftfile', 'bottomfile'
+CubeSkyMap
+ambient
+0 0 0
+
+topfile
+1.tga
+frontfile
+2.tga
+rightfile
+3.tga
+backfile
+4.tga
+leftfile
+5.tga
+bottomfile
+6.tga
+
+
+
+END ENVIRONMENT
+
+
+
+____________________________________________
+LIGHTS
+
+.....
+. Pointlight, specify 'POINTLIGHT', 'position' 'radius' 'color' and 'cast shadows' 
+. (to not cast shadows replace 'cast shadows' with any other string such as 'cast shadows NO')
+
+POINTLIGHT
+position
+9 -5 0
+radius
+1
+color
+1 1 1
+cast shadows
+
+____________________________________________
+MATERIALS
+
+.....
+. Basic material, specify 'Basic' 'color' (3 floats) 'kd ks kn' (3 floats) and 'reflection refraction' (2 floats)
+. and 'density' (value 1 or higher, affects refraction, good value is 1.1
+. and 'reflection / refraction blur angles' which takes two floats Degrees
+
+BASIC
+color
+1 0 0
+kd ks kn
+0.5 0 5
+reflection refraction
+0.5 0
+density
+1.1
+reflection / refraction blur angles
+1 1
+
+
+____________________________________________
+OBJECTS
+
+...........
+:'Sphere' object needs a 'position' 'radius' and 'material' (specify int)
+
+...........
+:'Sphere Array' object needs 'tga file' 'bounding box min' 'bounding box max' 'radius max' and 'material' (specify int)
+: !! Note, Sphere Arrays can not be animated as a whole! Sphere Array is a MACRO for creating multiple spheres
+
+..........
+:'Poly' object needs 'filename' 'shading'(choose 'flat' 'gourand' or 'phong') 'scale' 'rotate' 'translate' and 'material' (specify int)
+
+..........
+: For all objects, 'GET / CAST SHADOWS' followed by two ints, 0 for false, 1 for true.
+
+SPHERE
+POSITION
+10 0 0
+RADIUS
+0.8
+MATERIAL
+1
+GET / CAST SHADOWS
+0 0
+
+SPHERE
+POSITION
+10 2 0
+RADIUS
+0.8
+MATERIAL
+2
+GET / CAST SHADOWS
+0 0
+
+SPHERE
+POSITION
+9 -2 0
+RADIUS
+0.3
+MATERIAL
+3
+GET / CAST SHADOWS
+0 0
+
+
+____________________________________________
+OBSERVER
+
+POSITION
+2 -7 0.5
+
+LOOK AT
+10 0 0
+
+TILT
+0
+
+. NOTE: Angle of view, if specified as negative, specifies the width 
+. of the image at the center of interest. Use this to specify exactly
+. what you want on screen at the focal length. Also good for that
+. zoom out but move closer effect called 'vertigo'
+ANGLE OF VIEW
+40
+
+. Use Small values here (relative to your positioning in the world.) If center of 
+. interest is about 10 units away then a value of 0.1 will produce a medium amount
+. of bluring
+LENSE RADIUS
+0.2
+
+. pixel sampling area amount. Recommended values are between 0 and 1. 
+. a value of 1 will jitter the center of interest by an amount equal to
+. one pixel on the image.
+PIXEL SIZE
+0
+____________________________________________
+KEYFRAMES
+
+: Keyframes must be in accending order for a specific object.
+: they have the following form:
+
+.TYPE
+.NUMBER OF TYPE
+.TIME
+.PARAMETERS
+
+.EG:
+
+.OBJECT
+.1            <-- NUMBER IN OBJECT LIST
+.34.5         <-- TIME FOR THIS KEYFRAME
+.SPHERE
+.POSITION
+.10 0 0
+.RADIUS
+.0.8
+.MATERIAL
+.1
+.GET / CAST SHADOWS
+.0 0
+
+. OR
+
+.OBSERVER
+.12.3         <-- TIME OF KEYFRAME
+.POSITION
+.2 -7 0.5
+.LOOK AT
+.10 0 0
+.TILT
+.0
+.ANGLE OF VIEW
+.40
+.LENSE RADIUS
+.0.2
+.PIXEL SIZE
+.0
+
+END KEYFRAMES
+____________________________________________
+GO

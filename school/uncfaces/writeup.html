@@ -1,0 +1,145 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Vincent Scheib">
+   <meta name="GENERATOR" content="Mozilla/4.76 [en] (Windows NT 5.0; U) [Netscape]">
+   <meta name="Description" content="eigenfaces, eigenvectors, svd, singular value decomposition, Vincent Scheib">
+   <title>UNC EigenFaces - Vincent Scheib</title>
+</head>
+<body text="#000000" bgcolor="#FFFFFF" link="#0000EE" vlink="#551A8B" alink="#FF0000">
+&nbsp;
+<center><table BORDER=0 WIDTH="100%" >
+<tr>
+<td>
+<h2>
+<font face="Arial,Helvetica">Eigenfaces of UNC</font></h2>
+
+<p><br><font face="Arial,Helvetica">In the course, 205 - Geometric &amp;
+Scientific Computation, we were assigned an eigeinfaces problem for a homework.
+The final goal of this project was to group faces by similarity.</font>
+<p><font face="Arial,Helvetica">Shown to the right, you see that this was
+relatively successful. Notice that people with similar hair are grouped
+near each other. On the left, you can see that the two images taken under
+different lighting conditions are grouped together, and apart from everyone
+else. There are two outliers from most of the class -- distinguished mostly
+because of the shoulders, and long dark hair (Hi Kelly).</font></td>
+
+<td>
+<center><table COLS=1 BGCOLOR="#999999" >
+<tr>
+<td>
+<center><img SRC="cluster.gif" BORDER=2 height=327 width=407>
+<br><b><font face="Arial,Helvetica">16 students, clustered by image similarity</font></b></center>
+</td>
+</tr>
+</table></center>
+</td>
+</tr>
+</table></center>
+
+<center><table BORDER=0 WIDTH="100%" >
+<tr>
+<td>
+<table COLS=1 BGCOLOR="#999999" >
+<tr>
+<td>
+<center><img SRC="eigenvectors.gif" NOSAVE BORDER=2 height=260 width=452>
+<br><b><font face="Arial,Helvetica">8 Eigenvectors from the 201 UNC face
+dataset</font></b></center>
+</td>
+</tr>
+</table>
+</td>
+
+<td><font face="Arial,Helvetica">In the top frame, you can view a very
+wide image which contains 201 faces from the UNC Chapel Hill computer science
+department.</font>
+<p><font face="Arial,Helvetica">The results were so interesting to me from
+the homework assignment, I decided to run the procedure again on a larger
+set of faces. The 201 faces were taken from the online photo directory
+of the department. It took me about 20 miutes to crop all the images to
+just the faces, and numerous hours to run the calculations.&nbsp;</font>
+<p><font face="Arial,Helvetica">The data isn't as nice as the 16 faces
+we collected from the 205 class, however. The lighting conditions are dramatically
+different, as are the poses everyone was in.&nbsp;</font>
+<p><font face="Arial,Helvetica">Still, I was very interested to see what
+the result would be from running the simulation on this very large data
+set.&nbsp;</font></td>
+</tr>
+</table></center>
+
+<center><table BORDER=0 WIDTH="100%" >
+<tr>
+<td><font face="Arial,Helvetica">Above, you can see 8 of the eigenvectors
+from the 201 face dataset. The eigenvectors can be thought of the most
+prominent directions in which the images vary. The first eigenvector is
+the average of all the faces. For this dataset, the properties captured
+by the eigenvectors can be described. The second eigenvector captures the
+overall brightness of the face in the picture. The third and forth capture
+direction from which the face was illuminated. The fourth captures a bit
+of face shape.&nbsp;</font>
+<p><font face="Arial,Helvetica">The rest of the eigenvectors (there are
+201 of them) continue to capture more subtle details. The eigenvectors
+are ordered by the amount that the data is distributed by their direction.&nbsp;</font>
+<p><font face="Arial,Helvetica">The eigenvectors are obtained by a Singular
+Value Decomposition (SVD). From these, a set of vectors can be created
+which provide a basis for the dataset. Each image is a vector in 15,400
+dimensions (140 x 110 pixels). The basis, created by taking the difference
+of each eigenvector (2 thru 201) with the first eigenvector, is of only
+200 dimensions.&nbsp;</font>
+<p><font face="Arial,Helvetica">A distance can be calculated between each
+of the 201 images in this 200 dimensional basis. Then, a spring mass system
+can be constructed, such that a spring between each face has a rest length
+equal to the distance between the faces.&nbsp;</font>
+<p><font face="Arial,Helvetica">The spring mass system can be forced into
+only two dimensions, so that we may look at it easily. To do this, each
+face is given a random starting position, and then the spring mass system
+allowed to bounce around until it comes to a relaxed and stable state.</font>
+<p><font face="Arial,Helvetica">To the right you can see a plot of the
+spring mass system positions as they converge to a stable system.&nbsp;</font></td>
+
+<td>
+<table COLS=1 BGCOLOR="#999999" >
+<tr>
+<td>
+<center><img SRC="convergence.gif" NOSAVE BORDER=2 height=338 width=428>
+<br><b><font face="Arial,Helvetica">The convergence of the spring mass
+system for 16 images</font></b></center>
+</td>
+</tr>
+</table>
+</td>
+</tr>
+</table></center>
+
+<br>&nbsp;
+<center><table BORDER=0 WIDTH="50%" >
+<tr>
+<td>
+<h3>
+<font face="Arial,Helvetica">Analysis of the 201 face dataset</font></h3>
+<font face="Arial,Helvetica">The 201 faces did not cluster as nicely as
+the 16 faces did.&nbsp;</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">It is clear that the 201 faces arranged
+themselves very well with respect to their overall brightness. This is
+easy to understand, as the second eigenvector captured this property, and
+it's magnitude was 5 times as great as the next eigenvector.&nbsp;</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">Looking through the faces, you will see
+they cluster occasionally by hair mass, lighting, or bright foreheads.
+The easiest to see is the hair mass. People was a good area of dark hair
+on top group together.&nbsp;</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">These lesser properties create only some
+small groups however -- and the small groups are held far apart by the
+dominating lighting conditions.&nbsp;</font><font face="Arial,Helvetica"></font>
+<p><font face="Arial,Helvetica">It's still pretty nifty to see all 201
+images arranged. =) And if you know some of us, well, wave and say "hi".
+Can you find me? I'm the only face in profile.</font>
+<br><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+</table></center>
+
+<center><a href="../index.html" target="_top"><img SRC="../../common/back.gif" NOSAVE BORDER=0 height=20 width=50></a></center>
+
+</body>
+</html>

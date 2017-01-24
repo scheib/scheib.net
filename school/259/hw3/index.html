@@ -1,0 +1,153 @@
+<!doctype html public "-//w3c//dtd html 4.0 transitional//en">
+<html>
+<head>
+   <meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+   <meta name="Author" content="Vincent Scheib">
+   <meta name="GENERATOR" content="Mozilla/4.78 [en] (Windows NT 5.0; U) [Netscape]">
+   <title>Physically Based Modeling ODE and Particle Dynamics - Vincent Scheib</title>
+</head>
+<body text="#000000" bgcolor="#5B4266" link="#FF0000" vlink="#800080" alink="#FFFF00">
+&nbsp;
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=4 WIDTH="600" BGCOLOR="#FFFFFF" >
+<tr>
+<td>
+<center><table BORDER=0 CELLSPACING=0 CELLPADDING=20 COLS=1 WIDTH="560" >
+<tr>
+<td><b><font face="Arial,Helvetica">Homework3: Constrained Dynamics</font></b>
+<p><i><font face="Arial,Helvetica">Summary:</font></i>
+<p><font face="Arial,Helvetica">Implement dynamics with a simple constraint.</font>
+<p><i><font face="Arial,Helvetica">Assignment text:</font></i>
+<br>&nbsp;
+<table BORDER=0 COLS=1 WIDTH="100%" BGCOLOR="#CCCCCC" >
+<tr>
+<td><font size=-1>(25pt) Problem A: A Bead on a Wire</font>
+<p><font size=-1>Simulate the motion of a particle and visualize the result.
+The particle is defined in a Cartesian coordinate system p=(x,y), and it
+is constrained by a unit circle centered at the origin. Use the initial
+position (0, 1), the initial velocity (0, 0), and gravitational force (0,-mg).
+Constants are give as m=1Kg, and g=9.8m/sec2.&nbsp;</font></td>
+</tr>
+</table>
+
+<p><i><font face="Arial,Helvetica">What I did:</font></i>
+<p><font face="Arial,Helvetica">I have created a small program.</font>
+<br><font face="Arial,Helvetica"><a href="constrained.zip">download the
+program</a> (you need to put <a href="../qt.zip">qt-mt230nc.dll</a> in
+the same directory)</font>
+<p><font face="Arial,Helvetica">It requires Windows (2000?), openGL, <a href="http://www.cs.unc.edu/~walk/software/glvu/index.html">GLVU</a>
+(to compile), and the QT runtime dll (included).</font>
+<p><font face="Arial,Helvetica">You can view the <a href="code">source
+code</a>. All the simulation code is contained in the main.cpp. The other
+files are used for the user interface.</font>
+<br>&nbsp;
+<p><font face="Arial,Helvetica">I chose to use the Lagrange’s equations
+of motion, which is overkill for this circle case -- but still very easy.&nbsp;</font>
+<p><font face="Arial,Helvetica">The concept is to express the state of
+the system in a natural manner, and then convert it to the "real world".
+For a bead on a circle, the position can be stored as a single parameter
+<i>a</i>
+which indicates the angle.&nbsp;</font>
+<p><font face="Arial,Helvetica">Converting to world co-ordinates <i>x</i>,
+<i>y</i>
+is easy, just trigonometry. (See math below.) Then, the Jacobin matrix
+J is solved. This matrix is built from the partial derivatives shown. Additionally,
+the time derivative of J is found (J-dot).</font>
+<p><font face="Arial,Helvetica">The equation of motion is then shown. Notice
+that I have moved the Mass matrix <i>M</i> over to the force <i>f</i> side
+of the equation.&nbsp;</font>
+<p><font face="Arial,Helvetica">Then, some simple math and simplification
+provides us with a solution for the acceleration of the angle variable
+(a-dot-dot).&nbsp;</font>
+<p><img SRC="image002.gif" NOSAVE height=520 width=626>
+<p><font face="Arial,Helvetica">Finally, this system can be integrated
+with Euler's method. The relevant code is shown below:</font>
+<br>&nbsp;
+<br>&nbsp;
+<p><tt><font size=-2>//simulation variables</font></tt>
+<br><tt><font size=-2>static Stopwatch timer;</font></tt>
+<br><tt><font size=-2>struct _circle</font></tt>
+<br><tt><font size=-2>{</font></tt>
+<br><tt><font size=-2>&nbsp; float theta;&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp; float thetaVelocity;&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp; Vec3f worldForces;</font></tt>
+<br><tt><font size=-2>&nbsp; float mass;</font></tt>
+<br><tt><font size=-2>} circle;</font></tt>
+<br><tt><font size=-2>Vec3f gravity;</font></tt>
+<p><tt><font size=-2>void initObjects(void)</font></tt>
+<br><tt><font size=-2>{</font></tt>
+<br><tt><font size=-2>&nbsp; timer.Start();</font></tt>
+<br><tt><font size=-2>&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp; circle.theta = 3.1415/2;</font></tt>
+<br><tt><font size=-2>&nbsp; gravity.Set(0, -9.8, 0);</font></tt>
+<br><tt><font size=-2>}</font></tt>
+<br>&nbsp;
+<p><tt><font size=-2>void simulation(void)</font></tt>
+<br><tt><font size=-2>{</font></tt>
+<br><tt><font size=-2>&nbsp; static float time_simulated = 0;</font></tt>
+<br><tt><font size=-2>&nbsp; float time_now = timer.GetTime();</font></tt>
+<br><tt><font size=-2>&nbsp; float time_passed = time_now - time_simulated;</font></tt>
+<p><tt><font size=-2>&nbsp; circle.mass = pControlPanel->FloatSpinBox_mass->doubleValue();</font></tt>
+<p><tt><font size=-2>&nbsp; circle.worldForces.Set(0,0,0);</font></tt>
+<br><tt><font size=-2>&nbsp; circle.worldForces += circle.mass * gravity;</font></tt>
+<p><tt><font size=-2>&nbsp; float force_amount = pControlPanel->FloatSpinBox_force->doubleValue();</font></tt>
+<br><tt><font size=-2>&nbsp; if (pControlPanel->PushButton_Force_Left->isDown()
+)&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp; circle.worldForces += Vec3f(-force_amount,0,0);</font></tt>
+<br><tt><font size=-2>&nbsp; if (pControlPanel->PushButton_Force_Up->isDown()&nbsp;&nbsp;
+)&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp; circle.worldForces += Vec3f(0,force_amount,0);</font></tt>
+<br><tt><font size=-2>&nbsp; if (pControlPanel->PushButton_Force_Right->isDown())&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp; circle.worldForces += Vec3f(force_amount,0,0);</font></tt>
+<p><tt><font size=-2>&nbsp; float timestep = pControlPanel->SpinBox_TimeStep->value()
+/ (float)1000;</font></tt>
+<br><tt><font size=-2>&nbsp; float dampening = 1-pControlPanel->FloatSpinBox_dampening->doubleValue();</font></tt>
+<br><tt><font size=-2>&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp; int i=0;</font></tt>
+<br><tt><font size=-2>&nbsp; while ((time_simulated &lt; time_now) &amp;&amp;
+(timestep > 0))</font></tt>
+<br><tt><font size=-2>&nbsp; {</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp; float acceleration =&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; - circle.worldForces.x/circle.mass*sin(circle.theta)</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; + circle.worldForces.y/circle.mass*cos(circle.theta);</font></tt>
+<p><tt><font size=-2>&nbsp;&nbsp;&nbsp; circle.theta += circle.thetaVelocity
+* timestep;</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp; circle.thetaVelocity += acceleration
+* timestep;</font></tt>
+<br><tt><font size=-2>&nbsp;</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp; circle.thetaVelocity *= dampening;</font></tt>
+<p><tt><font size=-2>&nbsp;&nbsp;&nbsp; time_simulated += timestep;</font></tt>
+<br><tt><font size=-2>&nbsp;&nbsp;&nbsp; i++;</font></tt>
+<br><tt><font size=-2>&nbsp; }</font></tt>
+<br><tt><font size=-2>}</font></tt>
+<br>&nbsp;
+<br>&nbsp;
+<br>&nbsp;
+<p><i><font face="Arial,Helvetica">Analysis:</font></i>
+<p><font face="Arial,Helvetica">The system performs very well, and is very
+stable. The constraint can never be broken. Some dampening is required.</font>
+<center>
+<p><img SRC="screenshot.png" NOSAVE height=453 width=552></center>
+</td>
+</tr>
+
+<tr>
+<td></td>
+</tr>
+</table></center>
+</td>
+
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+
+<tr>
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+
+<td BGCOLOR="#37283E"><font face="Arial,Helvetica">&nbsp;</font></td>
+</tr>
+</table></center>
+
+<center>
+<p><a href="../index.html"><img SRC="../../../common/back.gif" NOSAVE BORDER=0 height=20 width=50></a></center>
+
+</body>
+</html>

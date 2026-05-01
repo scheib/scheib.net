@@ -88,14 +88,14 @@ attempting to debug that.</font>
 <font face="Arial,Helvetica">The paint system relies on transferring attributes
 between the 3D surface of the brush and the 2D canvas. Theoretically, a
 texel projected down from the brush should be reprojected back from the
-canvas to it’s original position. Warping is expected, as the 3D surface
+canvas to it's original position. Warping is expected, as the 3D surface
 is expected to not project down to the canvas in a one to one mapping.
 Specifically on portions of the brush which are near perpendicular to the
 canvas, several texels will map from the brush down to the canvas, and
-a single texel on the canvas will project to a large area on the brush’s
+a single texel on the canvas will project to a large area on the brush's
 surface. Warping should not cause problems, however.</font>
 <p><font face="Arial,Helvetica">The current error is that the texture returning
-from the canvas is somehow ‘scrambled’ slightly. The effects look, to the
+from the canvas is somehow 'scrambled' slightly. The effects look, to the
 human eye, very much like the zippering effects of Z-Fighting. Z-Fighting,
 however, is not the cause of the problem, as there are no coplanar polygons.&nbsp;</font>
 <p><font face="Arial,Helvetica">The mixing of the texture is acceptable
@@ -103,17 +103,17 @@ as it is currently used with the surface layer color &amp; volume. The
 effects are not very noticeable because these attributes change very rapidly.
 I.E. the surface paint has a very high turnover rate, and in the process
 does not have great variation in color, it is therefore not very noticeable.
-The volume errors are not very noticeable due to the large volume of ‘reservoir’
+The volume errors are not very noticeable due to the large volume of 'reservoir'
 paint just behind the surface layer. The effects on the reservoir volume
-are slightly noticeable as the brush depletes it’s supply of paint, the
-trailing paint at the end appears slightly ‘chunky’. Most users would not
+are slightly noticeable as the brush depletes it's supply of paint, the
+trailing paint at the end appears slightly 'chunky'. Most users would not
 notice this.&nbsp;</font>
 <p><font face="Arial,Helvetica">However, the bug is serious if one were
 to update a more sensitive attribute layer, such as the reservoir paint
 color texture. This texture is expected to change only slightly over a
 long period of time. The scrambling bug quickly blends the reservoir colors.
 This has the effect of the paint mixing thoroughly on the brush, destroying
-a ‘complex blend’ which may have been picked up.&nbsp;</font>
+a 'complex blend' which may have been picked up.&nbsp;</font>
 <p><font face="Arial,Helvetica">Many of the proposed additions to the paint
 model require additional attribute channels. For example, many require
 carrying more than 8 bits of information for the volume of paint stored
@@ -163,7 +163,7 @@ consideration</font></h3>
 <b><font face="Arial,Helvetica">Intuitive input scaling</font></b>
 <br><font face="Arial,Helvetica">The user currently can move within the
 workspace of the input device and move over the entire virtual workspace.
-However, when attempting detail work, this mapping may not be ‘fine’ enough
+However, when attempting detail work, this mapping may not be 'fine' enough
 for precise and small movements. The input workspace can be scaled, together
 or independently of the visual workspace, to allow greater precision for
 local work.&nbsp;</font>
@@ -193,7 +193,7 @@ are rumored to be very difficult.</font>
 <br><font face="Arial,Helvetica">Implementation complexity medium</font>
 <p><b><font face="Arial,Helvetica">Better specular light model</font></b>
 <br><font face="Arial,Helvetica">Current light model is only the embossing.
-A better specular model may allow for the indication of ‘wet’ paint by
+A better specular model may allow for the indication of 'wet' paint by
 higher specular term. However, this will likely slow rendering quite a
 bit, and may be passed over in favor of a much more complex rendering method,
 such as described below.</font>
@@ -205,7 +205,7 @@ method to render thick layers of paint accurately. Subsurface scattering
 theory should be able to be combined with this method to provide for rendering
 of thin layers of oil paints on top of each other. This would ideally provide
 a more realistic look to the paint model. It would require a change to
-the ‘pigment’ model of the paint model, however the rendering complexities
+the 'pigment' model of the paint model, however the rendering complexities
 far outweigh the pigment model changes.</font>
 <br><font face="Arial,Helvetica">Implementation complexity high</font>
 <p><b><font face="Arial,Helvetica">Multilayer paint model</font></b>
@@ -220,7 +220,7 @@ distinct layers. With respect to an unlimited number of layers to deposit
 onto, it is clear that a truly unlimited number can not be provided. However,
 a few layers could be provided, and if the user applies more paint then
 the previous layers could be pushed down, in a FIFO manner. The oldest
-layer would become ‘burried’, or lost, possibly merged into the dry layer.
+layer would become 'burried', or lost, possibly merged into the dry layer.
 If this were done locally per texel, a counter could be incremented to
 denote the layer shifting. On the other hand, if the entire canvas was
 shifted down the user would experience a noticeable pause. Depositing the
@@ -234,7 +234,7 @@ attributes.</font>
 <br><font face="Arial,Helvetica">Currently paint moves between the brush
 and canvas only. It does not move across the canvas, unless picked up and
 redeposited by the brush. True paint can be pushed in large volumes across
-the canvas by the brush, where the pain piles up in a ‘front’. To implement
+the canvas by the brush, where the pain piles up in a 'front'. To implement
 this a data structure must be constructed which allows paint volume to
 move in three dimensions, and a simulation algorithm must solve for the
 volumes of paint moved. A full navier-stokes simulation would be expensive,
@@ -252,7 +252,7 @@ this across the entire brush surface is overkill, as this effect will only
 be seen by the last portion of the brush to be in contact with a part of
 the canvas. This will have different implementations for the current, distinct
 multiplayer, and voxel canvas models. The effects simply can not be seen
-at the current resolution of the canvas – and higher resolutions run too
+at the current resolution of the canvas - and higher resolutions run too
 slowly.&nbsp;</font>
 <br><font face="Arial,Helvetica">Implementation complexity high</font>
 <p><b><font face="Arial,Helvetica">Paint transfer based on canvas height
@@ -264,12 +264,12 @@ field of the canvas to determine rate of transfer for each texel.&nbsp;</font>
 <br><font face="Arial,Helvetica">Implementation complexity medium</font>
 <p><b><font face="Arial,Helvetica">Multiresolution canvas</font></b>
 <br><font face="Arial,Helvetica">Upon detail work, a portion of the canvas
-may increase it’s resolution, and be inset into the lower resolution of
+may increase it's resolution, and be inset into the lower resolution of
 the main canvas. This allows for dramatic scale differences in paint strokes,
 and is just really hard and therefore attractive. Ideally, the higher resolution
 portions could still be painted over with low resolution techniques when
 they are not being focused on, allowing for greater simulation speeds.
-User interface for this may be very difficult – as they would need to be
+User interface for this may be very difficult - as they would need to be
 able to not only specify when to increase the resolution of an area, but
 also clearly see which areas of the canvas are at specific resolutions.
 A method for detecting when a higher resolution is needed is not apparent
@@ -301,7 +301,7 @@ been selected. A Multiresolution image data structure will be implemented
 to allow users to paint fine detail on any portion of the canvas.&nbsp;</font>
 <p><font face="Arial,Helvetica">Various papers on multiresolution image
 techniques were published, mostly in the mid ninties. The implementation
-choosen for this project most closely resembles the ‘sparse quadtree’ presented
+choosen for this project most closely resembles the 'sparse quadtree' presented
 by</font>
 <br><font face="Arial,Helvetica">Berman, Bartell, and Salesin</font>
 <br><font face="Arial,Helvetica">Multiresolution Painting and Compositing
@@ -313,7 +313,7 @@ by</font>
 <ul>
 <li>
 <font face="Arial,Helvetica">the DAB system did not properly store the
-volume of paint – the implementation was faulty, and a correct implementation
+volume of paint - the implementation was faulty, and a correct implementation
 of a relative height field was put into the system.</font></li>
 
 <li>

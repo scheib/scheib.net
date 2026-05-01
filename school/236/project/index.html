@@ -56,7 +56,7 @@ contain dramatic scale differences.</font>
 <font face="Arial,Helvetica">How a Multiresolution Canvas Would Improve
 DAB</font></h3>
 <font face="Arial,Helvetica">DAB uses a 2D paint blending algorithm to
-simulate a brush being moved across it’s surface. Between two discrete
+simulate a brush being moved across it's surface. Between two discrete
 locations of a brush in time, the footprint of that brush (the part in
 contact with the surface being painted) must be simulated to be in contact
 with the canvas.&nbsp;</font>
@@ -91,7 +91,7 @@ may require much higher detail than the rest of the image.&nbsp;</font>
 <font face="Arial,Helvetica">Re-execution</font></h3>
 <font face="Arial,Helvetica">One method used to create multiple resolution
 images is known as Re-execution. An image at arbitrary resolution can be
-generated if the artist’s movements are recorded, and then executed again
+generated if the artist's movements are recorded, and then executed again
 at another resolution. This allows the artist to work interactively at
 a low resolution, while the high resolution can be computed later at less
 than interactive speeds.&nbsp;</font>
@@ -101,7 +101,7 @@ brush in DAB is highly dependant on the simulation and subdivision systems.
 Correctly recreating these at higher resolutions is non trivial, and not
 part of the system which I am familiar with.&nbsp;</font>
 <p><font face="Arial,Helvetica">Additionally, this contradicts one of the
-important features of DAB: Artist’s interaction in a WYSIWYG environment.
+important features of DAB: Artist's interaction in a WYSIWYG environment.
 The artist currently can see exactly what they are producing, where a re-execution
 strategy would not allow this. Specifically over large scale factors. E.G.
 an artist can not carefully place detail which is at 32 times the resolution
@@ -122,11 +122,11 @@ a better argument against this method in [3] (section 3). Besides boundary
 issues, they point out issues in updating. Specifically, if an artist draws
 at high resolution, then over that area in a low resolution, and then again
 at a high resolution, the system must maintain a record of when each operation
-was performed. They are focusing on the ‘over’ paint operation, which is
+was performed. They are focusing on the 'over' paint operation, which is
 a simple alpha blending of paint over old paint. They note that this operation
 is non-commutative (A over B over C is not equal to B over A over C).&nbsp;</font>
 <p><font face="Arial,Helvetica">This approach was taken by Takeo Igarashi
-and Dennis Cosgrove in [2]. They designed a system for ‘casual painting’
+and Dennis Cosgrove in [2]. They designed a system for 'casual painting'
 of 3D objects. The object is given a solid base color. Painting a portion
 of the object causes the generation of an small image for just the portion
 of the texture map. Multiresolution capability is provided by always using
@@ -135,7 +135,7 @@ paint very fine detail. It will be captured at the resolution of the screen.
 These sub images always replace whatever image was previously there. Painting
 over high resolution with a low resolution causes the high resolution to
 be destroyed. The authors noted several limitations to this method for
-anything beyond simple ‘casual’ painting.&nbsp;</font>
+anything beyond simple 'casual' painting.&nbsp;</font>
 <h3>
 <font face="Arial,Helvetica">Lazy Evaluation</font></h3>
 <font face="Arial,Helvetica">Deborah F. Berman, Jason T. Bartell, and David
@@ -168,10 +168,10 @@ be forced to modify data until it is displayed. The paper presents an order
 O(m+j) algorithm for display. Painting operations occur in a fixed resolution
 image cache. When the user navigates to other portions or scales of the
 image, the data structure is updated to reflect the changes made.&nbsp;</font>
-<p><font face="Arial,Helvetica">The paint operations of ‘over’, ‘under’,
-‘in’, and ‘erase’ are supported. These are very basic painting operations,
+<p><font face="Arial,Helvetica">The paint operations of 'over', 'under',
+'in', and 'erase' are supported. These are very basic painting operations,
 which rely basically on an alpha blending operation. It is worthwhile to
-consider the ‘over’ operation in detail.</font>
+consider the 'over' operation in detail.</font>
 <p><font face="Arial,Helvetica">Over is defined as:&nbsp;</font>
 <br><font face="Arial,Helvetica">NewColor = AppliedColor * alpha + PreviousColor
 * (1 - alpha)</font>
@@ -181,7 +181,7 @@ higher resolution is stored. Modifying the current color is a trivial task
 up updating the difference from the previous node. Updating the higher
 resolution data is where this representation excels. In a lowpass pyramid
 all higher resolution pixels would require updating. However, in the bandpass
-pyramid, these are stored as a difference from the current node. The ‘over’
+pyramid, these are stored as a difference from the current node. The 'over'
 operation obscures these pixels partially. Therefore, the differences of
 the higher resolution pixels need only be scaled down! This can be accomplished
 by storing a single scaling factor in each node. Only a node at the current
@@ -198,26 +198,26 @@ that work</font></h3>
 (1 wet, 2 dry)), compared to the RGBA of most paint programs.&nbsp;</font>
 <p><font face="Arial,Helvetica">The difficulty is in finding an extrapolation
 scheme. When a user paints over an area of higher resolution the high resolution
-data must be updated. Berman et al found that the ‘over’ and ‘erase’ operations
+data must be updated. Berman et al found that the 'over' and 'erase' operations
 can be handled most efficiently by storing the scalar of occlusion. The
 blending operations in DAB are more complex than this, however.&nbsp;</font>
 <p><font face="Arial,Helvetica">The dry volume information in DAB poses
 a difficulty only in the drying process. The user can not dry paint selectively
-in DAB, and therefore we need not concern ourselves with it’s extrapolation.
+in DAB, and therefore we need not concern ourselves with it's extrapolation.
 The only problem with drying in a multiresolution image is that the entire
 canvas must be dried at once. This operation is almost non-interactive
 already for a 1024x1024 image. Amortizing this cost was considered by drying
 only a portion of the image at a time. However, this would cause artifacts
-to show up if the user paints over a ‘just dried’ region and a ‘soon to
-be dried’ region. The paint deposited in the two regions will differ, and
+to show up if the user paints over a 'just dried' region and a 'soon to
+be dried' region. The paint deposited in the two regions will differ, and
 the bump map rendering of the height field will show this boundary artifact.&nbsp;</font>
 <p><font face="Arial,Helvetica">The drying operation also suffers from
 requiring a decomposition of the entire image. All the highest resolution
 pixel values must have their volume adjusted, but their color values must
-be adjusted as well. The drying operation modifies the color of the ‘dry
-layer’ such that after the drying operation, the color of the blended wet
+be adjusted as well. The drying operation modifies the color of the 'dry
+layer' such that after the drying operation, the color of the blended wet
 layer over dry layer is the same. Performing this color blending will require
-an full decomposition of the highest resolution – touching every node in
+an full decomposition of the highest resolution - touching every node in
 the tree.&nbsp;</font>
 <p><font face="Arial,Helvetica">The wet volume information could be handled
 in the following way. As the user paints, record the difference in paint
@@ -236,14 +236,14 @@ DAB differs from most painting programs in that it uses a bi-directional
 blend operation.&nbsp;</font>
 <p><font face="Arial,Helvetica">Berman et al used only simple paint operations
 which effectively cover higher resolution data. In effect, they can store
-all the user’s work in a ‘foreground image’, and then apply those changes
+all the user's work in a 'foreground image', and then apply those changes
 to the image below. In the multiresolution case, this simply requires applying
 the changes to possibly many pixels for each foreground image. However,
 lazy evaluation works here because all the changes can be gathered in one
 layer, and then applied with one operation.</font>
 <p><font face="Arial,Helvetica">DAB can not use lazy evaluation. The bi-directional
 blending operations use both the foreground and background images at each
-simulation step. A separation can not be made between the current user’s
+simulation step. A separation can not be made between the current user's
 work, and the canvas below.&nbsp;</font>
 <p><font face="Arial,Helvetica">Thus, the user actually changes all paint
 on any pixels that they touch. This can not be applied in a partial manner
@@ -255,7 +255,7 @@ destroy the high resolution information.&nbsp;</font>
 and paints. Varying color and volume information is deposited on the canvas.&nbsp;</font>
 <br><font face="Arial,Helvetica">&middot; The user then zooms out to a
 lower resolution. A glazing brush stroke is applied over a large portion
-of the high detail work. The glazing stroke is not completely opaque –
+of the high detail work. The glazing stroke is not completely opaque -
 the color of the paint below shows through, as does its volume.&nbsp;</font>
 <br><font face="Arial,Helvetica">&middot; Additionally, (and this is where
 DAB differs from others) the high detail paint has been blended into the
@@ -270,7 +270,7 @@ each simulation step taken, the paint removed and added in each step, for
 each pixel, and to re-execute all those simulation steps for all higher
 resolution pixels. This would not be accurate, because the operations performed
 on the lower resolution image may differ from the high resolution due to
-clamping of volume to the 0 – 1 range. Additionally, this would require
+clamping of volume to the 0 - 1 range. Additionally, this would require
 very large amounts of dynamic storage.&nbsp;</font>
 <p><font face="Arial,Helvetica">Ignoring the multiple blending operations,
 and attempting to blend from the final result has not lead to a solution
@@ -281,7 +281,7 @@ either.&nbsp;</font>
 the DAB system was not found to be feasible. The available literature on
 multiresolution painting deals only with the simplest of paint blending
 operations, and does not extend to the paint model used in DAB. The interactive
-constraint, including the artist’s ability to see exactly the detail that
+constraint, including the artist's ability to see exactly the detail that
 they are painting, further limit the options available.&nbsp;</font>
 <h3>
 <font face="Arial,Helvetica">Aditional Work</font></h3>
@@ -312,15 +312,15 @@ multires image loaded from disk in about 10 seconds.&nbsp;</font><font face="Ari
 <p><font face="Arial,Helvetica">The multiresolution painting program allows
 the user to zoom in and add detail anywhere. Zooming out and painting over
 the highest resolution areas is still fast and efficient. The smallest
-text in the image, saying “Paint Over Me” can be covered with a thin layer
+text in the image, saying "Paint Over Me" can be covered with a thin layer
 of paint while not destroying it. This can be done even when zoomed out
 all the way. A 'regular' image could not allow this, because far too many
 pixels would be modified at once.&nbsp;</font><font face="Arial,Helvetica"></font>
 <p><font face="Arial,Helvetica">If the entire image had been stored at
 the resolution of the finest details, it would be 2<sup>23</sup> X 2<sup>23</sup>
 = 70,000,000,000,000 pixels in size!</font><font face="Arial,Helvetica"></font>
-<p><font face="Arial,Helvetica">During the presentation, the text “Paint
-Over Me” was displayed 3 feet tall. If the entire image could have been
+<p><font face="Arial,Helvetica">During the presentation, the text "Paint
+Over Me" was displayed 3 feet tall. If the entire image could have been
 shown at that resolution, it would be <i>595 miles tall</i>!</font>
 <br>&nbsp;
 <center><table BORDER=0 CELLPADDING=2 COLS=1 BGCOLOR="#CCCCCC" >

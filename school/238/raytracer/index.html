@@ -83,7 +83,7 @@ a 1.) When adding a new sample, the new average is = old_average * (avg_weight
 / new_weight) + new_sample * (sample_weight / new_weight) where new_weight
 = avg_weight + sample_weight.
 <p>Store an error metric. This is difficult, as to get a proper error I
-believe I would need to be able to read all previous samples. I can’t,
+believe I would need to be able to read all previous samples. I can't,
 because I am averaging them together. So I simply take a weighted average
 the new error with the average error, in exactly the same way that I find
 the new average color.
@@ -161,7 +161,7 @@ The scene rendered with 10 oversamples for every pixel.&nbsp;</li>
 <br>&nbsp;
 <li>
 The equivalent of 10 oversamples for the entire image are rendered adaptively.
-(That’s 400000 samples for this 200x200 pixel image.) This uses the error
+(That's 400000 samples for this 200x200 pixel image.) This uses the error
 values determined in the previous image (they are refined as we continue
 to render this image as well.)<br><br>
 Look at the second column. This shows the difference between the first
@@ -245,7 +245,7 @@ for each pixel were used of course, as that many is needed before the error
 for a pixel is defined. However, some pixels which should have been oversampled
 more times were not. They appear as specks. (easily visible in full image).
 These occurred due to the first two samples for a pixel returning an error
-too low – a statistical pitfall. The moral: Adaptively sample an image
+too low - a statistical pitfall. The moral: Adaptively sample an image
 after first gathering a good amount of error data (IE, overample the entire
 image multiple times first.)&nbsp;</td>
 </tr>
@@ -265,7 +265,7 @@ for that channel apears with maximum intensity.</td>
 
 <td>I have scaled the colors to make certain aspects clearer. The red shows
 where the most samples have been taken. The bright blue dots show the highest
-values on the blue channel – these are the pixels that would be rendered
+values on the blue channel - these are the pixels that would be rendered
 next if more adaptive samples were taken.</td>
 </tr>
 
@@ -275,7 +275,7 @@ next if more adaptive samples were taken.</td>
 <td>Histograms of the three channels. Notice that there were no pixels
 with less than 30 samples. (this data is from the second image from above).
 Also, notice that there are only small portions of the image with high
-error. This is why adaptive sampling helps us – we want to focus our efforts
+error. This is why adaptive sampling helps us - we want to focus our efforts
 on those areas and not the bulk of the low error pixels. In fact, you can
 see that some pixels received up to 1084 oversamples! This is a drastic
 change from the limit of 60 oversamples in the unadaptive method.</td>
@@ -291,10 +291,10 @@ A couple dozen samples for each pixel establish the required error information.
 Then only a handful of adaptive rays need to be used to refine the portions
 of the image which require it. (a handful when compared to how many pixel
 samples are used to render an entire image). All of this is done in constant
-memory, so I don’t need lots of hard drive space. The data is saved to
-disk whenever you want – you can interrupt the raytracer at any time to
-check on how it’s doing, and resume later.&nbsp;
-<p>Rendering time is faster due to the fact that I’m rendering drastically
+memory, so I don't need lots of hard drive space. The data is saved to
+disk whenever you want - you can interrupt the raytracer at any time to
+check on how it's doing, and resume later.&nbsp;
+<p>Rendering time is faster due to the fact that I'm rendering drastically
 fewer rays for acceptable images. However, render time for one adaptive
 ray is longer than one non-adaptive ray: errors must be computed and pixels
 with highest error/sample ratio must be searched for.&nbsp;
